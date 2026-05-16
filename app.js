@@ -14,6 +14,13 @@ function showPage(id){
 
    document.getElementById(id)
    .style.display='block';
+   document.getElementById('sisaKas')
+.innerHTML =
+rupiah(data.sisaKas);
+
+document.getElementById('totalPinjaman')
+.innerHTML =
+rupiah(data.totalPinjaman);
 }
 
 /* DEFAULT PAGE */
@@ -55,30 +62,53 @@ function rupiah(angka){
 
 async function loadDashboard(){
 
-   try{
+   const res =
+   await fetch(API_URL + '?action=dashboard');
 
-      const res =
-      await fetch(API_URL + '?action=dashboard');
+   const data =
+   await res.json();
 
-      const data =
-      await res.json();
+   document.getElementById('totalMasuk')
+   .innerHTML =
+   rupiah(data.totalMasuk);
 
-      document.getElementById('totalMasuk')
-      .innerHTML =
-      rupiah(data.totalMasuk);
+   document.getElementById('totalKeluar')
+   .innerHTML =
+   rupiah(data.totalKeluar);
 
-      document.getElementById('totalKeluar')
-      .innerHTML =
-      rupiah(data.totalKeluar);
+   document.getElementById('sisaKas')
+   .innerHTML =
+   rupiah(data.sisaKas);
 
-      document.getElementById('sisaPiutang')
-      .innerHTML =
-      rupiah(data.totalPiutang);
+   document.getElementById('totalPinjaman')
+   .innerHTML =
+   rupiah(data.totalPinjaman);
 
-   }catch(err){
+   document.getElementById('sisaPiutang')
+   .innerHTML =
+   rupiah(data.totalPiutang);
 
-      console.log(err);
-   }
+   /* =========================
+      BELUM LUNAS
+   ========================= */
+
+   let html='';
+
+   data.belumLunas.forEach(item=>{
+
+      html += `
+      <p>
+
+         ${item.nama}
+         -
+         ${rupiah(item.sisa)}
+
+      </p>
+      `;
+   });
+
+   document.getElementById('belumLunasList')
+   .innerHTML = html;
 }
 
 /* SIMPAN KAS */
