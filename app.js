@@ -425,15 +425,21 @@ async function loadDropdownPeminjam(){
 
    data.forEach(item=>{
 
-      html += `
-      <option value="${item.id}">
+      /* HANYA TAMPILKAN
+         YANG BELUM LUNAS */
 
-         ${item.nama}
-         - Sisa:
-         ${rupiah(item.sisa)}
+      if(Number(item.sisa) > 0){
 
-      </option>
-      `;
+         html += `
+         <option value="${item.id}">
+
+            ${item.nama}
+            - Sisa:
+            ${rupiah(item.sisa)}
+
+         </option>
+         `;
+      }
    });
 
    document.getElementById('idPeminjam')
