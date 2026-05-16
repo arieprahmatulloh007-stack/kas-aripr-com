@@ -1,29 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>KAS ARIP R.COM</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KAS ARIP R.COM</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body>
 
-<div class="sidebar">
-  <h2>KAS ARIP R.COM</h2>
+<script>
+if(localStorage.getItem('login') != 'true'){
+   window.location='login.html';
+}
+</script>
 
-  <button onclick="showPage('dashboard')">Dashboard</button>
-  <button onclick="showPage('masuk')">Kas Masuk</button>
-  <button onclick="showPage('keluar')">Kas Keluar</button>
-  <button onclick="showPage('pinjaman')">Pinjaman</button>
+<div class="sidebar">
+
+    <h2>KAS ARIP R.COM</h2>
+
+    <button onclick="showPage('dashboard')">
+      Dashboard
+    </button>
+
+    <button onclick="showPage('masuk')">
+      Kas Masuk
+    </button>
+
+    <button onclick="showPage('keluar')">
+      Kas Keluar
+    </button>
+
+    <button onclick="showPage('pinjaman')">
+      Pinjaman
+    </button>
+
+    <button onclick="logout()">
+      Logout
+    </button>
+
 </div>
 
 <div class="content">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Kas Masuk</h3>
+<p id="totalMasuk">Rp 0</p>
+</div>
+
+<div class="card">
+<h3>Total Kas Keluar</h3>
+<p id="totalKeluar">Rp 0</p>
+</div>
+
+<div class="card">
+<h3>Sisa Piutang</h3>
+<p id="sisaPiutang">Rp 0</p>
+</div>
+
+</div>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<!-- KAS MASUK -->
+<div id="masuk" class="page">
+
+<h1>Kas Masuk</h1>
+
+<input type="date" id="tglMasuk">
+
+<input type="number" id="nominalMasuk" placeholder="Nominal">
+
+<input type="text" id="ketMasuk" placeholder="Keterangan">
+
+<button onclick="simpanKasMasuk()">
+Simpan
+</button>
+
+<button onclick="window.print()">
+Print
+</button>
+
+<br><br>
+
 <table>
 
 <thead>
 <tr>
-  <th>Tanggal</th>
-  <th>Nominal</th>
-  <th>Keterangan</th>
+<th>Tanggal</th>
+<th>Nominal</th>
+<th>Keterangan</th>
 </tr>
 </thead>
 
@@ -32,52 +113,80 @@
 </tbody>
 
 </table>
-  <div id="dashboard" class="page">
-    <h1>Dashboard</h1>
-
-    <div class="cards">
-      <div class="card">
-        <h3>Total Kas Masuk</h3>
-        <p id="totalMasuk">Rp 0</p>
-      </div>
-
-      <div class="card">
-        <h3>Total Kas Keluar</h3>
-        <p id="totalKeluar">Rp 0</p>
-      </div>
-
-      <div class="card">
-        <h3>Sisa Piutang</h3>
-        <p id="sisaPiutang">Rp 0</p>
-      </div>
-    </div>
-
-    <canvas id="myChart"></canvas>
-  </div>
 
 </div>
-<div id="masuk" class="page">
 
-<h1>Kas Masuk</h1>
+<!-- KAS KELUAR -->
+<div id="keluar" class="page">
 
-<input type="date" id="tglMasuk">
+<h1>Kas Keluar</h1>
 
-<input type="number" id="nominalMasuk">
+<input type="date" id="tglKeluar">
 
-<input type="text" id="ketMasuk" placeholder="Keterangan">
+<input type="number" id="nominalKeluar" placeholder="Nominal">
 
-<button onclick="simpanKasMasuk()">
+<input type="text" id="ketKeluar" placeholder="Keterangan">
+
+<button onclick="simpanKasKeluar()">
 Simpan
 </button>
 
+<br><br>
+
+<table>
+
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Nominal</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+
+<tbody id="tableKasKeluar">
+
+</tbody>
+
+</table>
+
 </div>
+
+<!-- PINJAMAN -->
+<div id="pinjaman" class="page">
+
+<h1>Data Pinjaman</h1>
+
+<input type="text" id="namaPinjam" placeholder="Nama">
+
+<input type="number" id="totalPinjam" placeholder="Total Pinjaman">
+
+<button onclick="simpanPinjaman()">
+Simpan
+</button>
+
+<br><br>
+
+<table>
+
+<thead>
+<tr>
+<th>Nama</th>
+<th>Total</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="tablePinjaman">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
 <script src="app.js"></script>
-<script>
 
-if(localStorage.getItem('login') != 'true'){
-   window.location='login.html';
-}
-
-</script>
 </body>
 </html>
