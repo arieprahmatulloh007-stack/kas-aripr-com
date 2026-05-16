@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 
 <meta charset="UTF-8">
@@ -24,34 +25,40 @@ if(localStorage.getItem('login') != 'true'){
 
 </script>
 
-<!-- SIDEBAR -->
+<!-- =========================
+     SIDEBAR
+========================= -->
+
 <div class="sidebar">
 
-    <h2>KAS ARIP R.COM</h2>
+   <h2>KAS ARIP R.COM</h2>
 
-    <button onclick="showPage('dashboard')">
+   <button onclick="showPage('dashboard')">
       Dashboard
-    </button>
+   </button>
 
-    <button onclick="showPage('kas')">
+   <button onclick="showPage('kas')">
       Uang Kas
-    </button>
+   </button>
 
-    <button onclick="showPage('pinjaman')">
+   <button onclick="showPage('pinjaman')">
       Pinjaman
-    </button>
+   </button>
 
-    <button onclick="showPage('cicilan')">
+   <button onclick="showPage('cicilan')">
       Cicilan
-    </button>
+   </button>
 
-    <button onclick="logout()">
+   <button onclick="logout()">
       Logout
-    </button>
+   </button>
 
 </div>
 
-<!-- CONTENT -->
+<!-- =========================
+     CONTENT
+========================= -->
+
 <div class="content">
 
 <!-- =========================
@@ -60,28 +67,30 @@ if(localStorage.getItem('login') != 'true'){
 
 <div id="dashboard" class="page">
 
-<h1>Dashboard</h1>
+   <h1>Dashboard</h1>
 
-<div class="cards">
+   <div class="cards">
 
-   <div class="card">
-      <h3>Total Uang Masuk</h3>
-      <p id="totalMasuk">Rp 0</p>
+      <div class="card">
+         <h3>Total Uang Masuk</h3>
+         <p id="totalMasuk">Rp 0</p>
+      </div>
+
+      <div class="card">
+         <h3>Total Uang Keluar</h3>
+         <p id="totalKeluar">Rp 0</p>
+      </div>
+
+      <div class="card">
+         <h3>Sisa Piutang</h3>
+         <p id="sisaPiutang">Rp 0</p>
+      </div>
+
    </div>
 
-   <div class="card">
-      <h3>Total Uang Keluar</h3>
-      <p id="totalKeluar">Rp 0</p>
+   <div class="chart-box">
+      <canvas id="myChart"></canvas>
    </div>
-
-   <div class="card">
-      <h3>Sisa Piutang</h3>
-      <p id="sisaPiutang">Rp 0</p>
-   </div>
-
-</div>
-
-<canvas id="myChart"></canvas>
 
 </div>
 
@@ -91,57 +100,71 @@ if(localStorage.getItem('login') != 'true'){
 
 <div id="kas" class="page">
 
-<h1>Uang Kas</h1>
+   <h1>Uang Kas</h1>
 
-<input type="date"
-id="tglKas">
+   <div class="form-grid">
 
-<input type="number"
-id="nominalMasuk"
-placeholder="Nominal Masuk">
+      <input type="date" id="tglKas">
 
-<input type="number"
-id="nominalKeluar"
-placeholder="Nominal Keluar">
+      <input
+      type="number"
+      id="nominalMasuk"
+      placeholder="Nominal Masuk">
 
-<input type="text"
-id="sumberMasuk"
-placeholder="Sumber Masuk">
+      <input
+      type="number"
+      id="nominalKeluar"
+      placeholder="Nominal Keluar">
 
-<input type="text"
-id="sumberKeluar"
-placeholder="Sumber Keluar">
+      <input
+      type="text"
+      id="sumberMasuk"
+      placeholder="Sumber Masuk">
 
-<input type="text"
-id="ketKas"
-placeholder="Keterangan">
+      <input
+      type="text"
+      id="sumberKeluar"
+      placeholder="Sumber Keluar">
 
-<button onclick="simpanKas()">
-Simpan
-</button>
+      <input
+      type="text"
+      id="ketKas"
+      placeholder="Keterangan">
 
-<br><br>
+      <button onclick="simpanKas()">
+         Simpan
+      </button>
 
-<table>
+   </div>
 
-<thead>
-<tr>
+   <br>
 
-<th>Tanggal</th>
-<th>Masuk</th>
-<th>Keluar</th>
-<th>Sumber Masuk</th>
-<th>Sumber Keluar</th>
-<th>Keterangan</th>
+   <div class="table-box">
 
-</tr>
-</thead>
+      <table>
 
-<tbody id="tableKas">
+         <thead>
 
-</tbody>
+            <tr>
 
-</table>
+               <th>Tanggal</th>
+               <th>Masuk</th>
+               <th>Keluar</th>
+               <th>Sumber Masuk</th>
+               <th>Sumber Keluar</th>
+               <th>Keterangan</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableKas">
+
+         </tbody>
+
+      </table>
+
+   </div>
 
 </div>
 
@@ -151,53 +174,68 @@ Simpan
 
 <div id="pinjaman" class="page">
 
-<h1>Data Pinjaman</h1>
+   <h1>Data Pinjaman</h1>
 
-<input type="text"
-id="namaPinjam"
-placeholder="Nama">
+   <div class="form-grid">
 
-<input type="text"
-id="hpPinjam"
-placeholder="No HP">
+      <input
+      type="text"
+      id="namaPinjam"
+      placeholder="Nama">
 
-<input type="text"
-id="alamatPinjam"
-placeholder="Alamat">
+      <input
+      type="text"
+      id="hpPinjam"
+      placeholder="No HP">
 
-<input type="number"
-id="totalPinjam"
-placeholder="Total Pinjaman">
+      <input
+      type="text"
+      id="alamatPinjam"
+      placeholder="Alamat">
 
-<input type="number"
-id="lamaCicilan"
-placeholder="Lama Cicilan (bulan)">
+      <input
+      type="number"
+      id="totalPinjam"
+      placeholder="Total Pinjaman">
 
-<button onclick="simpanPinjaman()">
-Simpan
-</button>
+      <input
+      type="number"
+      id="lamaCicilan"
+      placeholder="Lama Cicilan (bulan)">
 
-<br><br>
+      <button onclick="simpanPinjaman()">
+         Simpan
+      </button>
 
-<table>
+   </div>
 
-<thead>
-<tr>
+   <br>
 
-<th>Nama</th>
-<th>Total</th>
-<th>Sudah Bayar</th>
-<th>Sisa</th>
-<th>Status</th>
+   <div class="table-box">
 
-</tr>
-</thead>
+      <table>
 
-<tbody id="tablePinjaman">
+         <thead>
 
-</tbody>
+            <tr>
 
-</table>
+               <th>Nama</th>
+               <th>Total</th>
+               <th>Sudah Bayar</th>
+               <th>Sisa</th>
+               <th>Status</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tablePinjaman">
+
+         </tbody>
+
+      </table>
+
+   </div>
 
 </div>
 
@@ -207,46 +245,58 @@ Simpan
 
 <div id="cicilan" class="page">
 
-<h1>Pembayaran Cicilan</h1>
+   <h1>Pembayaran Cicilan</h1>
 
-<select id="idPeminjam">
+   <div class="form-grid">
 
-</select>
+      <select id="idPeminjam">
 
-<input type="number"
-id="cicilanKe"
-placeholder="Cicilan Ke">
+      </select>
 
-<input type="number"
-id="bayarNominal"
-placeholder="Nominal Bayar">
+      <input
+      type="number"
+      id="cicilanKe"
+      placeholder="Cicilan Ke">
 
-<button onclick="bayarCicilan()">
-Bayar
-</button>
+      <input
+      type="number"
+      id="bayarNominal"
+      placeholder="Nominal Bayar">
 
-<br><br>
+      <button onclick="bayarCicilan()">
+         Bayar
+      </button>
 
-<table>
+   </div>
 
-<thead>
-<tr>
+   <br>
 
-<th>Tanggal</th>
-<th>Peminjam</th>
-<th>Cicilan</th>
-<th>Bayar</th>
-<th>Sisa</th>
-<th>Aksi</th>
+   <div class="table-box">
 
-</tr>
-</thead>
+      <table>
 
-<tbody id="tableCicilan">
+         <thead>
 
-</tbody>
+            <tr>
 
-</table>
+               <th>Tanggal</th>
+               <th>Peminjam</th>
+               <th>Cicilan</th>
+               <th>Bayar</th>
+               <th>Sisa</th>
+               <th>Aksi</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableCicilan">
+
+         </tbody>
+
+      </table>
+
+   </div>
 
 </div>
 
