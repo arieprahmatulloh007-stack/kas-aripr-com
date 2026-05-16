@@ -1,6 +1,6 @@
 function showPage(id){
   const pages = document.querySelectorAll('.page');
-
+  const API_URL = 'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
   pages.forEach(p=>{
     p.style.display='none';
   });
