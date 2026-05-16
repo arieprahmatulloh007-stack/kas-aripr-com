@@ -16,11 +16,15 @@
 <body>
 
 <script>
+
 if(localStorage.getItem('login') != 'true'){
+
    window.location='login.html';
 }
+
 </script>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
 
     <h2>KAS ARIP R.COM</h2>
@@ -29,45 +33,51 @@ if(localStorage.getItem('login') != 'true'){
       Dashboard
     </button>
 
-   <button onclick="showPage('kas')">
-     Uang Kas
-   </button>
+    <button onclick="showPage('kas')">
+      Uang Kas
+    </button>
 
     <button onclick="showPage('pinjaman')">
       Pinjaman
     </button>
- <button onclick="showPage('cicilan')">
-   Cicilan
-   </button>
+
+    <button onclick="showPage('cicilan')">
+      Cicilan
+    </button>
+
     <button onclick="logout()">
       Logout
     </button>
-   
+
 </div>
 
+<!-- CONTENT -->
 <div class="content">
 
-<!-- DASHBOARD -->
+<!-- =========================
+     DASHBOARD
+========================= -->
+
 <div id="dashboard" class="page">
 
 <h1>Dashboard</h1>
 
 <div class="cards">
 
-<div class="card">
-<h3>Total Kas Masuk</h3>
-<p id="totalMasuk">Rp 0</p>
-</div>
+   <div class="card">
+      <h3>Total Uang Masuk</h3>
+      <p id="totalMasuk">Rp 0</p>
+   </div>
 
-<div class="card">
-<h3>Total Kas Keluar</h3>
-<p id="totalKeluar">Rp 0</p>
-</div>
+   <div class="card">
+      <h3>Total Uang Keluar</h3>
+      <p id="totalKeluar">Rp 0</p>
+   </div>
 
-<div class="card">
-<h3>Sisa Piutang</h3>
-<p id="sisaPiutang">Rp 0</p>
-</div>
+   <div class="card">
+      <h3>Sisa Piutang</h3>
+      <p id="sisaPiutang">Rp 0</p>
+   </div>
 
 </div>
 
@@ -75,7 +85,126 @@ if(localStorage.getItem('login') != 'true'){
 
 </div>
 
-<!-- CICILAN -->
+<!-- =========================
+     UANG KAS
+========================= -->
+
+<div id="kas" class="page">
+
+<h1>Uang Kas</h1>
+
+<input type="date"
+id="tglKas">
+
+<input type="number"
+id="nominalMasuk"
+placeholder="Nominal Masuk">
+
+<input type="number"
+id="nominalKeluar"
+placeholder="Nominal Keluar">
+
+<input type="text"
+id="sumberMasuk"
+placeholder="Sumber Masuk">
+
+<input type="text"
+id="sumberKeluar"
+placeholder="Sumber Keluar">
+
+<input type="text"
+id="ketKas"
+placeholder="Keterangan">
+
+<button onclick="simpanKas()">
+Simpan
+</button>
+
+<br><br>
+
+<table>
+
+<thead>
+<tr>
+
+<th>Tanggal</th>
+<th>Masuk</th>
+<th>Keluar</th>
+<th>Sumber Masuk</th>
+<th>Sumber Keluar</th>
+<th>Keterangan</th>
+
+</tr>
+</thead>
+
+<tbody id="tableKas">
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- =========================
+     PINJAMAN
+========================= -->
+
+<div id="pinjaman" class="page">
+
+<h1>Data Pinjaman</h1>
+
+<input type="text"
+id="namaPinjam"
+placeholder="Nama">
+
+<input type="text"
+id="hpPinjam"
+placeholder="No HP">
+
+<input type="text"
+id="alamatPinjam"
+placeholder="Alamat">
+
+<input type="number"
+id="totalPinjam"
+placeholder="Total Pinjaman">
+
+<input type="number"
+id="lamaCicilan"
+placeholder="Lama Cicilan (bulan)">
+
+<button onclick="simpanPinjaman()">
+Simpan
+</button>
+
+<br><br>
+
+<table>
+
+<thead>
+<tr>
+
+<th>Nama</th>
+<th>Total</th>
+<th>Sudah Bayar</th>
+<th>Sisa</th>
+<th>Status</th>
+
+</tr>
+</thead>
+
+<tbody id="tablePinjaman">
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- =========================
+     CICILAN
+========================= -->
+
 <div id="cicilan" class="page">
 
 <h1>Pembayaran Cicilan</h1>
@@ -102,99 +231,18 @@ Bayar
 
 <thead>
 <tr>
+
 <th>Tanggal</th>
 <th>Peminjam</th>
 <th>Cicilan</th>
 <th>Bayar</th>
 <th>Sisa</th>
+<th>Aksi</th>
+
 </tr>
 </thead>
 
 <tbody id="tableCicilan">
-
-</tbody>
-
-</table>
-
-</div>
-   <!-- UANG KAS -->
-<div id="kas" class="page">
-
-<h1>Uang Kas</h1>
-
-<input type="date"
-id="tglKas">
-
-<input type="number"
-id="nominalMasuk"
-placeholder="Nominal Masuk">
-
-<input type="number"
-id="nominalKeluar"
-placeholder="Nominal Keluar">
-
-<input type="text"
-id="ketKas"
-placeholder="Keterangan">
-
-<button onclick="simpanKas()">
-Simpan
-</button>
-
-<br><br>
-
-<table>
-
-<thead>
-<tr>
-<th>Tanggal</th>
-<th>Masuk</th>
-<th>Keluar</th>
-<th>Keterangan</th>
-</tr>
-</thead>
-
-<tbody id="tableKas">
-
-</tbody>
-
-</table>
-
-</div>
-<!-- PINJAMAN -->
-<div id="pinjaman" class="page">
-
-<h1>Data Pinjaman</h1>
-
-<input type="text" id="namaPinjam" placeholder="Nama">
-
-<input type="text" id="hpPinjam" placeholder="No HP">
-
-<input type="text" id="alamatPinjam" placeholder="Alamat">
-
-<input type="number" id="totalPinjam" placeholder="Total Pinjaman">
-
-<input type="number" id="lamaCicilan" placeholder="Lama Cicilan (bulan)">
-
-<button onclick="simpanPinjaman()">
-Simpan
-</button>
-
-<br><br>
-
-<table>
-
-<thead>
-<tr>
-<th>Nama</th>
-<th>Total</th>
-<th>Sudah Bayar</th>
-<th>Sisa</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody id="tablePinjaman">
 
 </tbody>
 
