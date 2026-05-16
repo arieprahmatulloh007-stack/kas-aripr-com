@@ -423,7 +423,37 @@ async function loadDropdownPeminjam(){
    document.getElementById('idPeminjam')
    .innerHTML = html;
 }
+/* =========================
+   HAPUS CICILAN
+========================= */
 
+async function hapusCicilan(id){
+
+   let konfirmasi =
+   confirm('Yakin ingin menghapus data?');
+
+   if(!konfirmasi){
+      return;
+   }
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'hapusCicilan',
+
+         id:id
+
+      })
+   });
+
+   alert('Data berhasil dihapus');
+
+   loadCicilan();
+   loadDashboard();
+}
 /* =========================
    AUTO LOAD
 ========================= */
