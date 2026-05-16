@@ -385,6 +385,23 @@ async function loadCicilan(){
 
          <td>${rupiah(item.sisa)}</td>
 
+         <td>
+
+            <button
+            onclick="hapusCicilan('${item.rowid}')"
+            style="
+               background:red;
+               color:white;
+               border:none;
+               padding:8px 12px;
+               border-radius:8px;
+               cursor:pointer;
+            ">
+               Hapus
+            </button>
+
+         </td>
+
       </tr>
       `;
    });
@@ -392,7 +409,6 @@ async function loadCicilan(){
    document.getElementById('tableCicilan')
    .innerHTML = html;
 }
-
 /* =========================
    DROPDOWN PEMINJAM
 ========================= */
