@@ -114,68 +114,63 @@ table td{
 .login-box h1{
   text-align:center;
 }
+
+
 /* ================= LOGIN MODERN ================= */
+
+.login-body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f172a;
+    height:100vh;
+    overflow:hidden;
 }
 
-.input-group i{
-    position:absolute;
-    left:15px;
-    top:18px;
-    color:#64748b;
-}
-
-.input-group input{
+.login-container{
+    display:flex;
     width:100%;
-    padding:15px 15px 15px 45px;
-    border-radius:14px;
-    border:1px solid #dbeafe;
-    background:#f8fafc;
-    font-size:15px;
-    outline:none;
-    box-sizing:border-box;
+    height:100vh;
 }
 
-.input-group input:focus{
-    border:1px solid #2563eb;
-    background:white;
-}
-
-.login-btn{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:14px;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+.login-left{
+    flex:1;
+    position:relative;
+    background:
+    linear-gradient(rgba(15,23,42,0.8), rgba(30,41,59,0.9)),
+    url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-    margin-top:10px;
 }
 
-.login-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(37,99,235,0.3);
-}
-
-.copyright{
+.left-content{
+    position:relative;
+    z-index:2;
     text-align:center;
-    margin-top:30px;
-    color:#94a3b8;
-    font-size:13px;
 }
 
-/* RESPONSIVE HP */
+.left-content h1{
+    font-size:48px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
 
-@media(max-width:900px){
+.left-content p{
+    font-size:18px;
+    opacity:0.9;
+}
 
-    .login-left{
-        display:none;
-    }
+.login-right{
+    width:450px;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
 
-    .login-right{
-        width:100%;
-    }
-
+.login-box{
 }
