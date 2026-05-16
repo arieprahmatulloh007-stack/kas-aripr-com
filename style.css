@@ -2,12 +2,12 @@ body{
   margin:0;
   font-family:Arial;
   display:flex;
-  background:#f5f7fb;
+  background:#f1f5f9;
 }
 
 .sidebar{
   width:250px;
-  background:#1e293b;
+  background:#0f172a;
   color:white;
   height:100vh;
   padding:20px;
@@ -15,6 +15,7 @@ body{
 
 .sidebar h2{
   text-align:center;
+  margin-bottom:30px;
 }
 
 .sidebar button{
@@ -22,15 +23,25 @@ body{
   padding:15px;
   margin-top:10px;
   border:none;
-  border-radius:10px;
-  background:#334155;
+  border-radius:12px;
+  background:#1e293b;
   color:white;
+  font-weight:bold;
   cursor:pointer;
+  transition:0.3s;
+}
+
+.sidebar button:hover{
+  background:#2563eb;
 }
 
 .content{
   flex:1;
   padding:30px;
+}
+
+.page{
+  display:none;
 }
 
 .cards{
@@ -46,6 +57,45 @@ body{
   flex:1;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
+
+input{
+  width:250px;
+  padding:12px;
+  margin:5px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+table th{
+  background:#1e293b;
+  color:white;
+  padding:15px;
+}
+
+table td{
+  padding:12px;
+  border-bottom:1px solid #ddd;
+}
+
+/* LOGIN */
+
 .login-body{
   display:flex;
   justify-content:center;
@@ -59,30 +109,8 @@ body{
   background:white;
   padding:40px;
   border-radius:20px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
 .login-box h1{
   text-align:center;
-  margin-bottom:30px;
-}
-
-.login-box input{
-  width:100%;
-  padding:15px;
-  margin-top:10px;
-  border-radius:10px;
-  border:1px solid #ddd;
-}
-
-.login-box button{
-  width:100%;
-  padding:15px;
-  margin-top:20px;
-  border:none;
-  border-radius:10px;
-  background:#2563eb;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
 }
