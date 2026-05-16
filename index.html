@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -17,286 +16,164 @@
 <body>
 
 <script>
-
 if(localStorage.getItem('login') != 'true'){
-
    window.location='login.html';
 }
-
 </script>
-
-<!-- =========================
-     SIDEBAR
-========================= -->
 
 <div class="sidebar">
 
-   <h2>KAS ARIP R.COM</h2>
+    <h2>KAS ARIP R.COM</h2>
 
-   <button onclick="showPage('dashboard')">
+    <button onclick="showPage('dashboard')">
       Dashboard
-   </button>
+    </button>
 
+    <button onclick="showPage('masuk')">
+      Kas Masuk
+    </button>
+
+    <button onclick="showPage('keluar')">
+      Kas Keluar
+    </button>
    <button onclick="showPage('kas')">
-      Uang Kas
+     Uang Kas
    </button>
 
-   <button onclick="showPage('pinjaman')">
+    <button onclick="showPage('pinjaman')">
       Pinjaman
-   </button>
-
-   <button onclick="showPage('cicilan')">
-      Cicilan
-   </button>
-
-   <button onclick="logout()">
-      Logout
-   </button>
+@@ -121,58 +117,27 @@
+</table>
 
 </div>
+   
+<!-- KAS MASUK -->
+<div id="masuk" class="page">
 
-<!-- =========================
-     CONTENT
-========================= -->
+<h1>Kas Masuk</h1>
 
-<div class="content">
+<input type="date" id="tglMasuk">
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+<input type="number" id="nominalMasuk" placeholder="Nominal">
 
-<div id="dashboard" class="page">
-
-   <h1>Dashboard</h1>
-
-   <div class="cards">
-
-      <div class="card">
-         <h3>Total Uang Masuk</h3>
-         <p id="totalMasuk">Rp 0</p>
-      </div>
-
-      <div class="card">
-         <h3>Total Uang Keluar</h3>
-         <p id="totalKeluar">Rp 0</p>
-      </div>
-
-      <div class="card">
-         <h3>Sisa Piutang</h3>
-         <p id="sisaPiutang">Rp 0</p>
-      </div>
-
-   </div>
-
-   <div class="chart-box">
-      <canvas id="myChart"></canvas>
-   </div>
-
-</div>
-
-<!-- =========================
-     UANG KAS
-========================= -->
-
+<input type="text" id="ketMasuk" placeholder="Keterangan">
+   <!-- UANG KAS -->
 <div id="kas" class="page">
 
-   <h1>Uang Kas</h1>
+<button onclick="simpanKasMasuk()">
+Simpan
+</button>
+<h1>Uang Kas</h1>
 
-   <div class="form-grid">
+<button onclick="window.print()">
+Print
+</button>
 
-      <input type="date" id="tglKas">
+<br><br>
+<input type="date"
+id="tglKas">
 
-      <input
-      type="number"
-      id="nominalMasuk"
-      placeholder="Nominal Masuk">
+<table>
 
-      <input
-      type="number"
-      id="nominalKeluar"
-      placeholder="Nominal Keluar">
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Nominal</th>
+<th>Keterangan</th>
+</tr>
+</thead>
 
-      <input
-      type="text"
-      id="sumberMasuk"
-      placeholder="Sumber Masuk">
+<tbody id="tableKasMasuk">
 
-      <input
-      type="text"
-      id="sumberKeluar"
-      placeholder="Sumber Keluar">
+</tbody>
 
-      <input
-      type="text"
-      id="ketKas"
-      placeholder="Keterangan">
-
-      <button onclick="simpanKas()">
-         Simpan
-      </button>
-
-   </div>
-
-   <br>
-
-   <div class="table-box">
-
-      <table>
-
-         <thead>
-
-            <tr>
-
-               <th>Tanggal</th>
-               <th>Masuk</th>
-               <th>Keluar</th>
-               <th>Sumber Masuk</th>
-               <th>Sumber Keluar</th>
-               <th>Keterangan</th>
-
-            </tr>
-
-         </thead>
-
-         <tbody id="tableKas">
-
-         </tbody>
-
-      </table>
-
-   </div>
+</table>
 
 </div>
 
-<!-- =========================
-     PINJAMAN
-========================= -->
+<!-- KAS KELUAR -->
+<div id="keluar" class="page">
 
+<h1>Kas Keluar</h1>
+
+<input type="date" id="tglKeluar">
+<input type="number"
+id="nominalMasuk"
+placeholder="Nominal Masuk">
+
+<input type="number" id="nominalKeluar" placeholder="Nominal">
+<input type="number"
+id="nominalKeluar"
+placeholder="Nominal Keluar">
+
+<input type="text" id="ketKeluar" placeholder="Keterangan">
+<input type="text"
+id="ketKas"
+placeholder="Keterangan">
+
+<button onclick="simpanKasKeluar()">
+<button onclick="simpanKas()">
+Simpan
+</button>
+
+@@ -183,63 +148,63 @@
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Nominal</th>
+<th>Masuk</th>
+<th>Keluar</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+
+<tbody id="tableKasKeluar">
+<tbody id="tableKas">
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- PINJAMAN -->
 <div id="pinjaman" class="page">
 
-   <h1>Data Pinjaman</h1>
+<h1>Data Pinjaman</h1>
 
-   <div class="form-grid">
+<input type="text" id="namaPinjam" placeholder="Nama">
 
-      <input
-      type="text"
-      id="namaPinjam"
-      placeholder="Nama">
+<input type="text" id="hpPinjam" placeholder="No HP">
 
-      <input
-      type="text"
-      id="hpPinjam"
-      placeholder="No HP">
+<input type="text" id="alamatPinjam" placeholder="Alamat">
 
-      <input
-      type="text"
-      id="alamatPinjam"
-      placeholder="Alamat">
+<input type="number" id="totalPinjam" placeholder="Total Pinjaman">
 
-      <input
-      type="number"
-      id="totalPinjam"
-      placeholder="Total Pinjaman">
+<input type="number" id="lamaCicilan" placeholder="Lama Cicilan (bulan)">
 
-      <input
-      type="number"
-      id="lamaCicilan"
-      placeholder="Lama Cicilan (bulan)">
+<button onclick="simpanPinjaman()">
+Simpan
+</button>
 
-      <button onclick="simpanPinjaman()">
-         Simpan
-      </button>
+<br><br>
 
-   </div>
+<table>
 
-   <br>
+<thead>
+<tr>
+<th>Nama</th>
+<th>Total</th>
+<th>Sudah Bayar</th>
+<th>Sisa</th>
+<th>Status</th>
+</tr>
+</thead>
 
-   <div class="table-box">
+<tbody id="tablePinjaman">
 
-      <table>
+</tbody>
 
-         <thead>
-
-            <tr>
-
-               <th>Nama</th>
-               <th>Total</th>
-               <th>Sudah Bayar</th>
-               <th>Sisa</th>
-               <th>Status</th>
-
-            </tr>
-
-         </thead>
-
-         <tbody id="tablePinjaman">
-
-         </tbody>
-
-      </table>
-
-   </div>
-
-</div>
-
-<!-- =========================
-     CICILAN
-========================= -->
-
-<div id="cicilan" class="page">
-
-   <h1>Pembayaran Cicilan</h1>
-
-   <div class="form-grid">
-
-      <select id="idPeminjam">
-
-      </select>
-
-      <input
-      type="number"
-      id="cicilanKe"
-      placeholder="Cicilan Ke">
-
-      <input
-      type="number"
-      id="bayarNominal"
-      placeholder="Nominal Bayar">
-
-      <button onclick="bayarCicilan()">
-         Bayar
-      </button>
-
-   </div>
-
-   <br>
-
-   <div class="table-box">
-
-      <table>
-
-         <thead>
-
-            <tr>
-
-               <th>Tanggal</th>
-               <th>Peminjam</th>
-               <th>Cicilan</th>
-               <th>Bayar</th>
-               <th>Sisa</th>
-               <th>Aksi</th>
-
-            </tr>
-
-         </thead>
-
-         <tbody id="tableCicilan">
-
-         </tbody>
-
-      </table>
-
-   </div>
+</table>
 
 </div>
 
