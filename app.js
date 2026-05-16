@@ -44,10 +44,17 @@ function rupiah(angka){
 async function simpanKasMasuk(){
 
    let data = {
+
       action : 'tambahKasMasuk',
-      tanggal : document.getElementById('tglMasuk').value,
-      nominal : document.getElementById('nominalMasuk').value,
-      keterangan : document.getElementById('ketMasuk').value
+
+      tanggal :
+      document.getElementById('tglMasuk').value,
+
+      nominal :
+      document.getElementById('nominalMasuk').value,
+
+      keterangan :
+      document.getElementById('ketMasuk').value
    };
 
    await fetch(API_URL,{
@@ -56,6 +63,10 @@ async function simpanKasMasuk(){
    });
 
    alert('Kas masuk berhasil disimpan');
+
+   document.getElementById('tglMasuk').value='';
+   document.getElementById('nominalMasuk').value='';
+   document.getElementById('ketMasuk').value='';
 
    loadDashboard();
    loadKasMasuk();
@@ -68,10 +79,17 @@ async function simpanKasMasuk(){
 async function simpanKasKeluar(){
 
    let data = {
+
       action : 'tambahKasKeluar',
-      tanggal : document.getElementById('tglKeluar').value,
-      nominal : document.getElementById('nominalKeluar').value,
-      keterangan : document.getElementById('ketKeluar').value
+
+      tanggal :
+      document.getElementById('tglKeluar').value,
+
+      nominal :
+      document.getElementById('nominalKeluar').value,
+
+      keterangan :
+      document.getElementById('ketKeluar').value
    };
 
    await fetch(API_URL,{
@@ -80,6 +98,10 @@ async function simpanKasKeluar(){
    });
 
    alert('Kas keluar berhasil disimpan');
+
+   document.getElementById('tglKeluar').value='';
+   document.getElementById('nominalKeluar').value='';
+   document.getElementById('ketKeluar').value='';
 
    loadDashboard();
    loadKasKeluar();
@@ -124,16 +146,25 @@ async function simpanPinjaman(){
 
    alert('Pinjaman berhasil disimpan');
 
+   document.getElementById('namaPinjam').value='';
+   document.getElementById('hpPinjam').value='';
+   document.getElementById('alamatPinjam').value='';
+   document.getElementById('totalPinjam').value='';
+   document.getElementById('lamaCicilan').value='';
+
    loadPinjaman();
+   loadDropdownPeminjam();
    loadDashboard();
 }
+
 /* =========================
    LOAD DASHBOARD
 ========================= */
 
 async function loadDashboard(){
 
-   const res = await fetch(API_URL + '?action=dashboard');
+   const res =
+   await fetch(API_URL + '?action=dashboard');
 
    const data = await res.json();
 
@@ -153,14 +184,15 @@ async function loadDashboard(){
 }
 
 /* =========================
-   LOAD CHART
+   CHART
 ========================= */
 
 let chart;
 
 function loadChart(masuk, keluar){
 
-   const ctx = document.getElementById('myChart');
+   const ctx =
+   document.getElementById('myChart');
 
    if(chart){
       chart.destroy();
@@ -196,7 +228,8 @@ function loadChart(masuk, keluar){
 
 async function loadKasMasuk(){
 
-   const res = await fetch(API_URL + '?action=getKasMasuk');
+   const res =
+   await fetch(API_URL + '?action=getKasMasuk');
 
    const data = await res.json();
 
@@ -213,7 +246,8 @@ async function loadKasMasuk(){
       `;
    });
 
-   document.getElementById('tableKasMasuk').innerHTML = html;
+   document.getElementById('tableKasMasuk')
+   .innerHTML = html;
 }
 
 /* =========================
@@ -222,7 +256,8 @@ async function loadKasMasuk(){
 
 async function loadKasKeluar(){
 
-   const res = await fetch(API_URL + '?action=getKasKeluar');
+   const res =
+   await fetch(API_URL + '?action=getKasKeluar');
 
    const data = await res.json();
 
@@ -239,7 +274,8 @@ async function loadKasKeluar(){
       `;
    });
 
-   document.getElementById('tableKasKeluar').innerHTML = html;
+   document.getElementById('tableKasKeluar')
+   .innerHTML = html;
 }
 
 /* =========================
@@ -248,7 +284,8 @@ async function loadKasKeluar(){
 
 async function loadPinjaman(){
 
-   const res = await fetch(API_URL + '?action=getPinjaman');
+   const res =
+   await fetch(API_URL + '?action=getPinjaman');
 
    const data = await res.json();
 
@@ -258,17 +295,32 @@ async function loadPinjaman(){
 
       html += `
       <tr>
+
          <td>${item.nama}</td>
+
          <td>${rupiah(item.total)}</td>
-         <td style="color:red;">
-            BELUM LUNAS
+
+         <td>${rupiah(item.sudah)}</td>
+
+         <td>${rupiah(item.sisa)}</td>
+
+         <td style="
+            color:
+            ${item.status == 'LUNAS'
+            ? 'green'
+            : 'red'}
+         ">
+            ${item.status}
          </td>
+
       </tr>
       `;
    });
 
-   document.getElementById('tablePinjaman').innerHTML = html;
+   document.getElementById('tablePinjaman')
+   .innerHTML = html;
 }
+
 /* =========================
    BAYAR CICILAN
 ========================= */
@@ -282,9 +334,11 @@ async function bayarCicilan(){
       id :
       document.getElementById('idPeminjam').value,
 
+      cicilan :
+      document.getElementById('cicilanKe').value,
+
       bayar :
       document.getElementById('bayarNominal').value
-
    };
 
    await fetch(API_URL,{
@@ -294,9 +348,13 @@ async function bayarCicilan(){
 
    alert('Pembayaran berhasil');
 
+   document.getElementById('cicilanKe').value='';
+   document.getElementById('bayarNominal').value='';
+
    loadDashboard();
    loadPinjaman();
    loadCicilan();
+   loadDropdownPeminjam();
 }
 
 /* =========================
@@ -316,10 +374,17 @@ async function loadCicilan(){
 
       html += `
       <tr>
+
          <td>${item.tanggal}</td>
+
          <td>${item.id}</td>
+
+         <td>Cicilan Ke-${item.cicilan}</td>
+
          <td>${rupiah(item.bayar)}</td>
+
          <td>${rupiah(item.sisa)}</td>
+
       </tr>
       `;
    });
@@ -329,7 +394,7 @@ async function loadCicilan(){
 }
 
 /* =========================
-   LOAD DROPDOWN PEMINJAM
+   DROPDOWN PEMINJAM
 ========================= */
 
 async function loadDropdownPeminjam(){
@@ -339,13 +404,18 @@ async function loadDropdownPeminjam(){
 
    const data = await res.json();
 
-   let html = '';
+   let html =
+   '<option value=\"\">Pilih Peminjam</option>';
 
    data.forEach(item=>{
 
       html += `
       <option value="${item.id}">
+
          ${item.nama}
+         - Sisa:
+         ${rupiah(item.sisa)}
+
       </option>
       `;
    });
@@ -355,10 +425,12 @@ async function loadDropdownPeminjam(){
 }
 
 /* =========================
-   UPDATE LOAD
+   AUTO LOAD
 ========================= */
 
-loadDropdownPeminjam();
-loadCicilan();
-
+loadDashboard();
+loadKasMasuk();
+loadKasKeluar();
 loadPinjaman();
+loadCicilan();
+loadDropdownPeminjam();
