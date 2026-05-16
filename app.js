@@ -1,258 +1,373 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+/* PAGE */
 
-<title>KAS ARIP R.COM</title>
+function showPage(id){
 
-<link rel="stylesheet" href="style.css">
+   document
+   .querySelectorAll('.page')
+   .forEach(page=>{
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      page.style.display='none';
+   });
 
-</head>
+   document.getElementById(id)
+   .style.display='block';
+}
 
-<body>
+/* DEFAULT PAGE */
 
-<script>
+window.onload = function(){
 
-if(localStorage.getItem('login') != 'true'){
+   showPage('dashboard');
+
+   loadDashboard();
+
+   loadKas();
+
+   loadPinjaman();
+
+   loadCicilan();
+
+   loadDropdownPeminjam();
+};
+
+/* LOGOUT */
+
+function logout(){
+
+   localStorage.clear();
 
    window.location='login.html';
 }
 
-</script>
+/* FORMAT */
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+function rupiah(angka){
 
-    <h2>KAS ARIP R.COM</h2>
+   return 'Rp ' +
+   Number(angka || 0)
+   .toLocaleString('id-ID');
+}
 
-    <button onclick="showPage('dashboard')">
-      Dashboard
-    </button>
+/* DASHBOARD */
 
-    <button onclick="showPage('kas')">
-      Uang Kas
-    </button>
+async function loadDashboard(){
 
-    <button onclick="showPage('pinjaman')">
-      Pinjaman
-    </button>
+   try{
 
-    <button onclick="showPage('cicilan')">
-      Cicilan
-    </button>
+      const res =
+      await fetch(API_URL + '?action=dashboard');
 
-    <button onclick="logout()">
-      Logout
-    </button>
+      const data =
+      await res.json();
 
-</div>
+      document.getElementById('totalMasuk')
+      .innerHTML =
+      rupiah(data.totalMasuk);
 
-<!-- CONTENT -->
-<div class="content">
+      document.getElementById('totalKeluar')
+      .innerHTML =
+      rupiah(data.totalKeluar);
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+      document.getElementById('sisaPiutang')
+      .innerHTML =
+      rupiah(data.totalPiutang);
 
-<div id="dashboard" class="page">
+   }catch(err){
 
-<h1>Dashboard</h1>
+      console.log(err);
+   }
+}
 
-<div class="cards">
+/* SIMPAN KAS */
 
-   <div class="card">
-      <h3>Total Uang Masuk</h3>
-      <p id="totalMasuk">Rp 0</p>
-   </div>
+async function simpanKas(){
 
-   <div class="card">
-      <h3>Total Uang Keluar</h3>
-      <p id="totalKeluar">Rp 0</p>
-   </div>
+   let data = {
 
-   <div class="card">
-      <h3>Sisa Piutang</h3>
-      <p id="sisaPiutang">Rp 0</p>
-   </div>
+      action:'tambahKas',
 
-</div>
+      tanggal:
+      document.getElementById('tglKas').value,
 
-<canvas id="myChart"></canvas>
+      masuk:
+      document.getElementById('nominalMasuk').value,
 
-</div>
+      keluar:
+      document.getElementById('nominalKeluar').value,
 
-<!-- =========================
-     UANG KAS
-========================= -->
+      sumberMasuk:
+      document.getElementById('sumberMasuk').value,
 
-<div id="kas" class="page">
+      sumberKeluar:
+      document.getElementById('sumberKeluar').value,
 
-<h1>Uang Kas</h1>
+      keterangan:
+      document.getElementById('ketKas').value
+   };
 
-<input type="date"
-id="tglKas">
+   await fetch(API_URL,{
 
-<input type="number"
-id="nominalMasuk"
-placeholder="Nominal Masuk">
+      method:'POST',
 
-<input type="number"
-id="nominalKeluar"
-placeholder="Nominal Keluar">
+      body:JSON.stringify(data)
+   });
 
-<input type="text"
-id="sumberMasuk"
-placeholder="Sumber Masuk">
+   alert('Berhasil');
 
-<input type="text"
-id="sumberKeluar"
-placeholder="Sumber Keluar">
+   loadKas();
 
-<input type="text"
-id="ketKas"
-placeholder="Keterangan">
+   loadDashboard();
+}
 
-<button onclick="simpanKas()">
-Simpan
-</button>
+/* LOAD KAS */
 
-<br><br>
+async function loadKas(){
 
-<table>
+   try{
 
-<thead>
-<tr>
+      const res =
+      await fetch(API_URL + '?action=getKas');
 
-<th>Tanggal</th>
-<th>Masuk</th>
-<th>Keluar</th>
-<th>Sumber Masuk</th>
-<th>Sumber Keluar</th>
-<th>Keterangan</th>
+      const data =
+      await res.json();
 
-</tr>
-</thead>
+      let html='';
 
-<tbody id="tableKas">
+      data.forEach(item=>{
 
-</tbody>
+         html += `
+         <tr>
 
-</table>
+            <td>${item.tanggal}</td>
 
-</div>
+            <td>${rupiah(item.masuk)}</td>
 
-<!-- =========================
-     PINJAMAN
-========================= -->
+            <td>${rupiah(item.keluar)}</td>
 
-<div id="pinjaman" class="page">
+            <td>${item.sumberMasuk}</td>
 
-<h1>Data Pinjaman</h1>
+            <td>${item.sumberKeluar}</td>
 
-<input type="text"
-id="namaPinjam"
-placeholder="Nama">
+            <td>${item.keterangan}</td>
 
-<input type="text"
-id="hpPinjam"
-placeholder="No HP">
+         </tr>
+         `;
+      });
 
-<input type="text"
-id="alamatPinjam"
-placeholder="Alamat">
+      document.getElementById('tableKas')
+      .innerHTML = html;
 
-<input type="number"
-id="totalPinjam"
-placeholder="Total Pinjaman">
+   }catch(err){
 
-<input type="number"
-id="lamaCicilan"
-placeholder="Lama Cicilan (bulan)">
+      console.log(err);
+   }
+}
 
-<button onclick="simpanPinjaman()">
-Simpan
-</button>
+/* PINJAMAN */
 
-<br><br>
+async function simpanPinjaman(){
 
-<table>
+   let data = {
 
-<thead>
-<tr>
+      action:'tambahPinjaman',
 
-<th>Nama</th>
-<th>Total</th>
-<th>Sudah Bayar</th>
-<th>Sisa</th>
-<th>Status</th>
+      nama:
+      document.getElementById('namaPinjam').value,
 
-</tr>
-</thead>
+      hp:
+      document.getElementById('hpPinjam').value,
 
-<tbody id="tablePinjaman">
+      alamat:
+      document.getElementById('alamatPinjam').value,
 
-</tbody>
+      total:
+      document.getElementById('totalPinjam').value
+   };
 
-</table>
+   await fetch(API_URL,{
 
-</div>
+      method:'POST',
 
-<!-- =========================
-     CICILAN
-========================= -->
+      body:JSON.stringify(data)
+   });
 
-<div id="cicilan" class="page">
+   alert('Pinjaman berhasil');
 
-<h1>Pembayaran Cicilan</h1>
+   loadPinjaman();
 
-<select id="idPeminjam">
+   loadDropdownPeminjam();
+}
 
-</select>
+/* LOAD PINJAMAN */
 
-<input type="number"
-id="cicilanKe"
-placeholder="Cicilan Ke">
+async function loadPinjaman(){
 
-<input type="number"
-id="bayarNominal"
-placeholder="Nominal Bayar">
+   const res =
+   await fetch(API_URL + '?action=getPinjaman');
 
-<button onclick="bayarCicilan()">
-Bayar
-</button>
+   const data =
+   await res.json();
 
-<br><br>
+   let html='';
 
-<table>
+   data.forEach(item=>{
 
-<thead>
-<tr>
+      html += `
+      <tr>
 
-<th>Tanggal</th>
-<th>Peminjam</th>
-<th>Cicilan</th>
-<th>Bayar</th>
-<th>Sisa</th>
-<th>Aksi</th>
+         <td>${item.nama}</td>
 
-</tr>
-</thead>
+         <td>${rupiah(item.total)}</td>
 
-<tbody id="tableCicilan">
+         <td>${rupiah(item.sudah)}</td>
 
-</tbody>
+         <td>${rupiah(item.sisa)}</td>
 
-</table>
+         <td>${item.status}</td>
 
-</div>
+      </tr>
+      `;
+   });
 
-</div>
+   document.getElementById('tablePinjaman')
+   .innerHTML = html;
+}
 
-<script src="app.js"></script>
+/* CICILAN */
 
-</body>
-</html>
+async function bayarCicilan(){
+
+   let data = {
+
+      action:'bayarCicilan',
+
+      id:
+      document.getElementById('idPeminjam').value,
+
+      cicilan:
+      document.getElementById('cicilanKe').value,
+
+      bayar:
+      document.getElementById('bayarNominal').value
+   };
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify(data)
+   });
+
+   alert('Pembayaran berhasil');
+
+   loadCicilan();
+
+   loadPinjaman();
+
+   loadDashboard();
+}
+
+/* LOAD CICILAN */
+
+async function loadCicilan(){
+
+   const res =
+   await fetch(API_URL + '?action=getCicilan');
+
+   const data =
+   await res.json();
+
+   let html='';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+
+         <td>${item.tanggal}</td>
+
+         <td>${item.id}</td>
+
+         <td>${item.cicilan}</td>
+
+         <td>${rupiah(item.bayar)}</td>
+
+         <td>${rupiah(item.sisa)}</td>
+
+         <td>
+
+            <button
+            onclick="hapusCicilan('${item.rowid}')">
+
+            Hapus
+
+            </button>
+
+         </td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableCicilan')
+   .innerHTML = html;
+}
+
+/* HAPUS CICILAN */
+
+async function hapusCicilan(id){
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'hapusCicilan',
+
+         id:id
+      })
+   });
+
+   loadCicilan();
+
+   loadPinjaman();
+
+   loadDashboard();
+}
+
+/* DROPDOWN */
+
+async function loadDropdownPeminjam(){
+
+   const res =
+   await fetch(API_URL + '?action=getPinjaman');
+
+   const data =
+   await res.json();
+
+   let html =
+   '<option>Pilih Peminjam</option>';
+
+   data.forEach(item=>{
+
+      if(Number(item.sisa) > 0){
+
+         html += `
+         <option value="${item.id}">
+
+            ${item.nama}
+            - Sisa:
+            ${rupiah(item.sisa)}
+
+         </option>
+         `;
+      }
+   });
+
+   document.getElementById('idPeminjam')
+   .innerHTML = html;
+}
