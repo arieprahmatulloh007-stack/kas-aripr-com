@@ -1,7 +1,10 @@
+```javascript
 const API_URL =
 'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
 
-/* PAGE */
+/* =========================
+   PAGE
+========================= */
 
 function showPage(id){
 
@@ -14,16 +17,11 @@ function showPage(id){
 
    document.getElementById(id)
    .style.display='block';
-   document.getElementById('sisaKas')
-.innerHTML =
-rupiah(data.sisaKas);
-
-document.getElementById('totalPinjaman')
-.innerHTML =
-rupiah(data.totalPinjaman);
 }
 
-/* DEFAULT PAGE */
+/* =========================
+   DEFAULT
+========================= */
 
 window.onload = function(){
 
@@ -40,7 +38,9 @@ window.onload = function(){
    loadDropdownPeminjam();
 };
 
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
 
 function logout(){
 
@@ -49,7 +49,9 @@ function logout(){
    window.location='login.html';
 }
 
-/* FORMAT */
+/* =========================
+   RUPIAH
+========================= */
 
 function rupiah(angka){
 
@@ -58,7 +60,9 @@ function rupiah(angka){
    .toLocaleString('id-ID');
 }
 
-/* DASHBOARD */
+/* =========================
+   DASHBOARD
+========================= */
 
 async function loadDashboard(){
 
@@ -88,10 +92,6 @@ async function loadDashboard(){
    .innerHTML =
    rupiah(data.totalPiutang);
 
-   /* =========================
-      BELUM LUNAS
-   ========================= */
-
    let html='';
 
    data.belumLunas.forEach(item=>{
@@ -111,7 +111,9 @@ async function loadDashboard(){
    .innerHTML = html;
 }
 
-/* SIMPAN KAS */
+/* =========================
+   UANG KAS
+========================= */
 
 async function simpanKas(){
 
@@ -145,58 +147,49 @@ async function simpanKas(){
       body:JSON.stringify(data)
    });
 
-   alert('Berhasil');
-
    loadKas();
 
    loadDashboard();
 }
 
-/* LOAD KAS */
-
 async function loadKas(){
 
-   try{
+   const res =
+   await fetch(API_URL + '?action=getKas');
 
-      const res =
-      await fetch(API_URL + '?action=getKas');
+   const data =
+   await res.json();
 
-      const data =
-      await res.json();
+   let html='';
 
-      let html='';
+   data.forEach(item=>{
 
-      data.forEach(item=>{
+      html += `
+      <tr>
 
-         html += `
-         <tr>
+         <td>${item.tanggal}</td>
 
-            <td>${item.tanggal}</td>
+         <td>${rupiah(item.masuk)}</td>
 
-            <td>${rupiah(item.masuk)}</td>
+         <td>${rupiah(item.keluar)}</td>
 
-            <td>${rupiah(item.keluar)}</td>
+         <td>${item.sumberMasuk}</td>
 
-            <td>${item.sumberMasuk}</td>
+         <td>${item.sumberKeluar}</td>
 
-            <td>${item.sumberKeluar}</td>
+         <td>${item.keterangan}</td>
 
-            <td>${item.keterangan}</td>
+      </tr>
+      `;
+   });
 
-         </tr>
-         `;
-      });
-
-      document.getElementById('tableKas')
-      .innerHTML = html;
-
-   }catch(err){
-
-      console.log(err);
-   }
+   document.getElementById('tableKas')
+   .innerHTML = html;
 }
 
-/* PINJAMAN */
+/* =========================
+   PINJAMAN
+========================= */
 
 async function simpanPinjaman(){
 
@@ -224,14 +217,12 @@ async function simpanPinjaman(){
       body:JSON.stringify(data)
    });
 
-   alert('Pinjaman berhasil');
-
    loadPinjaman();
 
    loadDropdownPeminjam();
-}
 
-/* LOAD PINJAMAN */
+   loadDashboard();
+}
 
 async function loadPinjaman(){
 
@@ -256,7 +247,14 @@ async function loadPinjaman(){
 
          <td>${rupiah(item.sisa)}</td>
 
-         <td>${item.status}</td>
+         <td style="
+            color:
+            ${item.status == 'LUNAS'
+            ? 'limegreen'
+            : 'red'}
+         ">
+            ${item.status}
+         </td>
 
       </tr>
       `;
@@ -266,7 +264,9 @@ async function loadPinjaman(){
    .innerHTML = html;
 }
 
-/* CICILAN */
+/* =========================
+   CICILAN
+========================= */
 
 async function bayarCicilan(){
 
@@ -291,16 +291,14 @@ async function bayarCicilan(){
       body:JSON.stringify(data)
    });
 
-   alert('Pembayaran berhasil');
-
    loadCicilan();
 
    loadPinjaman();
 
    loadDashboard();
-}
 
-/* LOAD CICILAN */
+   loadDropdownPeminjam();
+}
 
 async function loadCicilan(){
 
@@ -346,8 +344,6 @@ async function loadCicilan(){
    .innerHTML = html;
 }
 
-/* HAPUS CICILAN */
-
 async function hapusCicilan(id){
 
    await fetch(API_URL,{
@@ -369,7 +365,9 @@ async function hapusCicilan(id){
    loadDashboard();
 }
 
-/* DROPDOWN */
+/* =========================
+   DROPDOWN
+========================= */
 
 async function loadDropdownPeminjam(){
 
@@ -401,3 +399,4 @@ async function loadDropdownPeminjam(){
    document.getElementById('idPeminjam')
    .innerHTML = html;
 }
+```
