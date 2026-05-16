@@ -79,7 +79,7 @@ if(localStorage.getItem('login') != 'true'){
 
 </div>
 
-   <!-- CICILAN -->
+<!-- CICILAN -->
 <div id="cicilan" class="page">
 
 <h1>Pembayaran Cicilan</h1>
@@ -88,7 +88,12 @@ if(localStorage.getItem('login') != 'true'){
 
 </select>
 
-<input type="number" id="bayarCicilan"
+<input type="number"
+id="cicilanKe"
+placeholder="Cicilan Ke">
+
+<input type="number"
+id="bayarNominal"
 placeholder="Nominal Bayar">
 
 <button onclick="bayarCicilan()">
@@ -103,6 +108,7 @@ Bayar
 <tr>
 <th>Tanggal</th>
 <th>Peminjam</th>
+<th>Cicilan</th>
 <th>Bayar</th>
 <th>Sisa</th>
 </tr>
