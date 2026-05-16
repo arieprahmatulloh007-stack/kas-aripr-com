@@ -322,6 +322,61 @@ async function loadPinjaman(){
 }
 
 /* =========================
+   simpankas
+========================= */
+
+async function simpanKas(){
+
+   let masuk =
+   Number(
+   document.getElementById('nominalMasuk').value || 0
+   );
+
+   let keluar =
+   Number(
+   document.getElementById('nominalKeluar').value || 0
+   );
+
+   if(masuk <=0 && keluar <=0){
+
+      alert('Isi nominal');
+
+      return;
+   }
+
+   let data = {
+
+      action : 'tambahKas',
+
+      tanggal :
+      document.getElementById('tglKas').value,
+
+      masuk : masuk,
+
+      keluar : keluar,
+
+      keterangan :
+      document.getElementById('ketKas').value
+   };
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify(data)
+   });
+
+   alert('Data kas berhasil disimpan');
+
+   document.getElementById('tglKas').value='';
+   document.getElementById('nominalMasuk').value='';
+   document.getElementById('nominalKeluar').value='';
+   document.getElementById('ketKas').value='';
+
+   loadKas();
+   loadDashboard();
+}
+/* =========================
    BAYAR CICILAN
 ========================= */
 
@@ -487,4 +542,5 @@ loadKasMasuk();
 loadKasKeluar();
 loadPinjaman();
 loadCicilan();
+loadKas();
 loadDropdownPeminjam();
