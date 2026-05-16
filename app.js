@@ -7,7 +7,18 @@ function showPage(id){
 
   document.getElementById(id).style.display='block';
 }
+function simpanKasMasuk(){
 
+   let data = {
+      tanggal : document.getElementById('tglMasuk').value,
+      nominal : document.getElementById('nominalMasuk').value,
+      keterangan : document.getElementById('ketMasuk').value
+   };
+
+   console.log(data);
+
+   alert('Data berhasil disimpan');
+}
 showPage('dashboard');
 
 const ctx = document.getElementById('myChart');
