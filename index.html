@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KAS ARIP R.COM</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>KAS ARIP R.COM</h2>
+
+  <button onclick="showPage('dashboard')">Dashboard</button>
+  <button onclick="showPage('masuk')">Kas Masuk</button>
+  <button onclick="showPage('keluar')">Kas Keluar</button>
+  <button onclick="showPage('pinjaman')">Pinjaman</button>
+</div>
+
+<div class="content">
+
+  <div id="dashboard" class="page">
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Total Kas Masuk</h3>
+        <p id="totalMasuk">Rp 0</p>
+      </div>
+
+      <div class="card">
+        <h3>Total Kas Keluar</h3>
+        <p id="totalKeluar">Rp 0</p>
+      </div>
+
+      <div class="card">
+        <h3>Sisa Piutang</h3>
+        <p id="sisaPiutang">Rp 0</p>
+      </div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
