@@ -29,13 +29,9 @@ if(localStorage.getItem('login') != 'true'){
       Dashboard
     </button>
 
-    <button onclick="showPage('masuk')">
-      Kas Masuk
-    </button>
-
-    <button onclick="showPage('keluar')">
-      Kas Keluar
-    </button>
+   <button onclick="showPage('kas')">
+     Uang Kas
+   </button>
 
     <button onclick="showPage('pinjaman')">
       Pinjaman
@@ -121,58 +117,27 @@ Bayar
 </table>
 
 </div>
-   
-<!-- KAS MASUK -->
-<div id="masuk" class="page">
+   <!-- UANG KAS -->
+<div id="kas" class="page">
 
-<h1>Kas Masuk</h1>
+<h1>Uang Kas</h1>
 
-<input type="date" id="tglMasuk">
+<input type="date"
+id="tglKas">
 
-<input type="number" id="nominalMasuk" placeholder="Nominal">
+<input type="number"
+id="nominalMasuk"
+placeholder="Nominal Masuk">
 
-<input type="text" id="ketMasuk" placeholder="Keterangan">
+<input type="number"
+id="nominalKeluar"
+placeholder="Nominal Keluar">
 
-<button onclick="simpanKasMasuk()">
-Simpan
-</button>
+<input type="text"
+id="ketKas"
+placeholder="Keterangan">
 
-<button onclick="window.print()">
-Print
-</button>
-
-<br><br>
-
-<table>
-
-<thead>
-<tr>
-<th>Tanggal</th>
-<th>Nominal</th>
-<th>Keterangan</th>
-</tr>
-</thead>
-
-<tbody id="tableKasMasuk">
-
-</tbody>
-
-</table>
-
-</div>
-
-<!-- KAS KELUAR -->
-<div id="keluar" class="page">
-
-<h1>Kas Keluar</h1>
-
-<input type="date" id="tglKeluar">
-
-<input type="number" id="nominalKeluar" placeholder="Nominal">
-
-<input type="text" id="ketKeluar" placeholder="Keterangan">
-
-<button onclick="simpanKasKeluar()">
+<button onclick="simpanKas()">
 Simpan
 </button>
 
@@ -183,19 +148,19 @@ Simpan
 <thead>
 <tr>
 <th>Tanggal</th>
-<th>Nominal</th>
+<th>Masuk</th>
+<th>Keluar</th>
 <th>Keterangan</th>
 </tr>
 </thead>
 
-<tbody id="tableKasKeluar">
+<tbody id="tableKas">
 
 </tbody>
 
 </table>
 
 </div>
-
 <!-- PINJAMAN -->
 <div id="pinjaman" class="page">
 
