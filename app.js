@@ -14,13 +14,6 @@ function showPage(id){
 
    document.getElementById(id)
    .style.display='block';
-   document.getElementById('sisaKas')
-.innerHTML =
-rupiah(data.sisaKas);
-
-document.getElementById('totalPinjaman')
-.innerHTML =
-rupiah(data.totalPinjaman);
 }
 
 /* DEFAULT PAGE */
@@ -146,6 +139,18 @@ async function simpanKas(){
    });
 
    alert('Berhasil');
+
+   document.getElementById('tglKas').value='';
+
+   document.getElementById('nominalMasuk').value='';
+
+   document.getElementById('nominalKeluar').value='';
+
+   document.getElementById('sumberMasuk').value='';
+
+   document.getElementById('sumberKeluar').value='';
+
+   document.getElementById('ketKas').value='';
 
    loadKas();
 
