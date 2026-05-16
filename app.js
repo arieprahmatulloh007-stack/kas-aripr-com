@@ -1,3 +1,10 @@
+const API_URL =
+'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
+
+/* =========================
+   MENU
+========================= */
+
 function showPage(id){
 
   const pages = document.querySelectorAll('.page');
@@ -11,7 +18,10 @@ function showPage(id){
 
 showPage('dashboard');
 
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
+
 function logout(){
 
    localStorage.clear();
@@ -19,107 +29,233 @@ function logout(){
    window.location='login.html';
 }
 
-/* CHART */
+/* =========================
+   FORMAT RUPIAH
+========================= */
 
-const ctx = document.getElementById('myChart');
+function rupiah(angka){
+   return 'Rp ' + Number(angka).toLocaleString('id-ID');
+}
 
-new Chart(ctx, {
+/* =========================
+   KAS MASUK
+========================= */
 
-  type: 'bar',
+async function simpanKasMasuk(){
 
-  data: {
+   let data = {
+      action : 'tambahKasMasuk',
+      tanggal : document.getElementById('tglMasuk').value,
+      nominal : document.getElementById('nominalMasuk').value,
+      keterangan : document.getElementById('ketMasuk').value
+   };
 
-    labels: ['Kas Masuk', 'Kas Keluar'],
+   await fetch(API_URL,{
+      method:'POST',
+      body:JSON.stringify(data)
+   });
 
-    datasets: [{
+   alert('Kas masuk berhasil disimpan');
 
-      label: 'Statistik',
+   loadDashboard();
+   loadKasMasuk();
+}
 
-      data: [5000000, 2000000]
+/* =========================
+   KAS KELUAR
+========================= */
 
-    }]
-  }
-});
+async function simpanKasKeluar(){
 
-/* TOTAL */
-let totalMasuk = 0;
-let totalKeluar = 0;
-let totalPiutang = 0;
+   let data = {
+      action : 'tambahKasKeluar',
+      tanggal : document.getElementById('tglKeluar').value,
+      nominal : document.getElementById('nominalKeluar').value,
+      keterangan : document.getElementById('ketKeluar').value
+   };
 
-/* KAS MASUK */
+   await fetch(API_URL,{
+      method:'POST',
+      body:JSON.stringify(data)
+   });
 
-function simpanKasMasuk(){
+   alert('Kas keluar berhasil disimpan');
 
-   let tanggal = document.getElementById('tglMasuk').value;
+   loadDashboard();
+   loadKasKeluar();
+}
 
-   let nominal = Number(document.getElementById('nominalMasuk').value);
+/* =========================
+   PINJAMAN
+========================= */
 
-   let keterangan = document.getElementById('ketMasuk').value;
+async function simpanPinjaman(){
 
-   let tr = `
-      <tr>
-         <td>${tanggal}</td>
-         <td>Rp ${nominal.toLocaleString()}</td>
-         <td>${keterangan}</td>
-      </tr>
-   `;
+   let data = {
+      action : 'tambahPinjaman',
+      nama : document.getElementById('namaPinjam').value,
+      total : document.getElementById('totalPinjam').value
+   };
 
-   document.getElementById('tableKasMasuk').innerHTML += tr;
+   await fetch(API_URL,{
+      method:'POST',
+      body:JSON.stringify(data)
+   });
 
-   totalMasuk += nominal;
+   alert('Pinjaman berhasil disimpan');
+
+   loadDashboard();
+   loadPinjaman();
+}
+
+/* =========================
+   LOAD DASHBOARD
+========================= */
+
+async function loadDashboard(){
+
+   const res = await fetch(API_URL + '?action=dashboard');
+
+   const data = await res.json();
 
    document.getElementById('totalMasuk').innerHTML =
-   'Rp ' + totalMasuk.toLocaleString();
-}
-
-/* KAS KELUAR */
-
-function simpanKasKeluar(){
-
-   let tanggal = document.getElementById('tglKeluar').value;
-
-   let nominal = Number(document.getElementById('nominalKeluar').value);
-
-   let keterangan = document.getElementById('ketKeluar').value;
-
-   let tr = `
-      <tr>
-         <td>${tanggal}</td>
-         <td>Rp ${nominal.toLocaleString()}</td>
-         <td>${keterangan}</td>
-      </tr>
-   `;
-
-   document.getElementById('tableKasKeluar').innerHTML += tr;
-
-   totalKeluar += nominal;
+   rupiah(data.totalMasuk);
 
    document.getElementById('totalKeluar').innerHTML =
-   'Rp ' + totalKeluar.toLocaleString();
+   rupiah(data.totalKeluar);
+
+   document.getElementById('sisaPiutang').innerHTML =
+   rupiah(data.totalPiutang);
+
+   loadChart(
+      data.totalMasuk,
+      data.totalKeluar
+   );
 }
 
-/* PINJAMAN */
+/* =========================
+   LOAD CHART
+========================= */
 
-function simpanPinjaman(){
+let chart;
 
-   let nama = document.getElementById('namaPinjam').value;
+function loadChart(masuk, keluar){
 
-   let total = Number(document.getElementById('totalPinjam').value);
+   const ctx = document.getElementById('myChart');
 
-   let tr = `
+   if(chart){
+      chart.destroy();
+   }
+
+   chart = new Chart(ctx, {
+
+      type: 'bar',
+
+      data: {
+
+         labels: [
+            'Kas Masuk',
+            'Kas Keluar'
+         ],
+
+         datasets: [{
+
+            label: 'Statistik Keuangan',
+
+            data: [masuk, keluar],
+
+            borderWidth:1
+
+         }]
+      }
+   });
+}
+
+/* =========================
+   LOAD KAS MASUK
+========================= */
+
+async function loadKasMasuk(){
+
+   const res = await fetch(API_URL + '?action=getKasMasuk');
+
+   const data = await res.json();
+
+   let html = '';
+
+   data.forEach(item=>{
+
+      html += `
       <tr>
-         <td>${nama}</td>
-         <td>Rp ${total.toLocaleString()}</td>
+         <td>${item.tanggal}</td>
+         <td>${rupiah(item.nominal)}</td>
+         <td>${item.keterangan}</td>
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableKasMasuk').innerHTML = html;
+}
+
+/* =========================
+   LOAD KAS KELUAR
+========================= */
+
+async function loadKasKeluar(){
+
+   const res = await fetch(API_URL + '?action=getKasKeluar');
+
+   const data = await res.json();
+
+   let html = '';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+         <td>${item.tanggal}</td>
+         <td>${rupiah(item.nominal)}</td>
+         <td>${item.keterangan}</td>
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableKasKeluar').innerHTML = html;
+}
+
+/* =========================
+   LOAD PINJAMAN
+========================= */
+
+async function loadPinjaman(){
+
+   const res = await fetch(API_URL + '?action=getPinjaman');
+
+   const data = await res.json();
+
+   let html = '';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+         <td>${item.nama}</td>
+         <td>${rupiah(item.total)}</td>
          <td style="color:red;">
             BELUM LUNAS
          </td>
       </tr>
-   `;
+      `;
+   });
 
-   document.getElementById('tablePinjaman').innerHTML += tr;
-
-   totalPiutang += total;
-
-   document.getElementById('sisaPiutang').innerHTML =
-   'Rp ' + totalPiutang.toLocaleString();
+   document.getElementById('tablePinjaman').innerHTML = html;
 }
+
+/* =========================
+   AUTO LOAD
+========================= */
+
+loadDashboard();
+loadKasMasuk();
+loadKasKeluar();
+loadPinjaman();
