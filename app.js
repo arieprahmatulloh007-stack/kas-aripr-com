@@ -41,36 +41,66 @@ function rupiah(angka){
    KAS MASUK
 ========================= */
 
-async function simpanKasMasuk(){
+ simpanKas(){
+
+   let masuk =
+   Number(
+   document.getElementById('nominalMasuk').value || 0
+   );
+
+   let keluar =
+   Number(
+   document.getElementById('nominalKeluar').value || 0
+   );
+
+   if(masuk <=0 && keluar <=0){
+
+      alert('Isi nominal');
+
+      return;
+   }
 
    let data = {
 
-      action : 'tambahKasMasuk',
+      action : 'tambahKas',
 
       tanggal :
-      document.getElementById('tglMasuk').value,
+      document.getElementById('tglKas').value,
 
-      nominal :
-      document.getElementById('nominalMasuk').value,
+      masuk : masuk,
+
+      keluar : keluar,
+
+      sumberMasuk :
+      document.getElementById('sumberMasuk').value,
+
+      sumberKeluar :
+      document.getElementById('sumberKeluar').value,
 
       keterangan :
-      document.getElementById('ketMasuk').value
+      document.getElementById('ketKas').value
    };
 
    await fetch(API_URL,{
+
       method:'POST',
+
       body:JSON.stringify(data)
    });
 
-   alert('Kas masuk berhasil disimpan');
+   alert('Data kas berhasil disimpan');
 
-   document.getElementById('tglMasuk').value='';
+   document.getElementById('tglKas').value='';
    document.getElementById('nominalMasuk').value='';
-   document.getElementById('ketMasuk').value='';
+   document.getElementById('nominalKeluar').value='';
+   document.getElementById('sumberMasuk').value='';
+   document.getElementById('sumberKeluar').value='';
+   document.getElementById('ketKas').value='';
 
+   loadKas();
    loadDashboard();
-   loadKasMasuk();
 }
+
 
 /* =========================
    KAS KELUAR
@@ -220,62 +250,6 @@ function loadChart(masuk, keluar){
          }]
       }
    });
-}
-
-/* =========================
-   LOAD KAS MASUK
-========================= */
-
-async function loadKasMasuk(){
-
-   const res =
-   await fetch(API_URL + '?action=getKasMasuk');
-
-   const data = await res.json();
-
-   let html = '';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-         <td>${item.tanggal}</td>
-         <td>${rupiah(item.nominal)}</td>
-         <td>${item.keterangan}</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableKasMasuk')
-   .innerHTML = html;
-}
-
-/* =========================
-   LOAD KAS KELUAR
-========================= */
-
-async function loadKasKeluar(){
-
-   const res =
-   await fetch(API_URL + '?action=getKasKeluar');
-
-   const data = await res.json();
-
-   let html = '';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-         <td>${item.tanggal}</td>
-         <td>${rupiah(item.nominal)}</td>
-         <td>${item.keterangan}</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableKasKeluar')
-   .innerHTML = html;
 }
 
 /* =========================
@@ -534,12 +508,48 @@ async function hapusCicilan(id){
    loadDashboard();
 }
 /* =========================
+   loadKas
+========================= */
+
+async function loadKas(){
+
+   const res =
+   await fetch(API_URL + '?action=getKas');
+
+   const data = await res.json();
+
+   let html = '';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+
+         <td>${item.tanggal}</td>
+
+         <td>${rupiah(item.masuk)}</td>
+
+         <td>${rupiah(item.keluar)}</td>
+
+         <td>${item.sumberMasuk}</td>
+
+         <td>${item.sumberKeluar}</td>
+
+         <td>${item.keterangan}</td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableKas')
+   .innerHTML = html;
+}
+/* =========================
    AUTO LOAD
 ========================= */
 
 loadDashboard();
-loadKasMasuk();
-loadKasKeluar();
+loadKas();
 loadPinjaman();
 loadCicilan();
 loadKas();
