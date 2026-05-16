@@ -425,17 +425,19 @@ async function loadDropdownPeminjam(){
 
    data.forEach(item=>{
 
-      /* HANYA TAMPILKAN
-         YANG BELUM LUNAS */
+      let sisa =
+      parseInt(item.sisa);
 
-      if(Number(item.sisa) > 0){
+      /* HANYA YANG MASIH ADA SISA */
+
+      if(sisa > 0){
 
          html += `
          <option value="${item.id}">
 
             ${item.nama}
             - Sisa:
-            ${rupiah(item.sisa)}
+            ${rupiah(sisa)}
 
          </option>
          `;
