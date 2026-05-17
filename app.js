@@ -187,6 +187,16 @@ async function loadKas(){
             <td>${item.sumberKeluar}</td>
 
             <td>${item.keterangan}</td>
+            <td>
+            <button
+            onclick="editKas('${item.row}')">
+            Edit
+            </button>
+            <button
+            onclick="hapusKas('${item.row}')"> 
+            Hapus
+            </button>
+            </td>
 
          </tr>
          `;
@@ -200,7 +210,16 @@ async function loadKas(){
       console.log(err);
    }
 }
+/* =========================
+   EDIT KAS
+========================= */
 
+function editKas(id){
+
+   alert(
+   'Fitur edit checkpoint berikutnya'
+   );
+}
 /* PINJAMAN */
 
 async function simpanPinjaman(){
@@ -420,8 +439,46 @@ async function loadDropdownPeminjam(){
          </option>
          `;
       }
+
    });
 
    document.getElementById('idPeminjam')
    .innerHTML = html;
+}
+/* =========================
+   HAPUS KAS
+========================= */
+
+async function hapusKas(id){
+
+   if(!confirm('Hapus data?')){
+      return;
+   }
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'hapusKas',
+
+         id:id
+      })
+   });
+
+   loadKas();
+
+   loadDashboard();
+}
+
+/* =========================
+   EDIT KAS
+========================= */
+
+function editKas(id){
+
+   alert(
+   'Fitur edit checkpoint berikutnya'
+   );
 }
