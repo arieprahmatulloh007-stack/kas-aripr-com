@@ -744,3 +744,280 @@ function editCicilan(id){
 
    localStorage.setItem('editCicilan',id);
 }
+/* =========================
+   PRINT KAS
+========================= */
+
+function printKas(){
+
+   let isi =
+   document.getElementById('tableKas')
+   .innerHTML;
+
+   let win =
+   window.open('','','width=1000,height=700');
+
+   win.document.write(`
+
+   <html>
+
+   <head>
+
+      <title>
+      Laporan Uang Kas
+      </title>
+
+      <style>
+
+      body{
+
+         font-family:Arial;
+         padding:20px;
+      }
+
+      table{
+
+         width:100%;
+         border-collapse:collapse;
+      }
+
+      th,td{
+
+         border:1px solid #ccc;
+         padding:10px;
+         text-align:left;
+      }
+
+      th{
+
+         background:#f3f4f6;
+      }
+
+      </style>
+
+   </head>
+
+   <body>
+
+      <h2>
+      LAPORAN UANG KAS
+      </h2>
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>Tanggal</th>
+               <th>Masuk</th>
+               <th>Keluar</th>
+               <th>Sumber Masuk</th>
+               <th>Sumber Keluar</th>
+               <th>Keterangan</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody>
+
+            ${isi}
+
+         </tbody>
+
+      </table>
+
+   </body>
+
+   </html>
+   `);
+
+   win.document.close();
+
+   win.print();
+}
+
+/* =========================
+   PRINT PINJAMAN
+========================= */
+
+function printPinjaman(){
+
+   let isi =
+   document.getElementById('tablePinjaman')
+   .innerHTML;
+
+   let win =
+   window.open('','','width=1000,height=700');
+
+   win.document.write(`
+
+   <html>
+
+   <head>
+
+      <title>
+      Data Pinjaman
+      </title>
+
+      <style>
+
+      body{
+
+         font-family:Arial;
+         padding:20px;
+      }
+
+      table{
+
+         width:100%;
+         border-collapse:collapse;
+      }
+
+      th,td{
+
+         border:1px solid #ccc;
+         padding:10px;
+      }
+
+      th{
+
+         background:#f3f4f6;
+      }
+
+      </style>
+
+   </head>
+
+   <body>
+
+      <h2>
+      DATA PINJAMAN
+      </h2>
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>Nama</th>
+               <th>Total</th>
+               <th>Sudah Bayar</th>
+               <th>Sisa</th>
+               <th>Status</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody>
+
+            ${isi}
+
+         </tbody>
+
+      </table>
+
+   </body>
+
+   </html>
+   `);
+
+   win.document.close();
+
+   win.print();
+}
+
+/* =========================
+   PRINT CICILAN
+========================= */
+
+function printCicilan(){
+
+   let isi =
+   document.getElementById('tableCicilan')
+   .innerHTML;
+
+   let win =
+   window.open('','','width=1000,height=700');
+
+   win.document.write(`
+
+   <html>
+
+   <head>
+
+      <title>
+      Data Cicilan
+      </title>
+
+      <style>
+
+      body{
+
+         font-family:Arial;
+         padding:20px;
+      }
+
+      table{
+
+         width:100%;
+         border-collapse:collapse;
+      }
+
+      th,td{
+
+         border:1px solid #ccc;
+         padding:10px;
+      }
+
+      th{
+
+         background:#f3f4f6;
+      }
+
+      </style>
+
+   </head>
+
+   <body>
+
+      <h2>
+      DATA CICILAN
+      </h2>
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>Tanggal</th>
+               <th>Peminjam</th>
+               <th>Cicilan</th>
+               <th>Bayar</th>
+               <th>Sisa</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody>
+
+            ${isi}
+
+         </tbody>
+
+      </table>
+
+   </body>
+
+   </html>
+   `);
+
+   win.document.close();
+
+   win.print();
+}
