@@ -250,23 +250,29 @@ if(localStorage.getItem('login') != 'true'){
 
    <input
    type="text"
-   id="searchPinjaman"
-   placeholder="Cari nama..."
-   onkeyup="filterPinjaman()">
+   id="searchKas"
+   placeholder="Cari keterangan..."
+   onkeyup="filterKas()">
 
-   <select id="statusPinjaman"
-   onchange="filterPinjaman()">
+   <input
+   type="date"
+   id="tglAwalKas"
+   onchange="filterKas()">
 
-   <option value="">
-   Semua Status
+   <input
+   type="date"
+   id="tglAkhirKas"
+   onchange="filterKas()">
+
+   <select id="sortKas"
+   onchange="filterKas()">
+
+   <option value="baru">
+   Terbaru
    </option>
 
-   <option value="LUNAS">
-   LUNAS
-   </option>
-
-   <option value="BELUM LUNAS">
-   BELUM LUNAS
+   <option value="lama">
+   Terlama
    </option>
 
    </select>
