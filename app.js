@@ -200,16 +200,23 @@ async function loadKas(){
             <td>${item.sumberKeluar}</td>
 
             <td>${item.keterangan}</td>
-           <td>
-            <button
-            onclick="editKas('${item.row}')">
-            Edit
-            </button>
-            <button
-            onclick="hapusKas('${item.row}')">
-            Hapus
-            </button>
-            </td>
+          <td>
+
+<button
+onclick="editKas('${item.row}')">
+
+Edit
+
+</button>
+
+<button
+onclick="hapusKas('${item.row}')">
+
+Hapus
+
+</button>
+
+</td>
          </tr>
          `;
       });
@@ -228,52 +235,45 @@ async function loadKas(){
 
 function editKas(id){
 
-   alert(
-   'Fitur edit checkpoint berikutnya'
-   );
-}
-/* PINJAMAN */
+   id = Number(id);
 
-async function simpanPinjaman(){
+   let item =
+   kasData.find(x => Number(x.row) === id);
 
-   let data = {
+   if(!item){
 
-      action:'tambahPinjaman',
+      alert('Data tidak ditemukan');
 
-      nama:
-      document.getElementById('namaPinjam').value,
+      return;
+   }
 
-      hp:
-      document.getElementById('hpPinjam').value,
+   let tgl =
+   item.tanggal.split(' ')[0];
 
-      alamat:
-      document.getElementById('alamatPinjam').value,
+   let pecah =
+   tgl.split('/');
 
-      total:
-      document.getElementById('totalPinjam').value
-   };
+   document.getElementById('tglKas').value =
+   `${pecah[2]}-${pecah[1]}-${pecah[0]}`;
 
-   await fetch(API_URL,{
+   document.getElementById('nominalMasuk').value =
+   item.masuk || '';
 
-      method:'POST',
+   document.getElementById('nominalKeluar').value =
+   item.keluar || '';
 
-      body:JSON.stringify(data)
-   });
+   document.getElementById('sumberMasuk').value =
+   item.sumberMasuk || '';
 
-   alert('Pinjaman berhasil');
-   document.getElementById('namaPinjam').value='';
+   document.getElementById('sumberKeluar').value =
+   item.sumberKeluar || '';
 
-   document.getElementById('hpPinjam').value='';
+   document.getElementById('ketKas').value =
+   item.keterangan || '';
 
-   document.getElementById('alamatPinjam').value='';
+   localStorage.setItem('editKas',id);
 
-   document.getElementById('totalPinjam').value='';
-
-   document.getElementById('lamaCicilan').value='';
-   localStorage.removeItem('editPinjaman');
-   loadPinjaman();
-   loadDashboard();
-   loadDropdownPeminjam();
+   alert('Mode edit aktif');
 }
 
 /* LOAD PINJAMAN */
