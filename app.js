@@ -182,6 +182,8 @@ async function loadKas(){
       const data =
       await res.json();
 
+      kasData = data;
+
       let html='';
 
       data.forEach(item=>{
@@ -200,23 +202,25 @@ async function loadKas(){
             <td>${item.sumberKeluar}</td>
 
             <td>${item.keterangan}</td>
-          <td>
 
-<button
-onclick="editKas('${item.row}')">
+            <td>
 
-Edit
+               <button
+               onclick="editKas('${item.row}')">
 
-</button>
+               Edit
 
-<button
-onclick="hapusKas('${item.row}')">
+               </button>
 
-Hapus
+               <button
+               onclick="hapusKas('${item.row}')">
 
-</button>
+               Hapus
 
-</td>
+               </button>
+
+            </td>
+
          </tr>
          `;
       });
@@ -229,53 +233,6 @@ Hapus
       console.log(err);
    }
 }
-/* =========================
-   EDIT KAS
-========================= */
-
-function editKas(id){
-
-   id = Number(id);
-
-   let item =
-   kasData.find(x => Number(x.row) === id);
-
-   if(!item){
-
-      alert('Data tidak ditemukan');
-
-      return;
-   }
-
-   let tgl =
-   item.tanggal.split(' ')[0];
-
-   let pecah =
-   tgl.split('/');
-
-   document.getElementById('tglKas').value =
-   `${pecah[2]}-${pecah[1]}-${pecah[0]}`;
-
-   document.getElementById('nominalMasuk').value =
-   item.masuk || '';
-
-   document.getElementById('nominalKeluar').value =
-   item.keluar || '';
-
-   document.getElementById('sumberMasuk').value =
-   item.sumberMasuk || '';
-
-   document.getElementById('sumberKeluar').value =
-   item.sumberKeluar || '';
-
-   document.getElementById('ketKas').value =
-   item.keterangan || '';
-
-   localStorage.setItem('editKas',id);
-
-   alert('Mode edit aktif');
-}
-
 /* LOAD PINJAMAN */
 
 async function loadPinjaman(){
@@ -497,16 +454,6 @@ async function hapusKas(id){
    loadDashboard();
 }
 
-/* =========================
-   EDIT KAS
-========================= */
-
-function editKas(id){
-
-   alert(
-   'Fitur edit checkpoint berikutnya'
-   );
-}
 /* =========================
    FILTER KAS
 ========================= */
