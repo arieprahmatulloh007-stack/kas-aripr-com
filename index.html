@@ -153,7 +153,28 @@ if(localStorage.getItem('login') != 'true'){
       </button>
 
    </div>
+   <div class="filter-box">
 
+   <input
+   type="text"
+   id="searchKas"
+   placeholder="Cari keterangan..."
+   onkeyup="filterKas()">
+
+   <select id="sortKas"
+   onchange="filterKas()">
+
+   <option value="baru">
+   Terbaru
+   </option>
+
+   <option value="lama">
+   Terlama
+   </option>
+
+   </select>
+
+   </div>
    <br>
 
    <div class="table-box">
@@ -225,7 +246,32 @@ if(localStorage.getItem('login') != 'true'){
       </button>
 
    </div>
+   <div class="filter-box">
 
+   <input
+   type="text"
+   id="searchPinjaman"
+   placeholder="Cari nama..."
+   onkeyup="filterPinjaman()">
+
+   <select id="statusPinjaman"
+   onchange="filterPinjaman()">
+
+   <option value="">
+   Semua Status
+   </option>
+
+   <option value="LUNAS">
+   LUNAS
+   </option>
+
+   <option value="BELUM LUNAS">
+   BELUM LUNAS
+   </option>
+
+   </select>
+
+   </div>
    <br>
 
    <div class="table-box">
@@ -285,7 +331,15 @@ if(localStorage.getItem('login') != 'true'){
       </button>
 
    </div>
+   <div class="filter-box">
 
+   <input
+   type="text"
+   id="searchCicilan"
+   placeholder="Cari peminjam..."
+   onkeyup="filterCicilan()">
+
+   </div>
    <br>
 
    <div class="table-box">
