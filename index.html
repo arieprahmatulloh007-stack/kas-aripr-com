@@ -118,11 +118,7 @@ if(localStorage.getItem('login') != 'true'){
 <div id="kas" class="page">
 
    <h1>Uang Kas</h1>
-   <button onclick="printKas()">
 
-   Print Laporan
-
-   </button>
    <div class="form-grid">
 
       <input type="date" id="tglKas">
@@ -155,7 +151,11 @@ if(localStorage.getItem('login') != 'true'){
       <button onclick="simpanKas()">
          Simpan
       </button>
+   <button onclick="printKas()">
 
+   Print Laporan
+
+   </button>
    </div>
    <div class="filter-box">
 
@@ -217,11 +217,7 @@ if(localStorage.getItem('login') != 'true'){
 <div id="pinjaman" class="page">
 
    <h1>Data Pinjaman</h1>
-<button onclick="printPinjaman()">
 
-Print Pinjaman
-
-</button>
    <div class="form-grid">
 
       <input
@@ -252,7 +248,12 @@ Print Pinjaman
       <button onclick="simpanPinjaman()">
          Simpan
       </button>
+      
+<button onclick="printPinjaman()">
 
+Print Pinjaman
+
+</button>
    </div>
    <div class="filter-box">
 
@@ -323,11 +324,7 @@ Print Pinjaman
 <div id="cicilan" class="page">
 
    <h1>Pembayaran Cicilan</h1>
-   <button onclick="printCicilan()">
-
-   Print Cicilan
-
-   </button>
+   
    <div class="form-grid">
 
       <select id="idPeminjam">
@@ -347,7 +344,11 @@ Print Pinjaman
       <button onclick="bayarCicilan()">
          Bayar
       </button>
+<button onclick="printCicilan()">
 
+   Print Cicilan
+
+   </button>
    </div>
    <div class="filter-box">
 
