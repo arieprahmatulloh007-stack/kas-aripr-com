@@ -1048,3 +1048,101 @@ function printCicilan(){
 
    win.print();
 }
+async function simpanPinjaman(){
+
+   try{
+
+      const nama =
+      document.getElementById('namaPinjam').value;
+
+      const hp =
+      document.getElementById('hpPinjam').value;
+
+      const alamat =
+      document.getElementById('alamatPinjam').value;
+
+      const total =
+      document.getElementById('totalPinjam').value;
+
+      const lama =
+      document.getElementById('lamaCicilan').value;
+
+      const res =
+      await fetch(API_URL,{
+
+         method:'POST',
+
+         body:JSON.stringify({
+
+            action:'tambahPinjaman',
+
+            editId:
+            localStorage.getItem('editPinjaman'),
+
+            nama:nama,
+
+            hp:hp,
+
+            alamat:alamat,
+
+            total:total,
+
+            lama:lama
+         })
+      });
+
+      const text =
+      await res.text();
+
+      console.log(text);
+
+      let hasil;
+
+      try{
+
+         hasil =
+         JSON.parse(text);
+
+      }catch{
+
+         alert(
+         'Response Apps Script bukan JSON'
+         );
+
+         return;
+      }
+
+      if(hasil.status == 'error'){
+
+         alert(hasil.message);
+
+         return;
+      }
+
+      alert('Data berhasil disimpan');
+
+      localStorage.removeItem('editPinjaman');
+
+      document.getElementById('namaPinjam').value='';
+
+      document.getElementById('hpPinjam').value='';
+
+      document.getElementById('alamatPinjam').value='';
+
+      document.getElementById('totalPinjam').value='';
+
+      document.getElementById('lamaCicilan').value='';
+
+      loadPinjaman();
+
+      loadDashboard();
+
+   }catch(err){
+
+      console.log(err);
+
+      alert(
+      'Gagal simpan pinjaman'
+      );
+   }
+}
