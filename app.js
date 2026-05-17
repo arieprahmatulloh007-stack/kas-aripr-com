@@ -120,6 +120,9 @@ async function simpanKas(){
 
       action:'tambahKas',
 
+      editId:
+      localStorage.getItem('editKas'),
+      
       tanggal:
       document.getElementById('tglKas').value,
 
@@ -137,6 +140,8 @@ async function simpanKas(){
 
       keterangan:
       document.getElementById('ketKas').value
+
+
    };
 
    await fetch(API_URL,{
@@ -159,7 +164,7 @@ async function simpanKas(){
    document.getElementById('sumberKeluar').value='';
 
    document.getElementById('ketKas').value='';
-
+   localStorage.removeItem('editKas');
    loadKas();
 
    loadDashboard();
@@ -195,17 +200,16 @@ async function loadKas(){
             <td>${item.sumberKeluar}</td>
 
             <td>${item.keterangan}</td>
-            <td>
+           <td>
             <button
             onclick="editKas('${item.row}')">
             Edit
             </button>
             <button
-            onclick="hapusKas('${item.row}')"> 
+            onclick="hapusKas('${item.row}')">
             Hapus
             </button>
             </td>
-
          </tr>
          `;
       });
@@ -266,8 +270,9 @@ async function simpanPinjaman(){
    document.getElementById('totalPinjam').value='';
 
    document.getElementById('lamaCicilan').value='';
+   localStorage.removeItem('editPinjaman');
    loadPinjaman();
-
+   loadDashboard();
    loadDropdownPeminjam();
 }
 
@@ -305,7 +310,18 @@ async function loadPinjaman(){
                ">
          ${item.status}
          </td>
-
+         
+         <td>
+         <button
+         onclick="editPinjaman('${item.row}')">
+         Edit
+         </button>
+         <button
+         onclick="hapusPinjaman('${item.row}')">
+         Hapus
+         </button>
+         </td>
+         
       </tr>
       `;
    });
@@ -321,7 +337,9 @@ async function bayarCicilan(){
    let data = {
 
       action:'bayarCicilan',
-
+      editId:
+      localStorage.getItem('editCicilan'),
+      
       id:
       document.getElementById('idPeminjam').value,
 
@@ -343,7 +361,7 @@ async function bayarCicilan(){
    document.getElementById('cicilanKe').value='';
 
    document.getElementById('bayarNominal').value='';
-   
+   localStorage.removeItem('editCicilan');
    loadCicilan();
 
    loadPinjaman();
@@ -379,16 +397,15 @@ async function loadCicilan(){
          <td>${rupiah(item.sisa)}</td>
 
          <td>
-
-            <button
-            onclick="hapusCicilan('${item.rowid}')">
-
-            Hapus
-
-            </button>
-
+         <button
+         onclick="editCicilan('${item.rowid}')">
+         Edit
+         </button>
+         <button
+         onclick="hapusCicilan('${item.rowid}')">
+         Hapus
+         </button>
          </td>
-
       </tr>
       `;
    });
@@ -673,4 +690,75 @@ function filterCicilan(){
 
    document.getElementById('tableCicilan')
    .innerHTML = html;
+}
+/* =========================
+   EDIT KAS
+========================= */
+
+function editKas(id){
+
+   let item =
+   kasData.find(x=>x.row == id);
+
+   document.getElementById('tglKas').value =
+   item.tanggal.split(' ')[0];
+
+   document.getElementById('nominalMasuk').value =
+   item.masuk;
+
+   document.getElementById('nominalKeluar').value =
+   item.keluar;
+
+   document.getElementById('sumberMasuk').value =
+   item.sumberMasuk;
+
+   document.getElementById('sumberKeluar').value =
+   item.sumberKeluar;
+
+   document.getElementById('ketKas').value =
+   item.keterangan;
+
+   localStorage.setItem('editKas',id);
+}
+
+/* =========================
+   EDIT PINJAMAN
+========================= */
+
+function editPinjaman(id){
+
+   let item =
+   pinjamanData.find(x=>x.row == id);
+
+   document.getElementById('namaPinjam').value =
+   item.nama;
+
+   document.getElementById('hpPinjam').value =
+   item.hp;
+
+   document.getElementById('alamatPinjam').value =
+   item.alamat;
+
+   document.getElementById('totalPinjam').value =
+   item.total;
+
+   localStorage.setItem('editPinjaman',id);
+}
+
+/* =========================
+   EDIT CICILAN
+========================= */
+
+function editCicilan(id){
+
+   let item =
+   cicilanData.find(x=>x.rowid == id);
+
+   document.getElementById('cicilanKe').value =
+   item.cicilan;
+
+   document.getElementById('bayarNominal').value =
+   item.bayar;
+
+   localStorage.setItem('editCicilan',id);
 }
