@@ -1,6 +1,14 @@
 const API_URL =
 'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
+/* =========================
+   GLOBAL DATA
+========================= */
 
+let kasData = [];
+
+let pinjamanData = [];
+
+let cicilanData = [];
 /* PAGE */
 
 function showPage(id){
@@ -60,7 +68,7 @@ async function loadDashboard(){
 
    const data =
    await res.json();
-
+   kasData = data;
    document.getElementById('totalMasuk')
    .innerHTML =
    rupiah(data.totalMasuk);
@@ -272,7 +280,7 @@ async function loadPinjaman(){
 
    const data =
    await res.json();
-
+   pinjamanData = data;
    let html='';
 
    data.forEach(item=>{
@@ -352,7 +360,7 @@ async function loadCicilan(){
 
    const data =
    await res.json();
-
+   cicilanData = data;
    let html='';
 
    data.forEach(item=>{
@@ -481,4 +489,188 @@ function editKas(id){
    alert(
    'Fitur edit checkpoint berikutnya'
    );
+}
+/* =========================
+   FILTER KAS
+========================= */
+
+function filterKas(){
+
+   let cari =
+   document
+   .getElementById('searchKas')
+   .value
+   .toLowerCase();
+
+   let sort =
+   document
+   .getElementById('sortKas')
+   .value;
+
+   let data =
+   [...kasData];
+
+   if(cari){
+
+      data = data.filter(item=>
+
+         item.keterangan
+         .toLowerCase()
+         .includes(cari)
+      );
+   }
+
+   if(sort == 'baru'){
+
+      data.reverse();
+   }
+
+   let html='';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+
+         <td>${item.tanggal}</td>
+
+         <td>${rupiah(item.masuk)}</td>
+
+         <td>${rupiah(item.keluar)}</td>
+
+         <td>${item.sumberMasuk}</td>
+
+         <td>${item.sumberKeluar}</td>
+
+         <td>${item.keterangan}</td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableKas')
+   .innerHTML = html;
+}
+
+/* =========================
+   FILTER PINJAMAN
+========================= */
+
+function filterPinjaman(){
+
+   let cari =
+   document
+   .getElementById('searchPinjaman')
+   .value
+   .toLowerCase();
+
+   let status =
+   document
+   .getElementById('statusPinjaman')
+   .value;
+
+   let data =
+   [...pinjamanData];
+
+   if(cari){
+
+      data = data.filter(item=>
+
+         item.nama
+         .toLowerCase()
+         .includes(cari)
+      );
+   }
+
+   if(status){
+
+      data = data.filter(item=>
+
+         item.status == status
+      );
+   }
+
+   let html='';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+
+         <td>${item.nama}</td>
+
+         <td>${rupiah(item.total)}</td>
+
+         <td>${rupiah(item.sudah)}</td>
+
+         <td>${rupiah(item.sisa)}</td>
+
+         <td style="
+         color:
+         ${item.status == 'LUNAS'
+         ? '#16a34a'
+         : '#dc2626'};
+         font-weight:bold;
+         ">
+
+         ${item.status}
+
+         </td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById('tablePinjaman')
+   .innerHTML = html;
+}
+
+/* =========================
+   FILTER CICILAN
+========================= */
+
+function filterCicilan(){
+
+   let cari =
+   document
+   .getElementById('searchCicilan')
+   .value
+   .toLowerCase();
+
+   let data =
+   [...cicilanData];
+
+   if(cari){
+
+      data = data.filter(item=>
+
+         String(item.id)
+         .toLowerCase()
+         .includes(cari)
+      );
+   }
+
+   let html='';
+
+   data.forEach(item=>{
+
+      html += `
+      <tr>
+
+         <td>${item.tanggal}</td>
+
+         <td>${item.id}</td>
+
+         <td>${item.cicilan}</td>
+
+         <td>${rupiah(item.bayar)}</td>
+
+         <td>${rupiah(item.sisa)}</td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById('tableCicilan')
+   .innerHTML = html;
 }
