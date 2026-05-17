@@ -459,18 +459,50 @@ async function hapusKas(id){
 ========================= */
 
 function filterKas(){
+   let tglAwal =
+   document
+   .getElementById('tglAwalKas')
+   .value;
 
+   let tglAkhir =
+   document
+   .getElementById('tglAkhirKas')
+   .value;
+   
    let cari =
    document
    .getElementById('searchKas')
    .value
    .toLowerCase();
+/* =========================
+   FILTER TANGGAL
+========================= */
 
+   if(tglAwal && tglAkhir){
+
+      data = data.filter(item=>{
+
+         let tgl =
+         item.tanggal.split(' ')[0];
+
+         let p =
+         tgl.split('/');
+   
+         let format =
+         `${p[2]}-${p[1]}-${p[0]}`;
+
+            return (
+            format >= tglAwal &&
+            format <= tglAkhir
+         );
+      });
+   }
    let sort =
    document
    .getElementById('sortKas')
    .value;
 
+   
    let data =
    [...kasData];
 
