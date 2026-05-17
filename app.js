@@ -230,7 +230,15 @@ async function simpanPinjaman(){
    });
 
    alert('Pinjaman berhasil');
+   document.getElementById('namaPinjam').value='';
 
+   document.getElementById('hpPinjam').value='';
+
+   document.getElementById('alamatPinjam').value='';
+
+   document.getElementById('totalPinjam').value='';
+
+   document.getElementById('lamaCicilan').value='';
    loadPinjaman();
 
    loadDropdownPeminjam();
@@ -297,7 +305,10 @@ async function bayarCicilan(){
    });
 
    alert('Pembayaran berhasil');
+   document.getElementById('cicilanKe').value='';
 
+   document.getElementById('bayarNominal').value='';
+   
    loadCicilan();
 
    loadPinjaman();
