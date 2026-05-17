@@ -699,9 +699,12 @@ function editKas(id){
 
    let item =
    kasData.find(x=>x.row == id);
-
-   document.getElementById('tglKas').value =
+   let tgl =
    item.tanggal.split(' ')[0];
+   let pecah =
+   tgl.split('/');
+   document.getElementById('tglKas').value =
+   `${pecah[2]}-${pecah[1]}-${pecah[0]}`;
 
    document.getElementById('nominalMasuk').value =
    item.masuk;
