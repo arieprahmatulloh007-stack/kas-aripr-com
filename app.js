@@ -750,12 +750,32 @@ function editCicilan(id){
 
 function printKas(){
 
-   let isi =
-   document.getElementById('tableKas')
-   .innerHTML;
+   let rows = '';
+
+   kasData.forEach(item=>{
+
+      rows += `
+
+      <tr>
+
+         <td>${item.tanggal}</td>
+
+         <td>${rupiah(item.masuk)}</td>
+
+         <td>${rupiah(item.keluar)}</td>
+
+         <td>${item.sumberMasuk}</td>
+
+         <td>${item.sumberKeluar}</td>
+
+         <td>${item.keterangan}</td>
+
+      </tr>
+      `;
+   });
 
    let win =
-   window.open('','','width=1000,height=700');
+   window.open('','','width=1200,height=700');
 
    win.document.write(`
 
@@ -773,6 +793,11 @@ function printKas(){
 
          font-family:Arial;
          padding:20px;
+      }
+
+      h2{
+
+         margin-bottom:20px;
       }
 
       table{
@@ -822,7 +847,7 @@ function printKas(){
 
          <tbody>
 
-            ${isi}
+            ${rows}
 
          </tbody>
 
@@ -834,6 +859,8 @@ function printKas(){
    `);
 
    win.document.close();
+
+   win.focus();
 
    win.print();
 }
