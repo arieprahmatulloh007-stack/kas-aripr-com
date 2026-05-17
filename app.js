@@ -269,7 +269,15 @@ async function loadPinjaman(){
 
          <td>${rupiah(item.sisa)}</td>
 
-         <td>${item.status}</td>
+         <td style="
+         color:
+         ${item.status == 'LUNAS'
+         ? '#16a34a'
+         : '#dc2626'};
+         font-weight:bold;
+               ">
+         ${item.status}
+         </td>
 
       </tr>
       `;
