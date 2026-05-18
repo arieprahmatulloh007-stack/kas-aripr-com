@@ -13,66 +13,115 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
-
 <body class="login-body">
 
 <div class="login-container">
 
-    <div class="login-left">
+   <!-- LEFT -->
+   <div class="login-left">
 
-        <div class="overlay"></div>
+      <div class="overlay"></div>
 
-        <div class="left-content">
-            <h1>KAS ARIP R.COM</h1>
-            <p>
-              Sistem Kas & Pinjaman Modern
-            </p>
-        </div>
+      <div class="left-content">
 
-    </div>
+         <div class="brand-badge">
+            <i class="fa-solid fa-wallet"></i>
+         </div>
 
-    <div class="login-right">
+         <h1>
+         KAS ARIP R.COM
+         </h1>
 
-        <div class="login-box">
+         <p>
+         Sistem Keuangan, Pinjaman,
+         Gaji Karyawan & Slip Gaji Digital
+         </p>
 
-            <div class="logo-icon">
-                <i class="fa-solid fa-wallet"></i>
+         <div class="feature-box">
+
+            <div class="feature-item">
+               <i class="fa-solid fa-chart-line"></i>
+               Dashboard Realtime
             </div>
 
-            <h2>Welcome Back</h2>
-
-            <p class="subtitle">
-              Silahkan login untuk melanjutkan
-            </p>
-
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text"
-                id="username"
-                placeholder="Username">
+            <div class="feature-item">
+               <i class="fa-solid fa-money-bill-wave"></i>
+               Kas & Pinjaman
             </div>
 
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password"
-                id="password"
-                placeholder="Password">
+            <div class="feature-item">
+               <i class="fa-solid fa-file-invoice-dollar"></i>
+               Slip Gaji Otomatis
             </div>
 
-            <button onclick="login()" class="login-btn">
-                LOGIN
-            </button>
-
-            <div class="copyright">
-                © 2026 KAS ARIP R.COM
+            <div class="feature-item">
+               <i class="fa-solid fa-shield-halved"></i>
+               Secure Cloud System
             </div>
 
-        </div>
+         </div>
 
-    </div>
+      </div>
+
+   </div>
+   
+   <!-- RIGHT -->
+   <div class="login-right">
+
+      <div class="login-box">
+
+         <div class="logo-icon">
+            <i class="fa-solid fa-building-columns"></i>
+         </div>
+
+         <h2>
+         Welcome Back
+         </h2>
+
+         <p class="subtitle">
+         Login untuk melanjutkan ke dashboard
+         </p>
+
+         <div class="input-group">
+
+            <i class="fa-solid fa-user"></i>
+
+            <input
+            type="text"
+            id="username"
+            placeholder="Username">
+
+         </div>
+
+         <div class="input-group">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+            type="password"
+            id="password"
+            placeholder="Password">
+
+         </div>
+
+         <button
+         class="login-btn"
+         onclick="login()">
+
+         <i class="fa-solid fa-right-to-bracket"></i>
+         Login Sekarang
+
+         </button>
+
+         <div class="copyright">
+            © 2026 KAS ARIP R.COM
+         </div>
+
+      </div>
+
+   </div>
 
 </div>
-
 <script src="login.js"></script>
 
 </body>
