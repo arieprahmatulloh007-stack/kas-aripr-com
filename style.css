@@ -201,6 +201,147 @@ table td{
 .login-box{
 }
 /* =========================
+   LOGIN PREMIUM FINTECH
+========================= */
+
+.login-body{
+
+   margin:0;
+   font-family:Arial, sans-serif;
+   overflow:hidden;
+   background:#020617;
+}
+
+.bg-animation{
+
+   position:fixed;
+   width:100%;
+   height:100%;
+   background:
+   radial-gradient(circle at top left,#1d4ed8,transparent 30%),
+   radial-gradient(circle at bottom right,#0f172a,transparent 40%),
+   #020617;
+
+   animation:bgMove 10s infinite alternate;
+}
+@keyframes bgMove{
+
+   from{
+      transform:scale(1);
+   }
+
+   to{
+      transform:scale(1.1);
+   }
+}
+
+.login-container{
+
+   position:relative;
+   z-index:2;
+   display:flex;
+   width:100%;
+   height:100vh;
+}
+
+.login-left{
+
+   flex:1;
+   position:relative;
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   color:white;
+   padding:50px;
+}
+.overlay{
+.left-content{
+
+   position:relative;
+   z-index:2;
+   max-width:500px;
+}
+
+.brand-badge{
+
+   width:100px;
+   height:100px;
+   border-radius:30px;
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   font-size:45px;
+   background:rgba(255,255,255,.1);
+   backdrop-filter:blur(10px);
+   margin-bottom:30px;
+   border:1px solid rgba(255,255,255,.2);
+}
+
+.left-content h1{
+
+   font-size:55px;
+   margin:0;
+   font-weight:bold;
+   line-height:1.1;
+}
+
+.left-content p{
+
+   margin-top:20px;
+   font-size:18px;
+   opacity:.9;
+   line-height:1.6;
+}
+
+.feature-box{
+
+   margin-top:40px;
+   display:grid;
+   grid-template-columns:1fr 1fr;
+   gap:15px;
+}
+.feature-item{
+   padding:40px;
+   box-shadow:-10px 0 30px rgba(0,0,0,.2);
+}
+
+.login-box{
+
+   width:100%;
+}
+
+.logo-icon{
+
+   width:90px;
+   height:90px;
+   border-radius:25px;
+   margin:auto;
+   margin-bottom:30px;
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   background:linear-gradient(135deg,#2563eb,#1e40af);
+   color:white;
+   font-size:40px;
+   box-shadow:0 15px 35px rgba(37,99,235,.3);
+}
+
+.login-box h2{
+
+   text-align:center;
+   margin:0;
+   font-size:35px;
+   color:#0f172a;
+}
+
+.subtitle{
+
+   text-align:center;
+   color:#64748b;
+   margin-top:10px;
+   margin-bottom:35px;
+}
+.input-group{
 }
 
 .input-group i{
@@ -259,7 +400,6 @@ table td{
    font-size:13px;
    color:#94a3b8;
 }
-
 /* RESPONSIVE */
 
 @media(max-width:900px){
