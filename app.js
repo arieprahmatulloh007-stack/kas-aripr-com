@@ -68,7 +68,6 @@ async function loadDashboard(){
 
    const data =
    await res.json();
-   kasData = data;
    document.getElementById('totalMasuk')
    .innerHTML =
    rupiah(data.totalMasuk);
@@ -459,6 +458,10 @@ async function hapusKas(id){
 ========================= */
 
 function filterKas(){
+
+     let data =
+   [...kasData];
+   
    let tglAwal =
    document
    .getElementById('tglAwalKas')
@@ -503,8 +506,7 @@ function filterKas(){
    .value;
 
    
-   let data =
-   [...kasData];
+ 
 
    if(cari){
 
@@ -612,7 +614,23 @@ function filterPinjaman(){
          ${item.status}
 
          </td>
+<td>
 
+<button
+onclick="editPinjaman('${item.row}')">
+
+Edit
+
+</button>
+
+<button
+onclick="hapusPinjaman('${item.row}')">
+
+Hapus
+
+</button>
+
+</td>
       </tr>
       `;
    });
@@ -662,7 +680,23 @@ function filterCicilan(){
          <td>${rupiah(item.bayar)}</td>
 
          <td>${rupiah(item.sisa)}</td>
+<td>
 
+<button
+onclick="editCicilan('${item.rowid}')">
+
+Edit
+
+</button>
+
+<button
+onclick="hapusCicilan('${item.rowid}')">
+
+Hapus
+
+</button>
+
+</td>
       </tr>
       `;
    });
@@ -1144,5 +1178,123 @@ async function simpanPinjaman(){
       alert(
       'Gagal simpan pinjaman'
       );
+   }
+}
+/* =========================
+   HAPUS PINJAMAN
+========================= */
+
+async function hapusPinjaman(id){
+
+   let yakin =
+   confirm('Hapus data pinjaman?');
+
+   if(!yakin) return;
+
+   try{
+
+      await fetch(API_URL,{
+
+         method:'POST',
+
+         body:JSON.stringify({
+
+            action:'hapusPinjaman',
+
+            id:id
+         })
+      });
+
+      alert('Data berhasil dihapus');
+
+      loadPinjaman();
+
+      loadDashboard();
+
+   }catch(err){
+
+      console.log(err);
+
+      alert('Gagal hapus pinjaman');
+   }
+}
+
+/* =========================
+   HAPUS CICILAN
+========================= */
+
+async function hapusCicilan(id){
+
+   let yakin =
+   confirm('Hapus data cicilan?');
+
+   if(!yakin) return;
+
+   try{
+
+      await fetch(API_URL,{
+
+         method:'POST',
+
+         body:JSON.stringify({
+
+            action:'hapusCicilan',
+
+            id:id
+         })
+      });
+
+      alert('Data berhasil dihapus');
+
+      loadCicilan();
+
+      loadPinjaman();
+
+      loadDashboard();
+
+   }catch(err){
+
+      console.log(err);
+
+      alert('Gagal hapus cicilan');
+   }
+}
+
+/* =========================
+   HAPUS UANG KAS
+========================= */
+
+async function hapusKas(id){
+
+   let yakin =
+   confirm('Hapus data uang kas?');
+
+   if(!yakin) return;
+
+   try{
+
+      await fetch(API_URL,{
+
+         method:'POST',
+
+         body:JSON.stringify({
+
+            action:'hapusKas',
+
+            id:id
+         })
+      });
+
+      alert('Data berhasil dihapus');
+
+      loadKas();
+
+      loadDashboard();
+
+   }catch(err){
+
+      console.log(err);
+
+      alert('Gagal hapus uang kas');
    }
 }
