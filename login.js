@@ -4,7 +4,7 @@ function login(){
 
   let password = document.getElementById('password').value;
 
-  if(username == 'admin' && password == 'admin123'){
+  if(username == 'Arip' && password == 'arip007'){
 
       localStorage.setItem('login','true');
 
