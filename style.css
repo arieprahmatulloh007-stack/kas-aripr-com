@@ -49,17 +49,87 @@ body{
 
 .sidebar h2{
 
+   position:relative;
+
    color:white;
 
    text-align:center;
 
-   margin-bottom:40px;
+   margin-bottom:45px;
 
-   font-size:32px;
+   padding:25px 15px;
 
-   font-weight:bold;
+   border-radius:28px;
+
+   font-size:42px;
+
+   font-weight:900;
+
+   line-height:1.2;
+
+   letter-spacing:1px;
+
+   overflow:hidden;
+
+   background:
+   linear-gradient(
+   135deg,
+   rgba(37,99,235,.25),
+   rgba(255,255,255,.05)
+   );
+
+   border:
+   1px solid rgba(255,255,255,.08);
+
+   box-shadow:
+   0 15px 35px rgba(0,0,0,.25);
+
+   backdrop-filter:blur(12px);
+
+   text-transform:uppercase;
+}
+.sidebar h2::before{
+
+   content:'';
+
+   position:absolute;
+
+   width:180px;
+
+   height:180px;
+
+   background:
+   radial-gradient(
+   circle,
+   rgba(59,130,246,.4),
+   transparent 70%
+   );
+
+   top:-90px;
+
+   left:-60px;
 }
 
+.sidebar h2::after{
+
+   content:'FINANCE SYSTEM';
+
+   position:absolute;
+
+   bottom:12px;
+
+   left:50%;
+
+   transform:translateX(-50%);
+
+   font-size:11px;
+
+   letter-spacing:4px;
+
+   color:#93c5fd;
+
+   font-weight:500;
+}
 .sidebar button{
 
    width:100%;
