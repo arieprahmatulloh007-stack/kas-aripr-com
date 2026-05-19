@@ -53,7 +53,11 @@ function logout(){
 /* FORMAT */
 
 function rupiah(angka){
+function formatRupiah(angka){
 
+   return Number(angka || 0)
+   .toLocaleString('id-ID');
+}
    return 'Rp ' +
    Number(angka || 0)
    .toLocaleString('id-ID');
@@ -1310,8 +1314,18 @@ function uploadExcel(){
       return;
    }
 
-   let reader =
-   new FileReader();
+	let btn =
+	document.querySelector(
+	'#uploadGaji button'
+	);
+
+	btn.innerHTML =
+	'⏳ Processing...';
+
+	btn.disabled = true;
+
+	let reader =
+	new FileReader();
 
    reader.onload = function(e){
 
@@ -1350,72 +1364,6 @@ function uploadExcel(){
    reader.readAsArrayBuffer(file);
 }
 
-function prosesPayroll(data){
-
-   let hasil = {};
-
-   data.forEach(item=>{
-
-      let nama =
-      item.NAMA_TEKNISI;
-
-      let qty =
-      Number(item.QTY || 0);
-
-      let bonus =
-      Number(item.BONUS || 0);
-
-      let lembur =
-      Number(item.LEMBUR || 0);
-
-      let potongan =
-      Number(item.POTONGAN || 0);
-
-      let tarif = 50000;
-
-      let totalSC =
-      qty * tarif;
-
-      let totalGaji =
-      totalSC +
-      bonus +
-      lembur -
-      potongan;
-
-      if(!hasil[nama]){
-
-         hasil[nama]={
-
-            nama:nama,
-
-            totalSC:0,
-
-            bonus:0,
-
-            lembur:0,
-
-            potongan:0,
-
-            totalGaji:0
-         };
-      }
-
-      hasil[nama].totalSC += totalSC;
-
-      hasil[nama].bonus += bonus;
-
-      hasil[nama].lembur += lembur;
-
-      hasil[nama].potongan += potongan;
-
-      hasil[nama].totalGaji += totalGaji;
-
-   });
-
-   tampilMonitoring(
-      Object.values(hasil)
-   );
-}
 
 function tampilMonitoring(data){
 
@@ -1542,9 +1490,14 @@ function prosesPayroll(data){
 
    });
 
-   tampilMonitoring(
-      Object.values(hasil)
-   );
+	tampilMonitoring(
+	Object.values(hasil)
+	);
+	
+	uploadBtn.innerHTML =
+	'Upload & Proses';
+	
+	btn.disabled = false;
 }
 function tampilMonitoring(data){
 
