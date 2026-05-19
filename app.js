@@ -9,6 +9,7 @@ let kasData = [];
 let pinjamanData = [];
 
 let cicilanData = [];
+let uploadBtn = null;
 /* PAGE */
 
 function showPage(id){
@@ -52,12 +53,14 @@ function logout(){
 
 /* FORMAT */
 
-function rupiah(angka){
 function formatRupiah(angka){
 
    return Number(angka || 0)
    .toLocaleString('id-ID');
 }
+
+function rupiah(angka){
+
    return 'Rp ' +
    Number(angka || 0)
    .toLocaleString('id-ID');
@@ -1314,13 +1317,15 @@ function uploadExcel(){
       return;
    }
 
-	let btn =
+	uploadBtn =
 	document.querySelector(
 	'#uploadGaji button'
 	);
 
-	btn.innerHTML =
-	'⏳ Processing...';
+	uploadBtn.innerHTML =
+	'⏳ Antosan nuju di dorong...';
+
+	uploadBtn.disabled = true;
 
 	btn.disabled = true;
 
@@ -1497,58 +1502,5 @@ function prosesPayroll(data){
 	uploadBtn.innerHTML =
 	'Upload & Proses';
 	
-	btn.disabled = false;
-}
-function tampilMonitoring(data){
-
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-
-      <tr>
-
-         <td>
-         ${new Date().toLocaleDateString('id-ID')}
-         </td>
-         <td>
-         ${item.nama}
-         </td>
-         <td>
-         Rp ${formatRupiah(item.totalSC)}
-         </td>
-         <td>
-         Rp ${formatRupiah(item.bonus)}
-         </td>
-         <td>
-         Rp ${formatRupiah(item.lembur)}
-         </td>
-         <td>
-         Rp ${formatRupiah(item.potongan)}
-         </td>
-         <td>
-         Rp ${formatRupiah(item.totalGaji)}
-         </td>
-         <td>
-            <span class="status-belum">
-
-            BELUM TRANSFER
-
-            </span>
-
-         </td>
-
-      </tr>
-      `;
-   });
-   document.getElementById(
-   'tableGaji'
-   ).innerHTML = html;
-
-   showPage('monitoringGaji');
-
-   alert(
-   'Payroll berhasil diproses'
-   );
+	buploadBtn.disabled = false;
 }
