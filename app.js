@@ -1349,6 +1349,137 @@ function uploadExcel(){
 
    reader.readAsArrayBuffer(file);
 }
+
+function prosesPayroll(data){
+
+   let hasil = {};
+
+   data.forEach(item=>{
+
+      let nama =
+      item.NAMA_TEKNISI;
+
+      let qty =
+      Number(item.QTY || 0);
+
+      let bonus =
+      Number(item.BONUS || 0);
+
+      let lembur =
+      Number(item.LEMBUR || 0);
+
+      let potongan =
+      Number(item.POTONGAN || 0);
+
+      let tarif = 50000;
+
+      let totalSC =
+      qty * tarif;
+
+      let totalGaji =
+      totalSC +
+      bonus +
+      lembur -
+      potongan;
+
+      if(!hasil[nama]){
+
+         hasil[nama]={
+
+            nama:nama,
+
+            totalSC:0,
+
+            bonus:0,
+
+            lembur:0,
+
+            potongan:0,
+
+            totalGaji:0
+         };
+      }
+
+      hasil[nama].totalSC += totalSC;
+
+      hasil[nama].bonus += bonus;
+
+      hasil[nama].lembur += lembur;
+
+      hasil[nama].potongan += potongan;
+
+      hasil[nama].totalGaji += totalGaji;
+
+   });
+
+   tampilMonitoring(
+      Object.values(hasil)
+   );
+}
+
+function tampilMonitoring(data){
+
+   let html='';
+
+   data.forEach(item=>{
+
+      html += `
+
+      <tr>
+
+         <td>
+         ${new Date().toLocaleDateString('id-ID')}
+         </td>
+
+         <td>
+         ${item.nama}
+         </td>
+
+         <td>
+         Rp ${formatRupiah(item.totalSC)}
+         </td>
+
+         <td>
+         Rp ${formatRupiah(item.bonus)}
+         </td>
+
+         <td>
+         Rp ${formatRupiah(item.lembur)}
+         </td>
+
+         <td>
+         Rp ${formatRupiah(item.potongan)}
+         </td>
+
+         <td>
+         Rp ${formatRupiah(item.totalGaji)}
+         </td>
+
+         <td>
+
+            <span class="status-belum">
+
+            BELUM TRANSFER
+
+            </span>
+
+         </td>
+
+      </tr>
+
+      `;
+   });
+
+   document.getElementById(
+   'tableGaji'
+   ).innerHTML = html;
+
+   showPage('monitoringGaji');
+
+   alert(
+   'Payroll berhasil diproses'
+   );
+}
 function prosesPayroll(data){
 
    let hasil = {};
