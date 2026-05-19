@@ -1497,9 +1497,31 @@ function prosesPayroll(data){
 
    });
 
-	tampilMonitoring(
-	Object.values(hasil)
-	);
+let finalData =
+Object.values(hasil);
+
+fetch(API_URL,{
+
+   method:'POST',
+
+   body:JSON.stringify({
+
+      action:'simpanPayroll',
+
+      items:finalData
+   })
+
+})
+.then(res=>res.json())
+.then(res=>{
+
+   tampilMonitoring(finalData);
+
+   uploadBtn.innerHTML =
+   'Upload & Proses';
+
+   uploadBtn.disabled = false;
+});
 	
 	uploadBtn.innerHTML =
 	'Upload & Proses';
