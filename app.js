@@ -1456,7 +1456,7 @@ function prosesPayroll(data){
       let potongan =
       Number(item.POTONGAN || 0);
 
-      let tarif = 50000;
+      let tarif = 120000;
 
       let totalSC =
       qty * tarif;
