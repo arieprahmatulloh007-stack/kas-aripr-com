@@ -1317,20 +1317,18 @@ function uploadExcel(){
       return;
    }
 
-	uploadBtn =
-	document.querySelector(
-	'#uploadGaji button'
-	);
+   uploadBtn =
+   document.querySelector(
+   '#uploadGaji button'
+   );
 
-	uploadBtn.innerHTML =
-	'⏳ Antosan nuju di dorong...';
+   uploadBtn.innerHTML =
+   '<i class="fa-solid fa-spinner fa-spin"></i> Processing Payroll...';
 
-	uploadBtn.disabled = true;
+   uploadBtn.disabled = true;
 
-	btn.disabled = true;
-
-	let reader =
-	new FileReader();
+   let reader =
+   new FileReader();
 
    reader.onload = function(e){
 
@@ -1351,6 +1349,11 @@ function uploadExcel(){
          'Nama sheet wajib DATA_GAJI'
          );
 
+         uploadBtn.innerHTML =
+         'Upload & Proses';
+
+         uploadBtn.disabled = false;
+
          return;
       }
 
@@ -1368,7 +1371,6 @@ function uploadExcel(){
 
    reader.readAsArrayBuffer(file);
 }
-
 
 function tampilMonitoring(data){
 
