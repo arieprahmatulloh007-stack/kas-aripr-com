@@ -1502,5 +1502,5 @@ function prosesPayroll(data){
 	uploadBtn.innerHTML =
 	'Upload & Proses';
 	
-	buploadBtn.disabled = false;
+	uploadBtn.disabled = false;
 }
