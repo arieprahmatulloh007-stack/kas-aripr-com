@@ -4,11 +4,17 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>KAS ARIP R.COM</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -33,16 +39,16 @@ if(localStorage.getItem('login') != 'true'){
 
    <h2>
 
-   <i class="fa-solid fa-wallet"></i>
+      <i class="fa-solid fa-wallet"></i>
 
-   <span>
+      <span>
 
-      KAS ARIP<br>
-      R.COM
+         KAS ARIP<br>
+         R.COM
 
-   </span>
+      </span>
 
-</h2>
+   </h2>
 
    <button onclick="showPage('dashboard')">
       Dashboard
@@ -59,6 +65,26 @@ if(localStorage.getItem('login') != 'true'){
    <button onclick="showPage('cicilan')">
       Cicilan
    </button>
+
+   <hr>
+
+   <button onclick="showPage('teknisi')">
+      Data Teknisi
+   </button>
+
+   <button onclick="showPage('uploadGaji')">
+      Upload Gaji
+   </button>
+
+   <button onclick="showPage('monitoringGaji')">
+      Monitoring Gaji
+   </button>
+
+   <button onclick="showPage('slipGaji')">
+      Slip Gaji
+   </button>
+
+   <br>
 
    <button onclick="logout()">
       Logout
@@ -91,6 +117,7 @@ if(localStorage.getItem('login') != 'true'){
          <h3>Total Uang Keluar</h3>
          <p id="totalKeluar">Rp 0</p>
       </div>
+
       <div class="card">
          <h3>Sisa Uang Kas</h3>
          <p id="sisaKas">Rp 0</p>
@@ -100,7 +127,7 @@ if(localStorage.getItem('login') != 'true'){
          <h3>Total Pinjaman</h3>
          <p id="totalPinjaman">Rp 0</p>
       </div>
-      
+
       <div class="card">
          <h3>Sisa Piutang</h3>
          <p id="sisaPiutang">Rp 0</p>
@@ -109,17 +136,19 @@ if(localStorage.getItem('login') != 'true'){
    </div>
 
    <div class="chart-box">
+
       <canvas id="myChart"></canvas>
+
    </div>
-<div class="card">
 
-<h3>Belum Lunas Pinjaman / Kasbon</h3>
+   <div class="card">
 
-<div id="belumLunasList">
+      <h3>Belum Lunas Pinjaman / Kasbon</h3>
 
-</div>
+      <div id="belumLunasList"></div>
 
-</div>
+   </div>
+
 </div>
 
 <!-- =========================
@@ -162,34 +191,37 @@ if(localStorage.getItem('login') != 'true'){
       <button onclick="simpanKas()">
          Simpan
       </button>
-   <button onclick="printKas()">
 
-   Print Laporan
+      <button onclick="printKas()">
+         Print Laporan
+      </button>
 
-   </button>
    </div>
+
    <div class="filter-box">
 
-   <input
-   type="text"
-   id="searchKas"
-   placeholder="Cari keterangan..."
-   onkeyup="filterKas()">
+      <input
+      type="text"
+      id="searchKas"
+      placeholder="Cari keterangan..."
+      onkeyup="filterKas()">
 
-   <select id="sortKas"
-   onchange="filterKas()">
+      <select
+      id="sortKas"
+      onchange="filterKas()">
 
-   <option value="baru">
-   Terbaru
-   </option>
+         <option value="baru">
+            Terbaru
+         </option>
 
-   <option value="lama">
-   Terlama
-   </option>
+         <option value="lama">
+            Terlama
+         </option>
 
-   </select>
+      </select>
 
    </div>
+
    <br>
 
    <div class="table-box">
@@ -207,13 +239,12 @@ if(localStorage.getItem('login') != 'true'){
                <th>Sumber Keluar</th>
                <th>Keterangan</th>
                <th>Aksi</th>
+
             </tr>
 
          </thead>
 
-         <tbody id="tableKas">
-
-         </tbody>
+         <tbody id="tableKas"></tbody>
 
       </table>
 
@@ -259,45 +290,47 @@ if(localStorage.getItem('login') != 'true'){
       <button onclick="simpanPinjaman()">
          Simpan
       </button>
-      
-<button onclick="printPinjaman()">
 
-Print Pinjaman
+      <button onclick="printPinjaman()">
+         Print Pinjaman
+      </button>
 
-</button>
    </div>
+
    <div class="filter-box">
 
-   <input
-   type="text"
-   id="searchKas"
-   placeholder="Cari keterangan..."
-   onkeyup="filterKas()">
+      <input
+      type="text"
+      id="searchPinjaman"
+      placeholder="Cari pinjaman..."
+      onkeyup="filterPinjaman()">
 
-   <input
-   type="date"
-   id="tglAwalKas"
-   onchange="filterKas()">
+      <input
+      type="date"
+      id="tglAwalPinjaman"
+      onchange="filterPinjaman()">
 
-   <input
-   type="date"
-   id="tglAkhirKas"
-   onchange="filterKas()">
+      <input
+      type="date"
+      id="tglAkhirPinjaman"
+      onchange="filterPinjaman()">
 
-   <select id="sortKas"
-   onchange="filterKas()">
+      <select
+      id="sortPinjaman"
+      onchange="filterPinjaman()">
 
-   <option value="baru">
-   Terbaru
-   </option>
+         <option value="baru">
+            Terbaru
+         </option>
 
-   <option value="lama">
-   Terlama
-   </option>
+         <option value="lama">
+            Terlama
+         </option>
 
-   </select>
+      </select>
 
    </div>
+
    <br>
 
    <div class="table-box">
@@ -313,14 +346,13 @@ Print Pinjaman
                <th>Sudah Bayar</th>
                <th>Sisa</th>
                <th>Status</th>
+               <th>Aksi</th>
 
             </tr>
 
          </thead>
 
-         <tbody id="tablePinjaman">
-
-         </tbody>
+         <tbody id="tablePinjaman"></tbody>
 
       </table>
 
@@ -335,12 +367,10 @@ Print Pinjaman
 <div id="cicilan" class="page">
 
    <h1>Pembayaran Cicilan</h1>
-   
+
    <div class="form-grid">
 
-      <select id="idPeminjam">
-
-      </select>
+      <select id="idPeminjam"></select>
 
       <input
       type="number"
@@ -355,21 +385,23 @@ Print Pinjaman
       <button onclick="bayarCicilan()">
          Bayar
       </button>
-<button onclick="printCicilan()">
 
-   Print Cicilan
+      <button onclick="printCicilan()">
+         Print Cicilan
+      </button>
 
-   </button>
    </div>
+
    <div class="filter-box">
 
-   <input
-   type="text"
-   id="searchCicilan"
-   placeholder="Cari peminjam..."
-   onkeyup="filterCicilan()">
+      <input
+      type="text"
+      id="searchCicilan"
+      placeholder="Cari peminjam..."
+      onkeyup="filterCicilan()">
 
    </div>
+
    <br>
 
    <div class="table-box">
@@ -391,9 +423,146 @@ Print Pinjaman
 
          </thead>
 
-         <tbody id="tableCicilan">
+         <tbody id="tableCicilan"></tbody>
 
-         </tbody>
+      </table>
+
+   </div>
+
+</div>
+
+<!-- =========================
+     DATA TEKNISI
+========================= -->
+
+<div id="teknisi" class="page">
+
+   <h1>Data Teknisi</h1>
+
+   <div class="table-box">
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>ID</th>
+               <th>Nama</th>
+               <th>Jabatan</th>
+               <th>Area</th>
+               <th>No HP</th>
+               <th>Bank</th>
+               <th>Rekening</th>
+               <th>Status</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableTeknisi"></tbody>
+
+      </table>
+
+   </div>
+
+</div>
+
+<!-- =========================
+     UPLOAD GAJI
+========================= -->
+
+<div id="uploadGaji" class="page">
+
+   <h1>Upload Gaji Excel</h1>
+
+   <div class="card">
+
+      <h3>Upload File Excel Payroll</h3>
+
+      <p>
+         Format wajib:
+         DATA_GAJI
+      </p>
+
+      <input
+      type="file"
+      id="fileExcel">
+
+      <br><br>
+
+      <button onclick="uploadExcel()">
+         Upload & Proses
+      </button>
+
+   </div>
+
+</div>
+
+<!-- =========================
+     MONITORING GAJI
+========================= -->
+
+<div id="monitoringGaji" class="page">
+
+   <h1>Monitoring Gaji</h1>
+
+   <div class="table-box">
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>Tanggal</th>
+               <th>Nama</th>
+               <th>Total SC</th>
+               <th>Bonus</th>
+               <th>Lembur</th>
+               <th>Potongan</th>
+               <th>Total Gaji</th>
+               <th>Status</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableGaji"></tbody>
+
+      </table>
+
+   </div>
+
+</div>
+
+<!-- =========================
+     SLIP GAJI
+========================= -->
+
+<div id="slipGaji" class="page">
+
+   <h1>Slip Gaji</h1>
+
+   <div class="table-box">
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>Tanggal</th>
+               <th>Nama</th>
+               <th>Total Gaji</th>
+               <th>Status</th>
+               <th>Aksi</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableSlipGaji"></tbody>
 
       </table>
 
