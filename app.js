@@ -1298,3 +1298,60 @@ async function hapusKas(id){
       alert('Gagal hapus uang kas');
    }
 }
+function uploadExcel(){
+
+   let file =
+   document.getElementById('fileExcel').files[0];
+
+   if(!file){
+
+      alert('Pilih file Excel dulu');
+
+      return;
+   }
+
+   let reader =
+   new FileReader();
+
+   reader.onload = function(e){
+
+      let data =
+      new Uint8Array(e.target.result);
+
+      let workbook =
+      XLSX.read(data,{
+         type:'array'
+      });
+
+      let sheetName =
+      workbook.SheetNames[0];
+
+      if(sheetName != 'DATA_GAJI'){
+
+         alert(
+         'Nama sheet wajib DATA_GAJI'
+         );
+
+         return;
+      }
+
+      let worksheet =
+      workbook.Sheets[sheetName];
+
+      let json =
+      XLSX.utils.sheet_to_json(
+         worksheet
+      );
+
+      console.log(json);
+
+      alert(
+      'Excel berhasil dibaca: '
+      + json.length +
+      ' data'
+      );
+
+   };
+
+   reader.readAsArrayBuffer(file);
+}
