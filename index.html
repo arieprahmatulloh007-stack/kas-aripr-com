@@ -439,67 +439,67 @@ if(localStorage.getItem('login') != 'true'){
 
    <h1>Data Teknisi</h1>
 
+   <!-- FORM -->
+   <div class="form-grid">
+
+      <input type="hidden"
+      id="editTeknisiId">
+
+      <input type="text"
+      id="teknisiNama"
+      placeholder="Nama Teknisi">
+
+      <input type="text"
+      id="teknisiJabatan"
+      placeholder="Jabatan">
+
+      <input type="text"
+      id="teknisiArea"
+      placeholder="Area">
+
+      <input type="text"
+      id="teknisiHp"
+      placeholder="No HP">
+
+      <input type="text"
+      id="teknisiBank"
+      placeholder="Bank">
+
+      <input type="text"
+      id="teknisiRekening"
+      placeholder="No Rekening">
+
+      <select id="teknisiStatus">
+
+         <option value="AKTIF">
+         AKTIF
+         </option>
+
+         <option value="NONAKTIF">
+         NONAKTIF
+         </option>
+
+      </select>
+
+      <button onclick="simpanTeknisi()">
+
+      Simpan Teknisi
+
+      </button>
+
+   </div>
+
+   <br>
+
    <div class="table-box">
 
-   <input
-   type="text"
-   id="searchTeknisi"
-   placeholder="Cari nama teknisi..."
-   onkeyup="filterTeknisi()"
-   class="search-input">
+      <input
+      type="text"
+      id="searchTeknisi"
+      placeholder="Cari nama teknisi..."
+      onkeyup="filterTeknisi()"
+      class="search-input">
 
-   <table>
-
-      <thead>
-      <!-- FORM -->
-      <div class="form-grid">
-
-         <input type="hidden"
-         id="editTeknisiId">
-
-         <input type="text"
-         id="teknisiNama"
-         placeholder="Nama Teknisi">
-
-         <input type="text"
-         id="teknisiJabatan"
-         placeholder="Jabatan">
-
-         <input type="text"
-         id="teknisiArea"
-         placeholder="Area">
-
-         <input type="text"
-         id="teknisiHp"
-         placeholder="No HP">
-
-         <input type="text"
-         id="teknisiBank"
-         placeholder="Bank">
-
-         <input type="text"
-         id="teknisiRekening"
-         placeholder="No Rekening">
-
-         <select id="teknisiStatus">
-
-            <option value="AKTIF">
-            AKTIF
-            </option>
-
-            <option value="NONAKTIF">
-            NONAKTIF
-            </option>
-
-         </select>
-
-         <button onclick="simpanTeknisi()">
-         Simpan Teknisi
-         </button>
-
-      </div>
-
-      <!-- TABLE -->
       <table>
 
          <thead>
@@ -520,7 +520,8 @@ if(localStorage.getItem('login') != 'true'){
 
          </thead>
 
-         <tbody id="tableTeknisi"></tbody>
+         <tbody id="tableTeknisi">
+         </tbody>
 
       </table>
 
@@ -613,7 +614,9 @@ if(localStorage.getItem('login') != 'true'){
 
          <select id="slipNama">
          </select>
-
+		<input
+			type="month"
+			id="slipBulan">
          <button onclick="buatSlipGaji()">
 
          Tampilkan Slip
