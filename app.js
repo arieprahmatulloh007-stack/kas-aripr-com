@@ -1913,8 +1913,7 @@ async function buatSlipGaji(){
 
 	&&
 
-	String(x.periode)
-	includes(bulan)
+	String(x.periode).includes(bulan)
 
 	);
 
