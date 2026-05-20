@@ -37,6 +37,8 @@ window.onload = function(){
    showPage('dashboard');
 
    loadDashboard();
+   
+   loadDashboardPayroll();
 
    loadKas();
 
@@ -51,6 +53,7 @@ window.onload = function(){
    loadTeknisi();
 
    loadSlipNama();
+
 };
 
 /* LOGOUT */
@@ -133,6 +136,139 @@ async function loadDashboard(){
 
    document.getElementById('belumLunasList')
    .innerHTML = html;
+}
+
+async function loadDashboardPayroll(){
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getPayroll'
+   );
+
+   let data =
+   await res.json();
+
+   if(!Array.isArray(data)) return;
+
+   let periodeGaji = {};
+
+   let periodeSC = {};
+
+   let teknisi = {};
+
+   data.forEach(item=>{
+
+      let periode =
+      item.periode || '-';
+
+      if(!periodeGaji[periode]){
+
+         periodeGaji[periode] = 0;
+      }
+
+      periodeGaji[periode] +=
+      Number(item.totalGaji || 0);
+
+      if(!periodeSC[periode]){
+
+         periodeSC[periode] = 0;
+      }
+
+      periodeSC[periode] +=
+      Number(item.jumlahOrder || 0);
+
+      if(!teknisi[item.nama]){
+
+         teknisi[item.nama] = {
+
+            gaji:0,
+
+            sc:0,
+
+            status:item.status
+         };
+      }
+
+      teknisi[item.nama].gaji +=
+      Number(item.totalGaji || 0);
+
+      teknisi[item.nama].sc +=
+      Number(item.jumlahOrder || 0);
+   });
+
+   let htmlGaji = '';
+
+   Object.keys(periodeGaji)
+   .reverse()
+   .forEach(p=>{
+
+      htmlGaji += `
+      <div class="row-dashboard">
+
+         <span>${p}</span>
+
+         <b>${rupiah(periodeGaji[p])}</b>
+
+      </div>
+      `;
+   });
+
+   document.getElementById(
+   'dashboardPeriodeGaji'
+   ).innerHTML = htmlGaji;
+
+   let htmlSC = '';
+
+   Object.keys(periodeSC)
+   .reverse()
+   .forEach(p=>{
+
+      htmlSC += `
+      <div class="row-dashboard">
+
+         <span>${p}</span>
+
+         <b>${periodeSC[p]} SC</b>
+
+      </div>
+      `;
+   });
+
+   document.getElementById(
+   'dashboardPeriodeSC'
+   ).innerHTML = htmlSC;
+
+   let htmlTeknisi = '';
+
+   Object.keys(teknisi)
+   .forEach(nama=>{
+
+      htmlTeknisi += `
+      <div class="row-dashboard">
+
+         <div>
+
+            <b>${nama}</b><br>
+
+            ${teknisi[nama].sc} SC
+         </div>
+
+         <div>
+
+            ${rupiah(teknisi[nama].gaji)}<br>
+
+            ${teknisi[nama].status}
+
+         </div>
+
+      </div>
+      `;
+   });
+
+   document.getElementById(
+   'dashboardTeknisiPayroll'
+   ).innerHTML = htmlTeknisi;
 }
 
 /* SIMPAN KAS */
