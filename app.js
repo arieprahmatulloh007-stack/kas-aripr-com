@@ -1471,14 +1471,14 @@ fetch(API_URL,{
 
    method:'POST',
 
-   body:JSON.stringify({
+	body:JSON.stringify({
 
-      action:'simpanPayroll',
+	action:'simpanPayroll',
+	
+	periode:periode,
 
-      periode:periode,
-
-      items:finalData
-   })
+	   items:finalData
+	})
 })
 .then(res=>res.json())
 .then(res=>{
@@ -1590,7 +1590,7 @@ html += `
       console.log(err);
    });
 }
-async function ubahStatusGaji(id,status){
+function ubahStatusGaji(id,status){
 
    let statusBaru =
    status == 'BELUM TRANSFER'
@@ -1599,7 +1599,7 @@ async function ubahStatusGaji(id,status){
    :
    'BELUM TRANSFER';
 
-   await fetch(API_URL,{
+   fetch(API_URL,{
 
       method:'POST',
 
@@ -1611,9 +1611,12 @@ async function ubahStatusGaji(id,status){
 
          status:statusBaru
       })
-   });
+   })
+   .then(res=>res.json())
+   .then(res=>{
 
-   loadPayroll();
+      loadPayroll();
+   });
 }
 async function loadTeknisi(){
 
@@ -1869,9 +1872,9 @@ async function buatSlipGaji(){
    'slipNama'
    ).value;
    
-	let bulan =
+	let periode =
 	document.getElementById(
-	'slipBulan'
+	'uploadPeriode'
 	).value;
 	
 	let periode =
