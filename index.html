@@ -441,6 +441,16 @@ if(localStorage.getItem('login') != 'true'){
 
    <div class="table-box">
 
+   <input
+   type="text"
+   id="searchTeknisi"
+   placeholder="Cari nama teknisi..."
+   onkeyup="filterTeknisi()"
+   class="search-input">
+
+   <table>
+
+      <thead>
       <!-- FORM -->
       <div class="form-grid">
 
@@ -496,7 +506,7 @@ if(localStorage.getItem('login') != 'true'){
 
             <tr>
 
-               <th>ID</th>
+               <th>NIK</th>
                <th>Nama</th>
                <th>Jabatan</th>
                <th>Area</th>
