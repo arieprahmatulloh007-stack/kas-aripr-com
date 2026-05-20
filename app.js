@@ -1907,31 +1907,48 @@ async function buatSlipGaji(){
 	console.log(data);
 
 let item =
-data.find(x=>
+data.find(x => {
 
+   let namaData =
    String(x.nama)
    .trim()
-   .toUpperCase()
+   .toUpperCase();
 
-   ==
-
+   let namaPilih =
    String(nama)
    .trim()
-   .toUpperCase()
+   .toUpperCase();
 
-   &&
+   let periodeData =
+   String(x.periode)
+   .trim()
+   .replace(/\s/g,'');
 
-String(x.periode)
-.replace(/\s/g,'')
-.trim()
+   let periodePilih =
+   String(bulan)
+   .trim()
+   .replace(/\s/g,'');
 
-===
+   console.log(
+   namaData,
+   namaPilih,
+   periodeData,
+   periodePilih
+   );
 
-String(bulan)
-.replace(/\s/g,'')
-.trim()
+   return (
 
-);
+      namaData === namaPilih
+
+      &&
+
+      periodeData.includes(
+      periodePilih
+      )
+
+   );
+
+});
    if(!item){
 
       alert(
