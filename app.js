@@ -42,6 +42,7 @@ window.onload = function(){
    loadDropdownPeminjam();
 	loadPayroll();
 	loadTeknisi();
+	loadSlipNama();
 };
 
 /* LOGOUT */
@@ -1815,4 +1816,133 @@ async function hapusTeknisi(id){
    });
 
    loadTeknisi();
+}
+async function loadSlipNama(){
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getTeknisi'
+   );
+
+   let data =
+   await res.json();
+
+   let html =
+   '<option value="">Pilih Teknisi</option>';
+
+   data.forEach(item=>{
+
+      html += `
+
+      <option value="${item.nama}">
+
+      ${item.nama}
+
+      </option>
+      `;
+   });
+
+   document.getElementById(
+   'slipNama'
+   ).innerHTML = html;
+}
+async function buatSlipGaji(){
+
+   let nama =
+   document.getElementById(
+   'slipNama'
+   ).value;
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getPayroll'
+   );
+
+   let data =
+   await res.json();
+
+   let item =
+   data.find(x=>
+   x.nama == nama
+   );
+
+   if(!item){
+
+      alert('Data tidak ditemukan');
+
+      return;
+   }
+
+   document.getElementById(
+   'hasilSlip'
+   ).innerHTML = `
+
+   <div class="slip-box">
+
+      <h2>KAS ARIP R.COM</h2>
+
+      <h3>SLIP GAJI TEKNISI</h3>
+
+      <hr>
+
+      <p>
+      <b>Nama :</b>
+      ${item.nama}
+      </p>
+
+      <p>
+      <b>Bank :</b>
+      ${item.bank}
+      </p>
+
+      <p>
+      <b>Rekening :</b>
+      ${item.rekening}
+      </p>
+
+      <hr>
+
+      <p>
+      <b>Jumlah Order :</b>
+      ${item.jumlahOrder} SC
+      </p>
+
+      <p>
+      <b>Total SC :</b>
+      ${rupiah(item.totalSC)}
+      </p>
+
+      <p>
+      <b>Bonus :</b>
+      ${rupiah(item.bonus)}
+      </p>
+
+      <p>
+      <b>Lembur :</b>
+      ${rupiah(item.lembur)}
+      </p>
+
+      <p>
+      <b>Potongan :</b>
+      ${rupiah(item.potongan)}
+      </p>
+
+      <hr>
+
+      <h2>
+
+      TOTAL:
+      ${rupiah(item.totalGaji)}
+
+      </h2>
+
+      <p>
+      <b>Status :</b>
+      ${item.status}
+      </p>
+
+   </div>
+   `;
 }
