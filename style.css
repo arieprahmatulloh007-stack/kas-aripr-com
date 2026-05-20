@@ -934,3 +934,102 @@ tr:hover{
 
    margin-bottom:20px;
 }
+.slip-box{
+
+   max-width:700px;
+
+   background:#fff;
+
+   margin-top:30px;
+
+   border-radius:25px;
+
+   overflow:hidden;
+
+   box-shadow:
+   0 10px 30px rgba(0,0,0,0.1);
+}
+
+.slip-header{
+
+   background:
+   linear-gradient(
+   135deg,
+   #0f172a,
+   #1e3a8a
+   );
+
+   color:#fff;
+
+   padding:30px;
+
+   text-align:center;
+}
+
+.slip-header h2{
+
+   margin:0;
+
+   font-size:32px;
+}
+
+.slip-header h3{
+
+   margin-top:10px;
+
+   font-weight:400;
+
+   opacity:0.9;
+}
+
+.slip-body{
+
+   padding:30px;
+}
+
+.slip-row{
+
+   display:flex;
+
+   justify-content:space-between;
+
+   margin-bottom:18px;
+
+   padding-bottom:10px;
+
+   border-bottom:
+   1px dashed #ddd;
+}
+
+.slip-total{
+
+   background:#f8fafc;
+
+   padding:30px;
+
+   text-align:center;
+}
+
+.slip-total h1{
+
+   color:#2563eb;
+
+   margin-top:10px;
+
+   font-size:38px;
+}
+
+.slip-status{
+
+   text-align:center;
+
+   padding:20px;
+
+   background:#22c55e;
+
+   color:#fff;
+
+   font-weight:bold;
+
+   font-size:20px;
+}
