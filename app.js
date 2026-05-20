@@ -21,8 +21,13 @@ function showPage(id){
       page.style.display='none';
    });
 
-   document.getElementById(id)
-   .style.display='block';
+   let target =
+   document.getElementById(id);
+
+   if(target){
+
+      target.style.display='block';
+   }
 }
 
 /* DEFAULT PAGE */
@@ -1857,8 +1862,8 @@ async function buatSlipGaji(){
    let data =
    await res.json();
 
-	let item =
-	data.find(x=>
+let item =
+data.find(x=>
 
    String(x.nama)
    .trim()
@@ -1872,17 +1877,17 @@ async function buatSlipGaji(){
 
    &&
 
-	String(x.periode)
-	.trim()
-	substring(0,7)
+   String(x.periode)
+   .trim()
+   .substring(0,7)
 
-	==
-	
-	String(bulan)
-	.trim()
-	substring(0,7)
+   ==
 
-	);
+   String(bulan)
+   .trim()
+   .substring(0,7)
+
+);
    if(!item){
 
       alert(
