@@ -1707,3 +1707,112 @@ async function simpanTeknisi(){
    loadTeknisi();
    alert('Teknisi berhasil disimpan');
 }
+function filterTeknisi(){
+
+   let cari =
+   document.getElementById(
+   'searchTeknisi'
+   ).value.toLowerCase();
+
+   let rows =
+   document.querySelectorAll(
+   '#tableTeknisi tr'
+   );
+
+   rows.forEach(row=>{
+
+      let nama =
+      row.children[1]
+      .innerText
+      .toLowerCase();
+
+      if(nama.includes(cari)){
+
+         row.style.display='';
+
+      }else{
+
+         row.style.display='none';
+      }
+   });
+}
+function editTeknisi(id){
+
+   let rows =
+   document.querySelectorAll(
+   '#tableTeknisi tr'
+   );
+
+   rows.forEach(row=>{
+
+      let btn =
+      row.querySelector('button');
+
+      if(
+      btn &&
+      btn.getAttribute('onclick')
+      .includes(id)
+      ){
+
+         document.getElementById(
+         'editTeknisiId'
+         ).value = id;
+
+         document.getElementById(
+         'teknisiNama'
+         ).value =
+         row.children[1].innerText;
+
+         document.getElementById(
+         'teknisiJabatan'
+         ).value =
+         row.children[2].innerText;
+
+         document.getElementById(
+         'teknisiArea'
+         ).value =
+         row.children[3].innerText;
+
+         document.getElementById(
+         'teknisiHp'
+         ).value =
+         row.children[4].innerText;
+
+         document.getElementById(
+         'teknisiBank'
+         ).value =
+         row.children[5].innerText;
+
+         document.getElementById(
+         'teknisiRekening'
+         ).value =
+         row.children[6].innerText;
+
+         document.getElementById(
+         'teknisiStatus'
+         ).value =
+         row.children[7].innerText;
+      }
+   });
+}
+async function hapusTeknisi(id){
+
+   let yakin =
+   confirm('Hapus teknisi?');
+
+   if(!yakin) return;
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'hapusTeknisi',
+
+         id:id
+      })
+   });
+
+   loadTeknisi();
+}
