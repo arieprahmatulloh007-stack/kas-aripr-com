@@ -3,13 +3,17 @@ const API_URL =
 /* =========================
    GLOBAL DATA
 ========================= */
+
 let kasData = [];
+
 let pinjamanData = [];
+
 let cicilanData = [];
 let uploadBtn = null;
 /* PAGE */
 
 function showPage(id){
+
    document
    .querySelectorAll('.page')
    .forEach(page=>{
@@ -1520,16 +1524,17 @@ function loadPayroll(){
             </td>
 			
             <td>
-            ${rupiah(item.totalSC)}
-            </td>
 			
+			${rupiah(item.totalSC)}
+			</td>
+
 			<td>
 			${item.jumlahOrder} SC
 			</td>
-			
-            <td>
-            ${rupiah(item.bonus)}
-            </td>
+
+			<td>
+			${rupiah(item.bonus)}
+			</td>
 
             <td>
             ${rupiah(item.lembur)}
