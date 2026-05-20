@@ -570,7 +570,20 @@ if(localStorage.getItem('login') != 'true'){
 <div id="monitoringGaji" class="page">
 
    <h1>Monitoring Gaji</h1>
+	<div class="filter-gaji">
 
+   <input
+   type="month"
+   id="filterPeriodeGaji"
+   onchange="filterMonitoringGaji()">
+
+   <input
+   type="text"
+   id="filterNamaGaji"
+   placeholder="Cari nama teknisi..."
+   onkeyup="filterMonitoringGaji()">
+
+	</div>
    <div class="table-box">
 
       <table>
@@ -580,6 +593,7 @@ if(localStorage.getItem('login') != 'true'){
             <tr>
 
                <th>Tanggal</th>
+			   <th>Periode</th>
                <th>Nama</th>
 			   <th>Bank</th>
 				<th>Rekening</th>
