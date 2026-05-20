@@ -609,25 +609,26 @@ if(localStorage.getItem('login') != 'true'){
 
    <div class="table-box">
 
-      <table>
+      <div class="slip-filter">
 
-         <thead>
+         <select id="slipNama">
+         </select>
 
-            <tr>
+         <button onclick="buatSlipGaji()">
 
-               <th>Tanggal</th>
-               <th>Nama</th>
-               <th>Total Gaji</th>
-               <th>Status</th>
-               <th>Aksi</th>
+         Tampilkan Slip
 
-            </tr>
+         </button>
 
-         </thead>
+         <button onclick="window.print()">
 
-         <tbody id="tableSlipGaji"></tbody>
+         Print Slip
 
-      </table>
+         </button>
+
+      </div>
+
+      <div id="hasilSlip"></div>
 
    </div>
 
