@@ -1334,60 +1334,7 @@ function uploadExcel(){
 
 function tampilMonitoring(data){
 
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-
-      <tr>
-
-         <td>
-         ${new Date().toLocaleDateString('id-ID')}
-         </td>
-
-         <td>
-         ${item.nama}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.totalSC)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.bonus)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.lembur)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.potongan)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.totalGaji)}
-         </td>
-
-         <td>
-
-            <span class="status-belum">
-
-            BELUM TRANSFER
-
-            </span>
-
-         </td>
-
-      </tr>
-
-      `;
-   });
-
-   document.getElementById(
-   'tableGaji'
-   ).innerHTML = html;
+   loadPayroll();
 
    showPage('monitoringGaji');
 
@@ -1925,13 +1872,15 @@ async function buatSlipGaji(){
 
    &&
 
-   String(x.periode)
-   .trim()
+	String(x.periode)
+	.trim()
+	substring(0,7)
 
-   ==
-
-   String(bulan)
-   .trim()
+	==
+	
+	String(bulan)
+	.trim()
+	substring(0,7)
 
 	);
    if(!item){
