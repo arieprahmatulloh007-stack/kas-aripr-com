@@ -1519,8 +1519,15 @@ function loadPayroll(){
 
             <td>
             ${item.nama || '-'}
-            </td>
 			
+            </td>
+			<td>
+			${item.bank}
+			</td>
+
+			<td>
+			${item.rekening}
+			</td>
             <td>
 			
 			${rupiah(item.totalSC)}
