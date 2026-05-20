@@ -1472,7 +1472,6 @@ fetch(API_URL,{
 
       items:finalData
    })
-
 })
 .then(res=>res.json())
 .then(res=>{
@@ -1495,7 +1494,6 @@ function loadPayroll(){
 
          action:'getPayroll'
       })
-
    })
    .then(res=>res.json())
    .then(data=>{
@@ -1506,7 +1504,6 @@ function loadPayroll(){
 
          return;
       }
-
       let html='';
 
       data.reverse().forEach(item=>{
@@ -1559,11 +1556,9 @@ function loadPayroll(){
 			:
 			'status-belum'
 				}">
-
 			${item.status}
 
 			</button>
-
 		</td>
 
          </tr>
@@ -1573,12 +1568,10 @@ function loadPayroll(){
       document.getElementById(
       'tableGaji'
       ).innerHTML = html;
-
    })
    .catch(err=>{
 
       console.log(err);
-
    });
 }
 async function ubahStatusGaji(id,status){
