@@ -1871,21 +1871,11 @@ async function buatSlipGaji(){
    document.getElementById(
    'slipNama'
    ).value;
-   
-	let periode =
-	document.getElementById(
-	'uploadPeriode'
-	).value;
-	
-	let periode =
-	new Date(bulan)
-	.toLocaleDateString(
-	'id-ID',
-	{
-   month:'long',
-   year:'numeric'
-}
-);
+
+   let bulan =
+   document.getElementById(
+   'slipBulan'
+   ).value;
 
    if(!nama){
 
@@ -1893,6 +1883,23 @@ async function buatSlipGaji(){
 
       return;
    }
+
+   if(!bulan){
+
+      alert('Pilih periode bulan');
+
+      return;
+   }
+
+   let periode =
+   new Date(bulan)
+   .toLocaleDateString(
+   'id-ID',
+   {
+      month:'long',
+      year:'numeric'
+   }
+   );
 
    let res =
    await fetch(
@@ -1903,24 +1910,25 @@ async function buatSlipGaji(){
    let data =
    await res.json();
 
-	let item =
-	data.find(x=>
+   let item =
+   data.find(x=>
 
-	String(x.nama)
-	.trim()
-	.toUpperCase()
+      String(x.nama)
+      .trim()
+      .toUpperCase()
 
-	==
+      ==
 
-	String(nama)
-	.trim()
-	.toUpperCase()
+      String(nama)
+      .trim()
+      .toUpperCase()
 
-	&&
+      &&
 
-	String(x.periode).includes(bulan)
+      String(x.periode)
+      .includes(bulan)
 
-	);
+   );
 
    if(!item){
 
@@ -1939,87 +1947,63 @@ async function buatSlipGaji(){
 
       <div class="slip-header">
 
-		<h2>
-		KAS ARIP R.COM
-		</h2>
+         <h2>
+         KAS ARIP R.COM
+         </h2>
 
-		<h3>
-		SLIP GAJI TEKNISI
-		</h3>
+         <h3>
+         SLIP GAJI TEKNISI
+         </h3>
 
-		<p class="periode-slip">
+         <p class="periode-slip">
 
-		PERIODE :
-		${periode.toUpperCase()}
+         PERIODE :
+         ${periode.toUpperCase()}
 
-		</p>
+         </p>
 
-	</div>
+      </div>
 
       <div class="slip-body">
 
          <div class="slip-row">
-
             <span>Nama</span>
-
             <b>${item.nama}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Bank</span>
-
             <b>${item.bank}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>No Rekening</span>
-
             <b>${item.rekening}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Jumlah Order</span>
-
             <b>${item.jumlahOrder} SC</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Total SC</span>
-
             <b>${rupiah(item.totalSC)}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Bonus</span>
-
             <b>${rupiah(item.bonus)}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Lembur</span>
-
             <b>${rupiah(item.lembur)}</b>
-
          </div>
 
          <div class="slip-row">
-
             <span>Potongan</span>
-
             <b>${rupiah(item.potongan)}</b>
-
          </div>
 
       </div>
