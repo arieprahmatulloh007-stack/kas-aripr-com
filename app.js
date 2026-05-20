@@ -40,6 +40,7 @@ window.onload = function(){
    loadCicilan();
 
    loadDropdownPeminjam();
+	loadPayroll();
 };
 
 /* LOGOUT */
@@ -1527,4 +1528,81 @@ fetch(API_URL,{
 	'Upload & Proses';
 	
 	uploadBtn.disabled = false;
+}
+function loadPayroll(){
+
+   fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'getPayroll'
+      })
+
+   })
+   .then(res=>res.json())
+   .then(data=>{
+
+      let html='';
+
+      data.reverse().forEach(item=>{
+
+         html += `
+
+         <tr>
+
+            <td>
+            ${formatTanggal(item.tanggal)}
+            </td>
+
+            <td>
+            ${item.nama}
+            </td>
+
+            <td>
+            ${rupiah(item.totalSC)}
+            </td>
+
+            <td>
+            ${rupiah(item.bonus)}
+            </td>
+
+            <td>
+            ${rupiah(item.lembur)}
+            </td>
+
+            <td>
+            ${rupiah(item.potongan)}
+            </td>
+
+            <td>
+            ${rupiah(item.totalGaji)}
+            </td>
+
+            <td>
+
+               <span class="${
+               item.status ==
+               'SUDAH TRANSFER'
+               ?
+               'status-lunas'
+               :
+               'status-belum'
+               }">
+
+               ${item.status}
+
+               </span>
+
+            </td>
+
+         </tr>
+         `;
+      });
+
+      document.getElementById(
+      'tableGaji'
+      ).innerHTML = html;
+   });
 }
