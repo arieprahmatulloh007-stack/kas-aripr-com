@@ -1854,6 +1854,21 @@ async function buatSlipGaji(){
    document.getElementById(
    'slipNama'
    ).value;
+   
+	let bulan =
+	document.getElementById(
+	'slipBulan'
+	).value;
+	
+	let periode =
+	new Date(bulan)
+	.toLocaleDateString(
+	'id-ID',
+	{
+   month:'long',
+   year:'numeric'
+}
+);
 
    if(!nama){
 
@@ -1893,15 +1908,22 @@ async function buatSlipGaji(){
 
       <div class="slip-header">
 
-         <h2>
-         KAS ARIP R.COM
-         </h2>
+		<h2>
+		KAS ARIP R.COM
+		</h2>
 
-         <h3>
-         SLIP GAJI TEKNISI
-         </h3>
+		<h3>
+		SLIP GAJI TEKNISI
+		</h3>
 
-      </div>
+		<p class="periode-slip">
+
+		PERIODE :
+		${periode.toUpperCase()}
+
+		</p>
+
+	</div>
 
       <div class="slip-body">
 
