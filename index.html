@@ -1,833 +1,230 @@
-const API_URL =
-'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
-/* =========================
-   GLOBAL DATA
-========================= */
+<!DOCTYPE html>
+<html lang="id">
 
-let kasData = [];
+<head>
 
-let pinjamanData = [];
+<meta charset="UTF-8">
 
-let cicilanData = [];
-let uploadBtn = null;
-/* PAGE */
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-function showPage(id){
+<title>KAS ARIP R.COM</title>
 
-   document
-   .querySelectorAll('.page')
-   .forEach(page=>{
+<link rel="stylesheet"
+href="style.css">
 
-      page.style.display='none';
-   });
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-   document.getElementById(id)
-   .style.display='block';
-}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-/* DEFAULT PAGE */
+</head>
 
-window.onload = function(){
+<body>
 
-	showPage('dashboard');
+<script>
 
-   loadDashboard();
-
-   loadKas();
-
-   loadPinjaman();
-
-   loadCicilan();
-
-   loadDropdownPeminjam();
-	loadPayroll();
-	loadTeknisi();
-	loadSlipNama();
-};
-
-/* LOGOUT */
-
-function logout(){
-
-   localStorage.clear();
+if(localStorage.getItem('login') != 'true'){
 
    window.location='login.html';
 }
 
-/* FORMAT */
+</script>
 
-function formatRupiah(angka){
+<!-- =========================
+     SIDEBAR
+========================= -->
 
-   return Number(angka || 0)
-   .toLocaleString('id-ID');
-}
+<div class="sidebar">
 
-function rupiah(angka){
+   <h2>
 
-   return 'Rp ' +
-   Number(angka || 0)
-   .toLocaleString('id-ID');
-}
+      <i class="fa-solid fa-wallet"></i>
 
-function formatTanggal(tanggal){
+      <span>
 
-   return new Date(tanggal)
-   .toLocaleDateString('id-ID');
-}
+         KAS ARIP<br>
+         R.COM
 
-/* DASHBOARD */
+      </span>
 
-async function loadDashboard(){
+   </h2>
 
-   const res =
-   await fetch(API_URL + '?action=dashboard');
+   <button onclick="showPage('dashboard')">
+      Dashboard
+   </button>
 
-   const data =
-   await res.json();
-   document.getElementById('totalMasuk')
-   .innerHTML =
-   rupiah(data.totalMasuk);
+   <button onclick="showPage('kas')">
+      Uang Kas
+   </button>
 
-   document.getElementById('totalKeluar')
-   .innerHTML =
-   rupiah(data.totalKeluar);
+   <button onclick="showPage('pinjaman')">
+      Pinjaman
+   </button>
 
-   document.getElementById('sisaKas')
-   .innerHTML =
-   rupiah(data.sisaKas);
+   <button onclick="showPage('cicilan')">
+      Cicilan
+   </button>
 
-   document.getElementById('totalPinjaman')
-   .innerHTML =
-   rupiah(data.totalPinjaman);
+   <hr>
 
-   document.getElementById('sisaPiutang')
-   .innerHTML =
-   rupiah(data.totalPiutang);
+   <button onclick="showPage('teknisi')">
+      Data Teknisi
+   </button>
 
-   /* =========================
-      BELUM LUNAS
-   ========================= */
+   <button onclick="showPage('uploadGaji')">
+      Upload Gaji
+   </button>
 
-   let html='';
+   <button onclick="showPage('monitoringGaji')">
+      Monitoring Gaji
+   </button>
 
-   data.belumLunas.forEach(item=>{
+   <button onclick="showPage('slipGaji')">
+      Slip Gaji
+   </button>
 
-      html += `
-      <p>
+   <br>
 
-         ${item.nama}
-         -
-         ${rupiah(item.sisa)}
+   <button onclick="logout()">
+      Logout
+   </button>
 
-      </p>
-      `;
-   });
+</div>
 
-   document.getElementById('belumLunasList')
-   .innerHTML = html;
-}
+<!-- =========================
+     CONTENT
+========================= -->
 
-/* SIMPAN KAS */
+<div class="content">
 
-async function simpanKas(){
+<!-- =========================
+     DASHBOARD
+========================= -->
 
-   let data = {
+<div id="dashboard" class="page">
 
-      action:'tambahKas',
+   <h1>Dashboard</h1>
 
-      editId:
-      localStorage.getItem('editKas'),
-      
-      tanggal:
-      document.getElementById('tglKas').value,
+   <div class="cards">
 
-      masuk:
-      document.getElementById('nominalMasuk').value,
+      <div class="card">
+         <h3>Total Uang Masuk</h3>
+         <p id="totalMasuk">Rp 0</p>
+      </div>
 
-      keluar:
-      document.getElementById('nominalKeluar').value,
+      <div class="card">
+         <h3>Total Uang Keluar</h3>
+         <p id="totalKeluar">Rp 0</p>
+      </div>
 
-      sumberMasuk:
-      document.getElementById('sumberMasuk').value,
+      <div class="card">
+         <h3>Sisa Uang Kas</h3>
+         <p id="sisaKas">Rp 0</p>
+      </div>
 
-      sumberKeluar:
-      document.getElementById('sumberKeluar').value,
+      <div class="card">
+         <h3>Total Pinjaman</h3>
+         <p id="totalPinjaman">Rp 0</p>
+      </div>
 
-      keterangan:
-      document.getElementById('ketKas').value
+      <div class="card">
+         <h3>Sisa Piutang</h3>
+         <p id="sisaPiutang">Rp 0</p>
+      </div>
 
+   </div>
 
-   };
+   <div class="chart-box">
 
-   await fetch(API_URL,{
+      <canvas id="myChart"></canvas>
 
-      method:'POST',
+   </div>
 
-      body:JSON.stringify(data)
-   });
+   <div class="card">
 
-   alert('Berhasil');
+      <h3>Belum Lunas Pinjaman / Kasbon</h3>
 
-   document.getElementById('tglKas').value='';
+      <div id="belumLunasList"></div>
 
-   document.getElementById('nominalMasuk').value='';
+   </div>
 
-   document.getElementById('nominalKeluar').value='';
+</div>
 
-   document.getElementById('sumberMasuk').value='';
+<!-- =========================
+     UANG KAS
+========================= -->
 
-   document.getElementById('sumberKeluar').value='';
+<div id="kas" class="page">
 
-   document.getElementById('ketKas').value='';
-   localStorage.removeItem('editKas');
-   loadKas();
+   <h1>Uang Kas</h1>
 
-   loadDashboard();
-}
+   <div class="form-grid">
 
-/* LOAD KAS */
+      <input type="date" id="tglKas">
 
-async function loadKas(){
+      <input
+      type="number"
+      id="nominalMasuk"
+      placeholder="Nominal Masuk">
 
-   try{
+      <input
+      type="number"
+      id="nominalKeluar"
+      placeholder="Nominal Keluar">
 
-      const res =
-      await fetch(API_URL + '?action=getKas');
+      <input
+      type="text"
+      id="sumberMasuk"
+      placeholder="Sumber Masuk">
 
-      const data =
-      await res.json();
+      <input
+      type="text"
+      id="sumberKeluar"
+      placeholder="Sumber Keluar">
 
-      kasData = data;
+      <input
+      type="text"
+      id="ketKas"
+      placeholder="Keterangan">
 
-      let html='';
+      <button onclick="simpanKas()">
+         Simpan
+      </button>
 
-      data.forEach(item=>{
+      <button onclick="printKas()">
+         Print Laporan
+      </button>
 
-         html += `
-         <tr>
+   </div>
 
-            <td>${item.tanggal}</td>
+   <div class="filter-box">
 
-            <td>${rupiah(item.masuk)}</td>
+      <input
+      type="text"
+      id="searchKas"
+      placeholder="Cari keterangan..."
+      onkeyup="filterKas()">
 
-            <td>${rupiah(item.keluar)}</td>
+      <select
+      id="sortKas"
+      onchange="filterKas()">
 
-            <td>${item.sumberMasuk}</td>
-
-            <td>${item.sumberKeluar}</td>
-
-            <td>${item.keterangan}</td>
-
-            <td>
-
-               <button
-               onclick="editKas('${item.row}')">
-
-               Edit
-
-               </button>
-
-               <button
-               onclick="hapusKas('${item.row}')">
-
-               Hapus
-
-               </button>
-
-            </td>
-
-         </tr>
-         `;
-      });
-
-      document.getElementById('tableKas')
-      .innerHTML = html;
-
-   }catch(err){
-
-      console.log(err);
-   }
-}
-/* LOAD PINJAMAN */
-
-async function loadPinjaman(){
-
-   const res =
-   await fetch(API_URL + '?action=getPinjaman');
-
-   const data =
-   await res.json();
-   pinjamanData = data;
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-
-         <td>${item.nama}</td>
-
-         <td>${rupiah(item.total)}</td>
-
-         <td>${rupiah(item.sudah)}</td>
-
-         <td>${rupiah(item.sisa)}</td>
-
-         <td style="
-         color:
-         ${item.status == 'LUNAS'
-         ? '#16a34a'
-         : '#dc2626'};
-         font-weight:bold;
-               ">
-         ${item.status}
-         </td>
-         
-         <td>
-         <button
-         onclick="editPinjaman('${item.row}')">
-         Edit
-         </button>
-         <button
-         onclick="hapusPinjaman('${item.row}')">
-         Hapus
-         </button>
-         </td>
-         
-      </tr>
-      `;
-   });
-
-   document.getElementById('tablePinjaman')
-   .innerHTML = html;
-}
-
-/* CICILAN */
-
-async function bayarCicilan(){
-
-   let data = {
-
-      action:'bayarCicilan',
-      editId:
-      localStorage.getItem('editCicilan'),
-      
-      id:
-      document.getElementById('idPeminjam').value,
-
-      cicilan:
-      document.getElementById('cicilanKe').value,
-
-      bayar:
-      document.getElementById('bayarNominal').value
-   };
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify(data)
-   });
-
-   alert('Pembayaran berhasil');
-   document.getElementById('cicilanKe').value='';
-
-   document.getElementById('bayarNominal').value='';
-   localStorage.removeItem('editCicilan');
-   loadCicilan();
-
-   loadPinjaman();
-
-   loadDashboard();
-}
-
-/* LOAD CICILAN */
-
-async function loadCicilan(){
-
-   const res =
-   await fetch(API_URL + '?action=getCicilan');
-
-   const data =
-   await res.json();
-   cicilanData = data;
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-
-         <td>${item.tanggal}</td>
-
-         <td>${item.id}</td>
-
-         <td>${item.cicilan}</td>
-
-         <td>${rupiah(item.bayar)}</td>
-
-         <td>${rupiah(item.sisa)}</td>
-
-         <td>
-         <button
-         onclick="editCicilan('${item.rowid}')">
-         Edit
-         </button>
-         <button
-         onclick="hapusCicilan('${item.rowid}')">
-         Hapus
-         </button>
-         </td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableCicilan')
-   .innerHTML = html;
-}
-
-/* DROPDOWN */
-
-async function loadDropdownPeminjam(){
-
-   const res =
-   await fetch(API_URL + '?action=getPinjaman');
-
-   const data =
-   await res.json();
-
-   let html =
-   '<option>Pilih Peminjam</option>';
-
-   data.forEach(item=>{
-
-      if(Number(item.sisa) > 0){
-
-         html += `
-         <option value="${item.id}">
-
-            ${item.nama}
-            - Sisa:
-            ${rupiah(item.sisa)}
-
+         <option value="baru">
+            Terbaru
          </option>
-         `;
-      }
 
-   });
+         <option value="lama">
+            Terlama
+         </option>
 
-   document.getElementById('idPeminjam')
-   .innerHTML = html;
-}
+      </select>
 
-/* =========================
-   FILTER KAS
-========================= */
+   </div>
 
-function filterKas(){
+   <br>
 
-     let data =
-   [...kasData];
-   
-   let tglAwal =
-   document
-   .getElementById('tglAwalKas')
-   .value;
-
-   let tglAkhir =
-   document
-   .getElementById('tglAkhirKas')
-   .value;
-   
-   let cari =
-   document
-   .getElementById('searchKas')
-   .value
-   .toLowerCase();
-/* =========================
-   FILTER TANGGAL
-========================= */
-
-   if(tglAwal && tglAkhir){
-
-      data = data.filter(item=>{
-
-         let tgl =
-         item.tanggal.split(' ')[0];
-
-         let p =
-         tgl.split('/');
-   
-         let format =
-         `${p[2]}-${p[1]}-${p[0]}`;
-
-            return (
-            format >= tglAwal &&
-            format <= tglAkhir
-         );
-      });
-   }
-   let sort =
-   document
-   .getElementById('sortKas')
-   .value;
-
-   
- 
-
-   if(cari){
-
-      data = data.filter(item=>
-
-         item.keterangan
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
-
-   if(sort == 'baru'){
-
-      data.reverse();
-   }
-
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-
-         <td>${item.tanggal}</td>
-
-         <td>${rupiah(item.masuk)}</td>
-
-         <td>${rupiah(item.keluar)}</td>
-
-         <td>${item.sumberMasuk}</td>
-
-         <td>${item.sumberKeluar}</td>
-
-         <td>${item.keterangan}</td>
-
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableKas')
-   .innerHTML = html;
-}
-
-/* =========================
-   FILTER PINJAMAN
-========================= */
-
-function filterPinjaman(){
-
-   let cari =
-   document
-   .getElementById('searchPinjaman')
-   .value
-   .toLowerCase();
-
-   let status =
-   document
-   .getElementById('statusPinjaman')
-   .value;
-
-   let data =
-   [...pinjamanData];
-
-   if(cari){
-
-      data = data.filter(item=>
-
-         item.nama
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
-
-   if(status){
-
-      data = data.filter(item=>
-
-         item.status == status
-      );
-   }
-
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-
-         <td>${item.nama}</td>
-
-         <td>${rupiah(item.total)}</td>
-
-         <td>${rupiah(item.sudah)}</td>
-
-         <td>${rupiah(item.sisa)}</td>
-
-         <td style="
-         color:
-         ${item.status == 'LUNAS'
-         ? '#16a34a'
-         : '#dc2626'};
-         font-weight:bold;
-         ">
-
-         ${item.status}
-
-         </td>
-<td>
-
-<button
-onclick="editPinjaman('${item.row}')">
-
-Edit
-
-</button>
-
-<button
-onclick="hapusPinjaman('${item.row}')">
-
-Hapus
-
-</button>
-
-</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tablePinjaman')
-   .innerHTML = html;
-}
-
-/* =========================
-   FILTER CICILAN
-========================= */
-
-function filterCicilan(){
-
-   let cari =
-   document
-   .getElementById('searchCicilan')
-   .value
-   .toLowerCase();
-
-   let data =
-   [...cicilanData];
-
-   if(cari){
-
-      data = data.filter(item=>
-
-         String(item.id)
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
-
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-      <tr>
-
-         <td>${item.tanggal}</td>
-
-         <td>${item.id}</td>
-
-         <td>${item.cicilan}</td>
-
-         <td>${rupiah(item.bayar)}</td>
-
-         <td>${rupiah(item.sisa)}</td>
-<td>
-
-<button
-onclick="editCicilan('${item.rowid}')">
-
-Edit
-
-</button>
-
-<button
-onclick="hapusCicilan('${item.rowid}')">
-
-Hapus
-
-</button>
-
-</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableCicilan')
-   .innerHTML = html;
-}
-/* =========================
-   EDIT KAS
-========================= */
-
-function editKas(id){
-
-   let item =
-   kasData.find(x=>x.row == id);
-   let tgl =
-   item.tanggal.split(' ')[0];
-   let pecah =
-   tgl.split('/');
-   document.getElementById('tglKas').value =
-   `${pecah[2]}-${pecah[1]}-${pecah[0]}`;
-
-   document.getElementById('nominalMasuk').value =
-   item.masuk;
-
-   document.getElementById('nominalKeluar').value =
-   item.keluar;
-
-   document.getElementById('sumberMasuk').value =
-   item.sumberMasuk;
-
-   document.getElementById('sumberKeluar').value =
-   item.sumberKeluar;
-
-   document.getElementById('ketKas').value =
-   item.keterangan;
-
-   localStorage.setItem('editKas',id);
-}
-
-/* =========================
-   EDIT PINJAMAN
-========================= */
-
-function editPinjaman(id){
-
-   let item =
-   pinjamanData.find(x=>x.row == id);
-
-   document.getElementById('namaPinjam').value =
-   item.nama;
-
-   document.getElementById('hpPinjam').value =
-   item.hp;
-
-   document.getElementById('alamatPinjam').value =
-   item.alamat;
-
-   document.getElementById('totalPinjam').value =
-   item.total;
-
-   localStorage.setItem('editPinjaman',id);
-}
-
-/* =========================
-   EDIT CICILAN
-========================= */
-
-function editCicilan(id){
-
-   let item =
-   cicilanData.find(x=>x.rowid == id);
-
-   document.getElementById('cicilanKe').value =
-   item.cicilan;
-
-   document.getElementById('bayarNominal').value =
-   item.bayar;
-
-   localStorage.setItem('editCicilan',id);
-}
-/* =========================
-   PRINT KAS
-========================= */
-
-function printKas(){
-
-   let rows = '';
-
-   kasData.forEach(item=>{
-
-      rows += `
-
-      <tr>
-
-         <td>${item.tanggal}</td>
-
-         <td>${rupiah(item.masuk)}</td>
-
-         <td>${rupiah(item.keluar)}</td>
-
-         <td>${item.sumberMasuk}</td>
-
-         <td>${item.sumberKeluar}</td>
-
-         <td>${item.keterangan}</td>
-
-      </tr>
-      `;
-   });
-
-   let win =
-   window.open('','','width=1200,height=700');
-
-   win.document.write(`
-
-   <html>
-
-   <head>
-
-      <title>
-      Laporan Uang Kas
-      </title>
-
-      <style>
-
-      body{
-
-         font-family:Arial;
-         padding:20px;
-      }
-
-      h2{
-
-         margin-bottom:20px;
-      }
-
-      table{
-
-         width:100%;
-         border-collapse:collapse;
-      }
-
-      th,td{
-
-         border:1px solid #ccc;
-         padding:10px;
-         text-align:left;
-      }
-
-      th{
-
-         background:#f3f4f6;
-      }
-
-      </style>
-
-   </head>
-
-   <body>
-
-      <h2>
-      LAPORAN UANG KAS
-      </h2>
+   <div class="table-box">
 
       <table>
 
@@ -841,88 +238,102 @@ function printKas(){
                <th>Sumber Masuk</th>
                <th>Sumber Keluar</th>
                <th>Keterangan</th>
+               <th>Aksi</th>
 
             </tr>
 
          </thead>
 
-         <tbody>
-
-            ${rows}
-
-         </tbody>
+         <tbody id="tableKas"></tbody>
 
       </table>
 
-   </body>
+   </div>
 
-   </html>
-   `);
+</div>
 
-   win.document.close();
+<!-- =========================
+     PINJAMAN
+========================= -->
 
-   win.focus();
+<div id="pinjaman" class="page">
 
-   win.print();
-}
+   <h1>Data Pinjaman</h1>
 
-/* =========================
-   PRINT PINJAMAN
-========================= */
+   <div class="form-grid">
 
-function printPinjaman(){
+      <input
+      type="text"
+      id="namaPinjam"
+      placeholder="Nama">
 
-   let isi =
-   document.getElementById('tablePinjaman')
-   .innerHTML;
+      <input
+      type="text"
+      id="hpPinjam"
+      placeholder="No HP">
 
-   let win =
-   window.open('','','width=1000,height=700');
+      <input
+      type="text"
+      id="alamatPinjam"
+      placeholder="Alamat">
 
-   win.document.write(`
+      <input
+      type="number"
+      id="totalPinjam"
+      placeholder="Total Pinjaman">
 
-   <html>
+      <input
+      type="number"
+      id="lamaCicilan"
+      placeholder="Lama Cicilan (bulan)">
 
-   <head>
+      <button onclick="simpanPinjaman()">
+         Simpan
+      </button>
 
-      <title>
-      Data Pinjaman
-      </title>
+      <button onclick="printPinjaman()">
+         Print Pinjaman
+      </button>
 
-      <style>
+   </div>
 
-      body{
+   <div class="filter-box">
 
-         font-family:Arial;
-         padding:20px;
-      }
+      <input
+      type="text"
+      id="searchPinjaman"
+      placeholder="Cari pinjaman..."
+      onkeyup="filterPinjaman()">
 
-      table{
+      <input
+      type="date"
+      id="tglAwalPinjaman"
+      onchange="filterPinjaman()">
 
-         width:100%;
-         border-collapse:collapse;
-      }
+      <input
+      type="date"
+      id="tglAkhirPinjaman"
+      onchange="filterPinjaman()">
 
-      th,td{
+      <select
+      id="sortPinjaman"
+      onchange="filterPinjaman()">
 
-         border:1px solid #ccc;
-         padding:10px;
-      }
+         <option value="baru">
+            Terbaru
+         </option>
 
-      th{
+         <option value="lama">
+            Terlama
+         </option>
 
-         background:#f3f4f6;
-      }
+      </select>
 
-      </style>
+   </div>
 
-   </head>
+   <br>
 
-   <body>
-
-      <h2>
-      DATA PINJAMAN
-      </h2>
+   <div class="table-box">
 
       <table>
 
@@ -935,86 +346,65 @@ function printPinjaman(){
                <th>Sudah Bayar</th>
                <th>Sisa</th>
                <th>Status</th>
+               <th>Aksi</th>
 
             </tr>
 
          </thead>
 
-         <tbody>
-
-            ${isi}
-
-         </tbody>
+         <tbody id="tablePinjaman"></tbody>
 
       </table>
 
-   </body>
+   </div>
 
-   </html>
-   `);
+</div>
 
-   win.document.close();
+<!-- =========================
+     CICILAN
+========================= -->
 
-   win.print();
-}
+<div id="cicilan" class="page">
 
-/* =========================
-   PRINT CICILAN
-========================= */
+   <h1>Pembayaran Cicilan</h1>
 
-function printCicilan(){
+   <div class="form-grid">
 
-   let isi =
-   document.getElementById('tableCicilan')
-   .innerHTML;
+      <select id="idPeminjam"></select>
 
-   let win =
-   window.open('','','width=1000,height=700');
+      <input
+      type="number"
+      id="cicilanKe"
+      placeholder="Cicilan Ke">
 
-   win.document.write(`
+      <input
+      type="number"
+      id="bayarNominal"
+      placeholder="Nominal Bayar">
 
-   <html>
+      <button onclick="bayarCicilan()">
+         Bayar
+      </button>
 
-   <head>
+      <button onclick="printCicilan()">
+         Print Cicilan
+      </button>
 
-      <title>
-      Data Cicilan
-      </title>
+   </div>
 
-      <style>
+   <div class="filter-box">
 
-      body{
+      <input
+      type="text"
+      id="searchCicilan"
+      placeholder="Cari peminjam..."
+      onkeyup="filterCicilan()">
 
-         font-family:Arial;
-         padding:20px;
-      }
+   </div>
 
-      table{
+   <br>
 
-         width:100%;
-         border-collapse:collapse;
-      }
-
-      th,td{
-
-         border:1px solid #ccc;
-         padding:10px;
-      }
-
-      th{
-
-         background:#f3f4f6;
-      }
-
-      </style>
-
-   </head>
-
-   <body>
-
-      <h2>
-      DATA CICILAN
-      </h2>
+   <div class="table-box">
 
       <table>
 
@@ -1027,1125 +417,229 @@ function printCicilan(){
                <th>Cicilan</th>
                <th>Bayar</th>
                <th>Sisa</th>
+               <th>Aksi</th>
 
             </tr>
 
          </thead>
 
-         <tbody>
+         <tbody id="tableCicilan"></tbody>
 
-            ${isi}
+      </table>
 
+   </div>
+
+</div>
+
+<!-- =========================
+     DATA TEKNISI
+========================= -->
+
+<div id="teknisi" class="page">
+
+   <h1>Data Teknisi</h1>
+
+   <!-- FORM -->
+   <div class="form-grid">
+
+      <input type="hidden"
+      id="editTeknisiId">
+
+      <input type="text"
+      id="teknisiNama"
+      placeholder="Nama Teknisi">
+
+      <input type="text"
+      id="teknisiJabatan"
+      placeholder="Jabatan">
+
+      <input type="text"
+      id="teknisiArea"
+      placeholder="Area">
+
+      <input type="text"
+      id="teknisiHp"
+      placeholder="No HP">
+
+      <input type="text"
+      id="teknisiBank"
+      placeholder="Bank">
+
+      <input type="text"
+      id="teknisiRekening"
+      placeholder="No Rekening">
+
+      <select id="teknisiStatus">
+
+         <option value="AKTIF">
+         AKTIF
+         </option>
+
+         <option value="NONAKTIF">
+         NONAKTIF
+         </option>
+
+      </select>
+
+      <button onclick="simpanTeknisi()">
+
+      Simpan Teknisi
+
+      </button>
+
+   </div>
+
+   <br>
+
+   <div class="table-box">
+
+      <input
+      type="text"
+      id="searchTeknisi"
+      placeholder="Cari nama teknisi..."
+      onkeyup="filterTeknisi()"
+      class="search-input">
+
+      <table>
+
+         <thead>
+
+            <tr>
+
+               <th>NIK</th>
+               <th>Nama</th>
+               <th>Jabatan</th>
+               <th>Area</th>
+               <th>No HP</th>
+               <th>Bank</th>
+               <th>Rekening</th>
+               <th>Status</th>
+               <th>Aksi</th>
+
+            </tr>
+
+         </thead>
+
+         <tbody id="tableTeknisi">
          </tbody>
 
       </table>
 
-   </body>
+   </div>
 
-   </html>
-   `);
+</div>
 
-   win.document.close();
+<!-- =========================
+     UPLOAD GAJI
+========================= -->
 
-   win.print();
-}
-async function simpanPinjaman(){
+<div id="uploadGaji" class="page">
 
-   try{
+   <h1>Upload Gaji Excel</h1>
 
-      const nama =
-      document.getElementById('namaPinjam').value;
+   <div class="card">
 
-      const hp =
-      document.getElementById('hpPinjam').value;
+      <h3>Upload File Excel Payroll</h3>
 
-      const alamat =
-      document.getElementById('alamatPinjam').value;
+      <p>
+         Format wajib:
+         DATA_GAJI
+      </p>
 
-      const total =
-      document.getElementById('totalPinjam').value;
+      <input
+      type="file"
+      id="fileExcel">
 
-      const lama =
-      document.getElementById('lamaCicilan').value;
+      <br><br>
 
-      const res =
-      await fetch(API_URL,{
-
-         method:'POST',
-
-         body:JSON.stringify({
-
-            action:'tambahPinjaman',
-
-            editId:
-            localStorage.getItem('editPinjaman'),
-
-            nama:nama,
-
-            hp:hp,
-
-            alamat:alamat,
-
-            total:total,
-
-            lama:lama
-         })
-      });
-
-      const text =
-      await res.text();
-
-      console.log(text);
-
-      let hasil;
-
-      try{
-
-         hasil =
-         JSON.parse(text);
-
-      }catch{
-
-         alert(
-         'Response Apps Script bukan JSON'
-         );
-
-         return;
-      }
-
-      if(hasil.status == 'error'){
-
-         alert(hasil.message);
-
-         return;
-      }
-
-      alert('Data berhasil disimpan');
-
-      localStorage.removeItem('editPinjaman');
-
-      document.getElementById('namaPinjam').value='';
-
-      document.getElementById('hpPinjam').value='';
-
-      document.getElementById('alamatPinjam').value='';
-
-      document.getElementById('totalPinjam').value='';
-
-      document.getElementById('lamaCicilan').value='';
-
-      loadPinjaman();
-
-      loadDashboard();
-
-   }catch(err){
-
-      console.log(err);
-
-      alert(
-      'Gagal simpan pinjaman'
-      );
-   }
-}
-/* =========================
-   HAPUS PINJAMAN
-========================= */
-
-async function hapusPinjaman(id){
-
-   let yakin =
-   confirm('Hapus data pinjaman?');
-
-   if(!yakin) return;
-
-   try{
-
-      await fetch(API_URL,{
-
-         method:'POST',
-
-         body:JSON.stringify({
-
-            action:'hapusPinjaman',
-
-            id:id
-         })
-      });
-
-      alert('Data berhasil dihapus');
-
-      loadPinjaman();
-
-      loadDashboard();
-
-   }catch(err){
-
-      console.log(err);
-
-      alert('Gagal hapus pinjaman');
-   }
-}
-
-/* =========================
-   HAPUS CICILAN
-========================= */
-
-async function hapusCicilan(id){
-
-   let yakin =
-   confirm('Hapus data cicilan?');
-
-   if(!yakin) return;
-
-   try{
-
-      await fetch(API_URL,{
-
-         method:'POST',
-
-         body:JSON.stringify({
-
-            action:'hapusCicilan',
-
-            id:id
-         })
-      });
-
-      alert('Data berhasil dihapus');
-
-      loadCicilan();
-
-      loadPinjaman();
-
-      loadDashboard();
-
-   }catch(err){
-
-      console.log(err);
-
-      alert('Gagal hapus cicilan');
-   }
-}
-
-/* =========================
-   HAPUS UANG KAS
-========================= */
-
-async function hapusKas(id){
-
-   let yakin =
-   confirm('Hapus data uang kas?');
-
-   if(!yakin) return;
-
-   try{
-
-      await fetch(API_URL,{
-
-         method:'POST',
-
-         body:JSON.stringify({
-
-            action:'hapusKas',
-
-            id:id
-         })
-      });
-
-      alert('Data berhasil dihapus');
-
-      loadKas();
-
-      loadDashboard();
-
-   }catch(err){
-
-      console.log(err);
-
-      alert('Gagal hapus uang kas');
-   }
-}
-function uploadExcel(){
-
-   let file =
-   document.getElementById('fileExcel').files[0];
-
-   if(!file){
-
-      alert('Pilih file Excel dulu');
-
-      return;
-   }
-
-   uploadBtn =
-   document.querySelector(
-   '#uploadGaji button'
-   );
-
-   uploadBtn.innerHTML =
-   '<i class="fa-solid fa-spinner fa-spin"></i> Processing Payroll...';
-
-   uploadBtn.disabled = true;
-
-   let reader =
-   new FileReader();
-
-   reader.onload = function(e){
-
-      let data =
-      new Uint8Array(e.target.result);
-
-      let workbook =
-      XLSX.read(data,{
-         type:'array'
-      });
-
-      let sheetName =
-      workbook.SheetNames[0];
-
-      if(sheetName != 'DATA_GAJI'){
-
-         alert(
-         'Nama sheet wajib DATA_GAJI'
-         );
-
-         uploadBtn.innerHTML =
-         'Upload & Proses';
-
-         uploadBtn.disabled = false;
-
-         return;
-      }
-
-      let worksheet =
-      workbook.Sheets[sheetName];
-
-      let json =
-      XLSX.utils.sheet_to_json(
-         worksheet
-      );
-
-      prosesPayroll(json);
-
-   };
-
-   reader.readAsArrayBuffer(file);
-}
-
-function tampilMonitoring(data){
-
-   let html='';
-
-   data.forEach(item=>{
-
-      html += `
-
-      <tr>
-
-         <td>
-         ${new Date().toLocaleDateString('id-ID')}
-         </td>
-
-         <td>
-         ${item.nama}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.totalSC)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.bonus)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.lembur)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.potongan)}
-         </td>
-
-         <td>
-         Rp ${formatRupiah(item.totalGaji)}
-         </td>
-
-         <td>
-
-            <span class="status-belum">
-
-            BELUM TRANSFER
-
-            </span>
-
-         </td>
-
-      </tr>
-
-      `;
-   });
-
-   document.getElementById(
-   'tableGaji'
-   ).innerHTML = html;
-
-   showPage('monitoringGaji');
-
-   alert(
-   'Payroll berhasil diproses'
-   );
-}
-function prosesPayroll(data){
-
-   let hasil = {};
-
-  data.forEach(item=>{
-
-   let nama =
-   item.NAMA_TEKNISI;
-
-   if(!hasil[nama]){
-
-      hasil[nama] = {
-
-         nama:nama,
-
-         totalSC:0,
-
-         jumlahOrder:0,
-
-         bonus:0,
-
-         lembur:0,
-
-         potongan:0,
-
-         totalGaji:0
-      };
-   }
-
-   let totalSC =
-   Number(item.QTY || 0)
-   * 120000;
-
-   hasil[nama].totalSC +=
-   totalSC;
-
-   hasil[nama].jumlahOrder +=
-   Number(item.QTY || 0);
-
-   hasil[nama].bonus +=
-   Number(item.BONUS || 0);
-
-   hasil[nama].lembur +=
-   Number(item.LEMBUR || 0);
-
-   hasil[nama].potongan +=
-   Number(item.POTONGAN || 0);
-
-   hasil[nama].totalGaji =
-
-   hasil[nama].totalSC +
-
-   hasil[nama].bonus +
-
-   hasil[nama].lembur -
-
-   hasil[nama].potongan;
-});
-
-let finalData =
-Object.values(hasil);
-
-fetch(API_URL,{
-
-   method:'POST',
-
-   body:JSON.stringify({
-
-      action:'simpanPayroll',
-
-      items:finalData
-   })
-})
-.then(res=>res.json())
-.then(res=>{
-
-   tampilMonitoring(finalData);
-
-   uploadBtn.innerHTML =
-   'Upload & Proses';
-
-   uploadBtn.disabled = false;
-});
-}
-function loadPayroll(){
-
-   fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'getPayroll'
-      })
-   })
-   .then(res=>res.json())
-   .then(data=>{
-
-      if(!Array.isArray(data)){
-
-         console.log(data);
-
-         return;
-      }
-      let html='';
-
-      data.reverse().forEach(item=>{
-
-         html += `
-
-         <tr>
-
-            <td>
-            ${formatTanggal(item.tanggal)}
-            </td>
-
-            <td>
-            ${item.nama || '-'}
-			
-            </td>
-			<td>
-			${item.bank}
-			</td>
-
-			<td>
-			${item.rekening}
-			</td>
-            <td>
-			
-			${rupiah(item.totalSC)}
-			</td>
-
-			<td>
-			${item.jumlahOrder} SC
-			</td>
-
-			<td>
-			${rupiah(item.bonus)}
-			</td>
-
-            <td>
-            ${rupiah(item.lembur)}
-            </td>
-
-            <td>
-            ${rupiah(item.potongan)}
-            </td>
-
-            <td>
-            ${rupiah(item.totalGaji)}
-            </td>
-
-            <td>
-
-			<button onclick="ubahStatusGaji('${item.id}','${item.status}')"
-			class="${
-			item.status ==
-			'SUDAH TRANSFER'
-				?
-			'status-lunas'
-			:
-			'status-belum'
-				}">
-			${item.status}
-
-			</button>
-		</td>
-
-         </tr>
-         `;
-      });
-
-      document.getElementById(
-      'tableGaji'
-      ).innerHTML = html;
-   })
-   .catch(err=>{
-
-      console.log(err);
-   });
-}
-async function ubahStatusGaji(id,status){
-
-   let statusBaru =
-   status == 'BELUM TRANSFER'
-   ?
-   'SUDAH TRANSFER'
-   :
-   'BELUM TRANSFER';
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'ubahStatusGaji',
-
-         id:id,
-
-         status:statusBaru
-      })
-   });
-
-   loadPayroll();
-}
-async function loadTeknisi(){
-
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
-
-   let data =
-   await res.json();
-
-   let html='';
-
-   data.reverse().forEach(item=>{
-
-      html += `
-
-      <tr>
-
-         <td>${item.id}</td>
-
-         <td>${item.nama}</td>
-
-         <td>${item.jabatan}</td>
-
-         <td>${item.area}</td>
-
-         <td>${item.hp}</td>
-
-         <td>${item.bank}</td>
-
-         <td>${item.rekening}</td>
-
-         <td>${item.status}</td>
-
-         <td>
-
-            <button
-            onclick="editTeknisi('${item.row}')">
-            Edit
-            </button>
-
-            <button
-            onclick="hapusTeknisi('${item.row}')">
-            Hapus
-            </button>
-
-         </td>
-
-      </tr>
-      `;
-   });
-
-   document.getElementById(
-   'tableTeknisi'
-   ).innerHTML = html;
-}
-async function simpanTeknisi(){
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'simpanTeknisi',
-
-         nama:
-         document.getElementById(
-         'teknisiNama'
-         ).value,
-
-         jabatan:
-         document.getElementById(
-         'teknisiJabatan'
-         ).value,
-
-         area:
-         document.getElementById(
-         'teknisiArea'
-         ).value,
-
-         hp:
-         document.getElementById(
-         'teknisiHp'
-         ).value,
-
-         bank:
-         document.getElementById(
-         'teknisiBank'
-         ).value,
-
-         rekening:
-         document.getElementById(
-         'teknisiRekening'
-         ).value,
-
-         status:
-         document.getElementById(
-         'teknisiStatus'
-         ).value
-      })
-   });
-
-   loadTeknisi();
-   alert('Teknisi berhasil disimpan');
-}
-function filterTeknisi(){
-
-   let cari =
-   document.getElementById(
-   'searchTeknisi'
-   ).value.toLowerCase();
-
-   let rows =
-   document.querySelectorAll(
-   '#tableTeknisi tr'
-   );
-
-   rows.forEach(row=>{
-
-      let nama =
-      row.children[1]
-      .innerText
-      .toLowerCase();
-
-      if(nama.includes(cari)){
-
-         row.style.display='';
-
-      }else{
-
-         row.style.display='none';
-      }
-   });
-}
-function editTeknisi(id){
-
-   let rows =
-   document.querySelectorAll(
-   '#tableTeknisi tr'
-   );
-
-   rows.forEach(row=>{
-
-      let btn =
-      row.querySelector('button');
-
-      if(
-      btn &&
-      btn.getAttribute('onclick')
-      .includes(id)
-      ){
-
-         document.getElementById(
-         'editTeknisiId'
-         ).value = id;
-
-         document.getElementById(
-         'teknisiNama'
-         ).value =
-         row.children[1].innerText;
-
-         document.getElementById(
-         'teknisiJabatan'
-         ).value =
-         row.children[2].innerText;
-
-         document.getElementById(
-         'teknisiArea'
-         ).value =
-         row.children[3].innerText;
-
-         document.getElementById(
-         'teknisiHp'
-         ).value =
-         row.children[4].innerText;
-
-         document.getElementById(
-         'teknisiBank'
-         ).value =
-         row.children[5].innerText;
-
-         document.getElementById(
-         'teknisiRekening'
-         ).value =
-         row.children[6].innerText;
-
-         document.getElementById(
-         'teknisiStatus'
-         ).value =
-         row.children[7].innerText;
-      }
-   });
-}
-async function hapusTeknisi(id){
-
-   let yakin =
-   confirm('Hapus teknisi?');
-
-   if(!yakin) return;
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'hapusTeknisi',
-
-         id:id
-      })
-   });
-
-   loadTeknisi();
-}
-async function loadSlipNama(){
-
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
-
-   let data =
-   await res.json();
-
-   let html =
-   '<option value="">Pilih Teknisi</option>';
-
-   data.forEach(item=>{
-
-      html += `
-
-      <option value="${item.nama}">
-
-      ${item.nama}
-
-      </option>
-      `;
-   });
-
-   document.getElementById(
-   'slipNama'
-   ).innerHTML = html;
-}
-
-async function buatSlipGaji(){
-
-   let nama =
-   document.getElementById(
-   'slipNama'
-   ).value;
-   
-	let bulan =
-	document.getElementById(
-	'slipBulan'
-	).value;
-	
-	let periode =
-	new Date(bulan)
-	.toLocaleDateString(
-	'id-ID',
-	{
-   month:'long',
-   year:'numeric'
-}
-);
-
-   if(!nama){
-
-      alert('Pilih teknisi');
-
-      return;
-   }
-
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getPayroll'
-   );
-
-   let data =
-   await res.json();
-
-	let item =
-	data
-	.filter(x=>
-	String(x.nama)
-	.trim()
-	.toUpperCase()
-
-	==
-
-	String(nama)
-	.trim()
-	.toUpperCase()
-	)
-
-	.pop();
-
-   if(!item){
-
-      alert(
-      'Slip tidak ditemukan'
-      );
-
-      return;
-   }
-
-   document.getElementById(
-   'hasilSlip'
-   ).innerHTML = `
-
-   <div class="slip-box">
-
-      <div class="slip-header">
-
-		<h2>
-		KAS ARIP R.COM
-		</h2>
-
-		<h3>
-		SLIP GAJI TEKNISI
-		</h3>
-
-		<p class="periode-slip">
-
-		PERIODE :
-		${periode.toUpperCase()}
-
-		</p>
-
-	</div>
-
-      <div class="slip-body">
-
-         <div class="slip-row">
-
-            <span>Nama</span>
-
-            <b>${item.nama}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Bank</span>
-
-            <b>${item.bank}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>No Rekening</span>
-
-            <b>${item.rekening}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Jumlah Order</span>
-
-            <b>${item.jumlahOrder} SC</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Total SC</span>
-
-            <b>${rupiah(item.totalSC)}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Bonus</span>
-
-            <b>${rupiah(item.bonus)}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Lembur</span>
-
-            <b>${rupiah(item.lembur)}</b>
-
-         </div>
-
-         <div class="slip-row">
-
-            <span>Potongan</span>
-
-            <b>${rupiah(item.potongan)}</b>
-
-         </div>
-
-      </div>
-
-      <div class="slip-total">
-
-         TOTAL GAJI
-
-         <h1>
-         ${rupiah(item.totalGaji)}
-         </h1>
-
-      </div>
-
-      <div class="slip-status">
-
-         ${item.status}
-
-      </div>
+      <button onclick="uploadExcel()">
+         Upload & Proses
+      </button>
 
    </div>
-   `;
-}
-function printSlip(){
 
-   let content =
-   document.getElementById(
-   'hasilSlip'
-   ).innerHTML;
+</div>
 
-   let win =
-   window.open('','','width=900,height=700');
+<!-- =========================
+     MONITORING GAJI
+========================= -->
 
-   win.document.write(`
+<div id="monitoringGaji" class="page">
 
-   <html>
+   <h1>Monitoring Gaji</h1>
 
-   <head>
+   <div class="table-box">
 
-      <title>
-      Slip Gaji
-      </title>
+      <table>
 
-      <style>
+         <thead>
 
-         body{
+            <tr>
 
-            font-family:Arial;
+               <th>Tanggal</th>
+               <th>Nama</th>
+			   <th>Bank</th>
+				<th>Rekening</th>
+               <th>Total SC</th>
+			   <th>Order</th>
+               <th>Bonus</th>
+               <th>Lembur</th>
+               <th>Potongan</th>
+               <th>Total Gaji</th>
+               <th>Status</th>
 
-            background:#f1f5f9;
+            </tr>
 
-            padding:30px;
-         }
+         </thead>
 
-         .slip-box{
+         <tbody id="tableGaji"></tbody>
 
-            max-width:700px;
+      </table>
 
-            margin:auto;
+   </div>
 
-            background:#fff;
+</div>
 
-            border-radius:25px;
+<!-- =========================
+     SLIP GAJI
+========================= -->
 
-            overflow:hidden;
+<div id="slipGaji" class="page">
 
-            box-shadow:
-            0 10px 30px rgba(0,0,0,0.1);
-         }
+   <h1>Slip Gaji</h1>
 
-         .slip-header{
+   <div class="table-box">
 
-            background:
-            linear-gradient(
-            135deg,
-            #0f172a,
-            #1e3a8a
-            );
+      <div class="slip-filter">
 
-            color:#fff;
+         <select id="slipNama">
+         </select>
+		<input
+			type="month"
+			id="slipBulan">
+         <button onclick="buatSlipGaji()">
 
-            padding:30px;
+         Tampilkan Slip
 
-            text-align:center;
-         }
+         </button>
 
-         .slip-body{
+         <button onclick="printSlip()">
 
-            padding:30px;
-         }
+         Print Slip
 
-         .slip-row{
+         </button>
 
-            display:flex;
+      </div>
 
-            justify-content:space-between;
+      <div id="hasilSlip"></div>
 
-            margin-bottom:15px;
+   </div>
 
-            border-bottom:
-            1px dashed #ddd;
+</div>
 
-            padding-bottom:10px;
-         }
+</div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="app.js"></script>
 
-         .slip-total{
-
-            background:#f8fafc;
-
-            padding:30px;
-
-            text-align:center;
-         }
-
-         .slip-total h1{
-
-            color:#2563eb;
-         }
-
-         .slip-status{
-
-            padding:20px;
-
-            text-align:center;
-
-            color:#fff;
-
-            font-weight:bold;
-
-            background:#22c55e;
-         }
-
-      </style>
-
-   </head>
-
-   <body>
-
-   ${content}
-
-   </body>
-
-   </html>
-   `);
-
-   win.document.close();
-
-   win.print();
-}
+</body>
+</html>
