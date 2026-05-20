@@ -1033,3 +1033,26 @@ tr:hover{
 
    font-size:20px;
 }
+.filter-gaji{
+
+   display:flex;
+
+   gap:15px;
+
+   margin:20px 0;
+
+   flex-wrap:wrap;
+}
+
+.filter-gaji input{
+
+   padding:14px 18px;
+
+   border-radius:14px;
+
+   border:none;
+
+   min-width:220px;
+
+   font-size:15px;
+}
