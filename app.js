@@ -1886,10 +1886,21 @@ async function buatSlipGaji(){
    let data =
    await res.json();
 
-   let item =
-   data.find(x=>
-   x.nama == nama
-   );
+	let item =
+	data
+	.filter(x=>
+	String(x.nama)
+	.trim()
+	.toUpperCase()
+
+	==
+
+	String(nama)
+	.trim()
+	.toUpperCase()
+	)
+
+	.pop();
 
    if(!item){
 
@@ -2011,4 +2022,130 @@ async function buatSlipGaji(){
 
    </div>
    `;
+}
+function printSlip(){
+
+   let content =
+   document.getElementById(
+   'hasilSlip'
+   ).innerHTML;
+
+   let win =
+   window.open('','','width=900,height=700');
+
+   win.document.write(`
+
+   <html>
+
+   <head>
+
+      <title>
+      Slip Gaji
+      </title>
+
+      <style>
+
+         body{
+
+            font-family:Arial;
+
+            background:#f1f5f9;
+
+            padding:30px;
+         }
+
+         .slip-box{
+
+            max-width:700px;
+
+            margin:auto;
+
+            background:#fff;
+
+            border-radius:25px;
+
+            overflow:hidden;
+
+            box-shadow:
+            0 10px 30px rgba(0,0,0,0.1);
+         }
+
+         .slip-header{
+
+            background:
+            linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+            );
+
+            color:#fff;
+
+            padding:30px;
+
+            text-align:center;
+         }
+
+         .slip-body{
+
+            padding:30px;
+         }
+
+         .slip-row{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            margin-bottom:15px;
+
+            border-bottom:
+            1px dashed #ddd;
+
+            padding-bottom:10px;
+         }
+
+         .slip-total{
+
+            background:#f8fafc;
+
+            padding:30px;
+
+            text-align:center;
+         }
+
+         .slip-total h1{
+
+            color:#2563eb;
+         }
+
+         .slip-status{
+
+            padding:20px;
+
+            text-align:center;
+
+            color:#fff;
+
+            font-weight:bold;
+
+            background:#22c55e;
+         }
+
+      </style>
+
+   </head>
+
+   <body>
+
+   ${content}
+
+   </body>
+
+   </html>
+   `);
+
+   win.document.close();
+
+   win.print();
 }
