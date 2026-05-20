@@ -1630,8 +1630,3 @@ function loadPayroll(){
 
    });
 }
-      document.getElementById(
-      'tableGaji'
-      ).innerHTML = html;
-   });
-}
