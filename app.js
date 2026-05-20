@@ -1527,11 +1527,6 @@ fetch(API_URL,{
 
    uploadBtn.disabled = false;
 });
-	
-	uploadBtn.innerHTML =
-	'Upload & Proses';
-	
-	uploadBtn.disabled = false;
 }
 function loadPayroll(){
 
