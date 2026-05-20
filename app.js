@@ -1599,3 +1599,109 @@ async function ubahStatusGaji(id,status){
 
    loadPayroll();
 }
+async function loadTeknisi(){
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getTeknisi'
+   );
+
+   let data =
+   await res.json();
+
+   let html='';
+
+   data.reverse().forEach(item=>{
+
+      html += `
+
+      <tr>
+
+         <td>${item.id}</td>
+
+         <td>${item.nama}</td>
+
+         <td>${item.jabatan}</td>
+
+         <td>${item.area}</td>
+
+         <td>${item.hp}</td>
+
+         <td>${item.bank}</td>
+
+         <td>${item.rekening}</td>
+
+         <td>${item.status}</td>
+
+         <td>
+
+            <button
+            onclick="editTeknisi('${item.row}')">
+            Edit
+            </button>
+
+            <button
+            onclick="hapusTeknisi('${item.row}')">
+            Hapus
+            </button>
+
+         </td>
+
+      </tr>
+      `;
+   });
+
+   document.getElementById(
+   'tableTeknisi'
+   ).innerHTML = html;
+}
+async function simpanTeknisi(){
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'simpanTeknisi',
+
+         nama:
+         document.getElementById(
+         'teknisiNama'
+         ).value,
+
+         jabatan:
+         document.getElementById(
+         'teknisiJabatan'
+         ).value,
+
+         area:
+         document.getElementById(
+         'teknisiArea'
+         ).value,
+
+         hp:
+         document.getElementById(
+         'teknisiHp'
+         ).value,
+
+         bank:
+         document.getElementById(
+         'teknisiBank'
+         ).value,
+
+         rekening:
+         document.getElementById(
+         'teknisiRekening'
+         ).value,
+
+         status:
+         document.getElementById(
+         'teknisiStatus'
+         ).value
+      })
+   });
+
+   loadTeknisi();
+}
