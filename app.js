@@ -1398,67 +1398,60 @@ function prosesPayroll(data){
 
    let hasil = {};
 
-   data.forEach(item=>{
+  data.forEach(item=>{
 
-      let nama =
-      item.NAMA_TEKNISI;
+   let nama =
+   item.NAMA_TEKNISI;
 
-      let qty =
-      Number(item.QTY || 0);
+   if(!hasil[nama]){
 
-      let bonus =
-      Number(item.BONUS || 0);
+      hasil[nama] = {
 
-      let lembur =
-      Number(item.LEMBUR || 0);
+         nama:nama,
 
-      let potongan =
-      Number(item.POTONGAN || 0);
+         totalSC:0,
 
-      let tarif = 120000;
+         jumlahOrder:0,
 
-      let totalSC =
-      qty * tarif;
+         bonus:0,
 
-      let totalGaji =
-      totalSC +
-      bonus +
-      lembur -
-      potongan;
+         lembur:0,
 
-      if(!hasil[nama]){
+         potongan:0,
 
-         hasil[nama]={
+         totalGaji:0
+      };
+   }
 
-            nama:nama,
-			
-            totalSC:0,
+   let totalSC =
+   Number(item.QTY || 0)
+   * 120000;
 
-			jumlahOrder:0,
+   hasil[nama].totalSC +=
+   totalSC;
 
-            bonus:0,
+   hasil[nama].jumlahOrder +=
+   Number(item.QTY || 0);
 
-            lembur:0,
+   hasil[nama].bonus +=
+   Number(item.BONUS || 0);
 
-            potongan:0,
+   hasil[nama].lembur +=
+   Number(item.LEMBUR || 0);
 
-            totalGaji:0
-         };
-      }
+   hasil[nama].potongan +=
+   Number(item.POTONGAN || 0);
 
-      hasil[nama].totalSC += totalSC;
-	  
-	  hasil[nama].jumlahOrder += qty;
+   hasil[nama].totalGaji =
 
-      hasil[nama].bonus += bonus;
+   hasil[nama].totalSC +
 
-      hasil[nama].lembur += lembur;
+   hasil[nama].bonus +
 
-      hasil[nama].potongan += potongan;
+   hasil[nama].lembur -
 
-      hasil[nama].totalGaji += totalGaji;
-
-   });
+   hasil[nama].potongan;
+});
 
 let finalData =
 Object.values(hasil);
