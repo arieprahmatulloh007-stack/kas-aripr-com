@@ -1577,7 +1577,6 @@ function loadPayroll(){
       document.getElementById(
       'tableGaji'
       ).innerHTML = html;
-
    })
    .catch(err=>{
 
@@ -1595,15 +1594,10 @@ async function ubahStatusGaji(id,status){
    'BELUM TRANSFER';
 
    await fetch(API_URL,{
-
       method:'POST',
-
       body:JSON.stringify({
-
          action:'ubahStatusGaji',
-
          id:id,
-
          status:statusBaru
       })
    });
