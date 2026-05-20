@@ -32,22 +32,32 @@ function showPage(id){
 
 /* DEFAULT PAGE */
 
-window.onload = function(){
+window.onload = async function(){
 
-	showPage('dashboard');
+   try{
 
-   loadDashboard();
+      showPage('dashboard');
 
-   loadKas();
+      await loadDashboard();
 
-   loadPinjaman();
+      await loadKas();
 
-   loadCicilan();
+      await loadPinjaman();
 
-   loadDropdownPeminjam();
-	loadPayroll();
-	loadTeknisi();
-	loadSlipNama();
+      await loadCicilan();
+
+      await loadDropdownPeminjam();
+
+      await loadPayroll();
+
+      await loadTeknisi();
+
+      await loadSlipNama();
+
+   }catch(err){
+
+      console.log(err);
+   }
 };
 
 /* LOGOUT */
@@ -1349,6 +1359,15 @@ function tampilMonitoring(data){
 }
 function prosesPayroll(data){
 
+let periodeInput =
+document.getElementById('uploadPeriode');
+
+let periode = '';
+
+if(periodeInput){
+
+   periode = periodeInput.value;
+}
    let hasil = {};
 
   data.forEach(item=>{
@@ -1358,22 +1377,26 @@ function prosesPayroll(data){
 
    if(!hasil[nama]){
 
-      hasil[nama] = {
+   hasil[nama] = {
 
-         nama:nama,
+   nama:nama,
 
-         totalSC:0,
+   periode:periode,
 
-         jumlahOrder:0,
+   status:'BELUM TRANSFER',
 
-         bonus:0,
+   totalSC:0,
 
-         lembur:0,
+   jumlahOrder:0,
 
-         potongan:0,
+   bonus:0,
 
-         totalGaji:0
-      };
+   lembur:0,
+
+   potongan:0,
+
+   totalGaji:0
+	};
    }
 
    let totalSC =
@@ -1409,15 +1432,10 @@ function prosesPayroll(data){
 let finalData =
 Object.values(hasil);
 
-let periodeInput =
-document.getElementById('uploadPeriode');
+finalData.forEach(item=>{
 
-let periode = '';
-
-if(periodeInput){
-
-   periode = periodeInput.value;
-}
+   item.periode = periode;
+});
 
 fetch(API_URL,{
 
@@ -1877,15 +1895,15 @@ data.find(x=>
 
    &&
 
-   String(x.periode)
-   .trim()
-   .substring(0,7)
+String(x.periode)
+.replace(/\s/g,'')
+.trim()
 
-   ==
+===
 
-   String(bulan)
-   .trim()
-   .substring(0,7)
+String(bulan)
+.replace(/\s/g,'')
+.trim()
 
 );
    if(!item){
