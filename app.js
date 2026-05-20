@@ -1485,7 +1485,11 @@ html += `
    <td>
    ${formatTanggal(item.tanggal)}
    </td>
-
+   
+	<td>
+	${item.periode}
+	</td>
+	
    <td>
    ${item.nama}
    </td>
@@ -1553,6 +1557,52 @@ html += `
       console.log(err);
    });
 }
+
+function filterMonitoringGaji(){
+
+   let periode =
+   document.getElementById(
+   'filterPeriodeGaji'
+   ).value
+   .trim();
+
+   let nama =
+   document.getElementById(
+   'filterNamaGaji'
+   ).value
+   .toUpperCase()
+   .trim();
+
+   let rows =
+   document.querySelectorAll(
+   '#tableGaji tr'
+   );
+
+   rows.forEach(row=>{
+
+      let text =
+      row.innerText.toUpperCase();
+
+      let tampil = true;
+
+      if(nama && !text.includes(nama)){
+
+         tampil = false;
+      }
+
+      if(periode && !text.includes(periode.split('-')[0])){
+
+      }
+
+      row.style.display =
+      tampil
+      ?
+      ''
+      :
+      'none';
+   });
+}
+
 function ubahStatusGaji(id,status){
 
    let statusBaru =
