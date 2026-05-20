@@ -29,7 +29,7 @@ function showPage(id){
 
 window.onload = function(){
 
-   showPage('dashboard');
+	showPage('monitoringGaji');
 
    loadDashboard();
 
@@ -1551,6 +1551,17 @@ function loadPayroll(){
    .then(res=>res.json())
    .then(data=>{
 
+      console.log(data);
+
+      if(!Array.isArray(data)){
+
+         console.log(
+         'Payroll bukan array'
+         );
+
+         return;
+      }
+
       let html='';
 
       data.reverse().forEach(item=>{
@@ -1564,7 +1575,7 @@ function loadPayroll(){
             </td>
 
             <td>
-            ${item.nama}
+            ${item.nama || '-'}
             </td>
 
             <td>
@@ -1608,6 +1619,17 @@ function loadPayroll(){
          `;
       });
 
+      document.getElementById(
+      'tableGaji'
+      ).innerHTML = html;
+
+   })
+   .catch(err=>{
+
+      console.log(err);
+
+   });
+}
       document.getElementById(
       'tableGaji'
       ).innerHTML = html;
