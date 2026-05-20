@@ -1585,13 +1585,25 @@ function filterMonitoringGaji(){
 
       let tampil = true;
 
-      if(nama && !text.includes(nama)){
+      if(
+      nama &&
+      !text.includes(nama)
+      ){
 
          tampil = false;
       }
 
-      if(periode && !text.includes(periode.split('-')[0])){
+      let periodeRow =
+      row.children[1]
+      .innerText
+      .trim();
 
+      if(
+      periode &&
+      periodeRow !== periode
+      ){
+
+         tampil = false;
       }
 
       row.style.display =
