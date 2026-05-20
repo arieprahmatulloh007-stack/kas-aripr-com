@@ -29,7 +29,7 @@ function showPage(id){
 
 window.onload = function(){
 
-	showPage('monitoringGaji');
+	showPage('dashboard');
 
    loadDashboard();
 
@@ -386,29 +386,6 @@ async function loadCicilan(){
    .innerHTML = html;
 }
 
-/* HAPUS CICILAN */
-
-async function hapusCicilan(id){
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'hapusCicilan',
-
-         id:id
-      })
-   });
-
-   loadCicilan();
-
-   loadPinjaman();
-
-   loadDashboard();
-}
-
 /* DROPDOWN */
 
 async function loadDropdownPeminjam(){
@@ -441,32 +418,6 @@ async function loadDropdownPeminjam(){
 
    document.getElementById('idPeminjam')
    .innerHTML = html;
-}
-/* =========================
-   HAPUS KAS
-========================= */
-
-async function hapusKas(id){
-
-   if(!confirm('Hapus data?')){
-      return;
-   }
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify({
-
-         action:'hapusKas',
-
-         id:id
-      })
-   });
-
-   loadKas();
-
-   loadDashboard();
 }
 
 /* =========================
@@ -1547,13 +1498,9 @@ function loadPayroll(){
    .then(res=>res.json())
    .then(data=>{
 
-      console.log(data);
-
       if(!Array.isArray(data)){
 
-         console.log(
-         'Payroll bukan array'
-         );
+         console.log(data);
 
          return;
       }
@@ -1615,12 +1562,11 @@ function loadPayroll(){
          `;
       });
 
-}
-document.getElementById(
-'tableGaji'
-).innerHTML = html;
-});
-}
+      document.getElementById(
+      'tableGaji'
+      ).innerHTML = html;
+
+   })
    .catch(err=>{
 
       console.log(err);
