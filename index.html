@@ -441,6 +441,55 @@ if(localStorage.getItem('login') != 'true'){
 
    <div class="table-box">
 
+      <!-- FORM -->
+      <div class="form-grid">
+
+         <input type="hidden"
+         id="editTeknisiId">
+
+         <input type="text"
+         id="teknisiNama"
+         placeholder="Nama Teknisi">
+
+         <input type="text"
+         id="teknisiJabatan"
+         placeholder="Jabatan">
+
+         <input type="text"
+         id="teknisiArea"
+         placeholder="Area">
+
+         <input type="text"
+         id="teknisiHp"
+         placeholder="No HP">
+
+         <input type="text"
+         id="teknisiBank"
+         placeholder="Bank">
+
+         <input type="text"
+         id="teknisiRekening"
+         placeholder="No Rekening">
+
+         <select id="teknisiStatus">
+
+            <option value="AKTIF">
+            AKTIF
+            </option>
+
+            <option value="NONAKTIF">
+            NONAKTIF
+            </option>
+
+         </select>
+
+         <button onclick="simpanTeknisi()">
+         Simpan Teknisi
+         </button>
+
+      </div>
+
+      <!-- TABLE -->
       <table>
 
          <thead>
@@ -455,6 +504,7 @@ if(localStorage.getItem('login') != 'true'){
                <th>Bank</th>
                <th>Rekening</th>
                <th>Status</th>
+               <th>Aksi</th>
 
             </tr>
 
