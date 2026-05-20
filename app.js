@@ -1861,15 +1861,29 @@ async function buatSlipGaji(){
       return;
    }
 
-   let periode =
-   new Date(bulan)
-   .toLocaleDateString(
-   'id-ID',
-   {
-      month:'long',
-      year:'numeric'
-   }
-   );
+	let arrBulan = [
+
+   'Januari',
+   'Februari',
+   'Maret',
+   'April',
+   'Mei',
+   'Juni',
+   'Juli',
+   'Agustus',
+   'September',
+   'Oktober',
+   'November',
+   'Desember'
+	];
+
+	let split =
+	bulan.split('-');
+
+	let periode =
+	arrBulan[
+	Number(split[1]) - 1
+	] + ' ' + split[0];
 
    let res =
    await fetch(
@@ -1879,6 +1893,12 @@ async function buatSlipGaji(){
 
    let data =
    await res.json();
+
+	console.log(nama);
+
+	console.log(bulan);
+
+	console.log(data);
 
 let item =
 data.find(x=>
