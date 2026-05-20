@@ -1885,14 +1885,20 @@ async function buatSlipGaji(){
 	Number(split[1]) - 1
 	] + ' ' + split[0];
 
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getPayroll'
-   );
+	let res =
+	await fetch(API_URL,{
 
-   let data =
-   await res.json();
+	method:'POST',
+
+	body:JSON.stringify({
+
+      action:'getPayroll'
+
+	})
+	});
+
+	let data =
+	await res.json();
 
 	console.log(nama);
 
