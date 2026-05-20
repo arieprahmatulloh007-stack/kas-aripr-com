@@ -60,12 +60,6 @@ function formatRupiah(angka){
    .toLocaleString('id-ID');
 }
 
-function formatRupiah(angka){
-
-   return Number(angka || 0)
-   .toLocaleString('id-ID');
-}
-
 function rupiah(angka){
 
    return 'Rp ' +
@@ -78,6 +72,8 @@ function formatTanggal(tanggal){
    return new Date(tanggal)
    .toLocaleDateString('id-ID');
 }
+
+🔥
 
 /* DASHBOARD */
 
@@ -1619,11 +1615,12 @@ function loadPayroll(){
          `;
       });
 
-      document.getElementById(
-      'tableGaji'
-      ).innerHTML = html;
-
-   })
+}
+document.getElementById(
+'tableGaji'
+).innerHTML = html;
+});
+}
    .catch(err=>{
 
       console.log(err);
