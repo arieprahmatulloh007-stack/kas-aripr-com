@@ -41,6 +41,7 @@ window.onload = function(){
 
    loadDropdownPeminjam();
 	loadPayroll();
+	loadTeknisi();
 };
 
 /* LOGOUT */
@@ -1704,4 +1705,5 @@ async function simpanTeknisi(){
    });
 
    loadTeknisi();
+   alert('Teknisi berhasil disimpan');
 }
