@@ -73,8 +73,6 @@ function formatTanggal(tanggal){
    .toLocaleDateString('id-ID');
 }
 
-🔥
-
 /* DASHBOARD */
 
 async function loadDashboard(){
