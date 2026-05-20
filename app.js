@@ -1550,11 +1550,7 @@ function loadPayroll(){
 
             <td>
 
-			<button
-			onclick="ubahStatusGaji(
-			'${item.id}',
-			'${item.status}'
-			)"
+			<button onclick="ubahStatusGaji('${item.id}','${item.status}')"
 			class="${
 			item.status ==
 			'SUDAH TRANSFER'
@@ -1577,6 +1573,7 @@ function loadPayroll(){
       document.getElementById(
       'tableGaji'
       ).innerHTML = html;
+
    })
    .catch(err=>{
 
@@ -1594,10 +1591,15 @@ async function ubahStatusGaji(id,status){
    'BELUM TRANSFER';
 
    await fetch(API_URL,{
+
       method:'POST',
+
       body:JSON.stringify({
+
          action:'ubahStatusGaji',
+
          id:id,
+
          status:statusBaru
       })
    });
