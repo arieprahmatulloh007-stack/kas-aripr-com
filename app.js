@@ -1910,26 +1910,30 @@ async function buatSlipGaji(){
    let data =
    await res.json();
 
-   let item =
-   data.find(x=>
+	let item =
+	data.find(x=>
 
-      String(x.nama)
-      .trim()
-      .toUpperCase()
+   String(x.nama)
+   .trim()
+   .toUpperCase()
 
-      ==
+   ==
 
-      String(nama)
-      .trim()
-      .toUpperCase()
+   String(nama)
+   .trim()
+   .toUpperCase()
 
-      &&
+   &&
 
-      String(x.periode)
-      .includes(bulan)
+   String(x.periode)
+   .trim()
 
-   );
+   ==
 
+   String(bulan)
+   .trim()
+
+	);
    if(!item){
 
       alert(
