@@ -1457,10 +1457,15 @@ function prosesPayroll(data){
 let finalData =
 Object.values(hasil);
 
-let periode =
-document.getElementById(
-'slipBulan'
-).value;
+let periodeInput =
+document.getElementById('slipBulan');
+
+let periode = '';
+
+if(periodeInput){
+
+   periode = periodeInput.value;
+}
 
 fetch(API_URL,{
 
