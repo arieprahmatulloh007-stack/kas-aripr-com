@@ -1899,7 +1899,9 @@ async function buatSlipGaji(){
 
 	let data =
 	await res.json();
+	console.log(data);
 
+	alert(JSON.stringify(data));
 	console.log(nama);
 
 	console.log(bulan);
