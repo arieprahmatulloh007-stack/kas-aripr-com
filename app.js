@@ -1946,3 +1946,145 @@ async function buatSlipGaji(){
    </div>
    `;
 }
+async function buatSlipGaji(){
+
+   let nama =
+   document.getElementById(
+   'slipNama'
+   ).value;
+
+   if(!nama){
+
+      alert('Pilih teknisi');
+
+      return;
+   }
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getPayroll'
+   );
+
+   let data =
+   await res.json();
+
+   let item =
+   data.find(x=>
+   x.nama == nama
+   );
+
+   if(!item){
+
+      alert(
+      'Slip tidak ditemukan'
+      );
+
+      return;
+   }
+
+   document.getElementById(
+   'hasilSlip'
+   ).innerHTML = `
+
+   <div class="slip-box">
+
+      <div class="slip-header">
+
+         <h2>
+         KAS ARIP R.COM
+         </h2>
+
+         <h3>
+         SLIP GAJI TEKNISI
+         </h3>
+
+      </div>
+
+      <div class="slip-body">
+
+         <div class="slip-row">
+
+            <span>Nama</span>
+
+            <b>${item.nama}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Bank</span>
+
+            <b>${item.bank}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>No Rekening</span>
+
+            <b>${item.rekening}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Jumlah Order</span>
+
+            <b>${item.jumlahOrder} SC</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Total SC</span>
+
+            <b>${rupiah(item.totalSC)}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Bonus</span>
+
+            <b>${rupiah(item.bonus)}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Lembur</span>
+
+            <b>${rupiah(item.lembur)}</b>
+
+         </div>
+
+         <div class="slip-row">
+
+            <span>Potongan</span>
+
+            <b>${rupiah(item.potongan)}</b>
+
+         </div>
+
+      </div>
+
+      <div class="slip-total">
+
+         TOTAL GAJI
+
+         <h1>
+         ${rupiah(item.totalGaji)}
+         </h1>
+
+      </div>
+
+      <div class="slip-status">
+
+         ${item.status}
+
+      </div>
+
+   </div>
+   `;
+}
