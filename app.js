@@ -1430,8 +1430,10 @@ function prosesPayroll(data){
          hasil[nama]={
 
             nama:nama,
-
+			
             totalSC:0,
+
+			jumlahOrder:0,
 
             bonus:0,
 
@@ -1444,6 +1446,8 @@ function prosesPayroll(data){
       }
 
       hasil[nama].totalSC += totalSC;
+	  
+	  hasil[nama].jumlahOrder += qty;
 
       hasil[nama].bonus += bonus;
 
@@ -1518,11 +1522,15 @@ function loadPayroll(){
             <td>
             ${item.nama || '-'}
             </td>
-
+			
             <td>
             ${rupiah(item.totalSC)}
             </td>
-
+			
+			<td>
+			${item.jumlahOrder} SC
+			</td>
+			
             <td>
             ${rupiah(item.bonus)}
             </td>
@@ -1541,20 +1549,25 @@ function loadPayroll(){
 
             <td>
 
-               <span class="${
-               item.status ==
-               'SUDAH TRANSFER'
-               ?
-               'status-lunas'
-               :
-               'status-belum'
-               }">
+			<button
+			onclick="ubahStatusGaji(
+			'${item.id}',
+			'${item.status}'
+			)"
+			class="${
+			item.status ==
+			'SUDAH TRANSFER'
+				?
+			'status-lunas'
+			:
+			'status-belum'
+				}">
 
-               ${item.status}
+			${item.status}
 
-               </span>
+			</button>
 
-            </td>
+		</td>
 
          </tr>
          `;
@@ -1570,4 +1583,29 @@ function loadPayroll(){
       console.log(err);
 
    });
+}
+async function ubahStatusGaji(id,status){
+
+   let statusBaru =
+   status == 'BELUM TRANSFER'
+   ?
+   'SUDAH TRANSFER'
+   :
+   'BELUM TRANSFER';
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'ubahStatusGaji',
+
+         id:id,
+
+         status:statusBaru
+      })
+   });
+
+   loadPayroll();
 }
