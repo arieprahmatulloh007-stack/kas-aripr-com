@@ -61,7 +61,11 @@ function formatRupiah(angka){
 }
 
 function rupiah(angka){
+function formatTanggal(tanggal){
 
+   return new Date(tanggal)
+   .toLocaleDateString('id-ID');
+}
    return 'Rp ' +
    Number(angka || 0)
    .toLocaleString('id-ID');
