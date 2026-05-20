@@ -1457,6 +1457,11 @@ function prosesPayroll(data){
 let finalData =
 Object.values(hasil);
 
+let periode =
+document.getElementById(
+'slipBulan'
+).value;
+
 fetch(API_URL,{
 
    method:'POST',
@@ -1464,6 +1469,8 @@ fetch(API_URL,{
    body:JSON.stringify({
 
       action:'simpanPayroll',
+
+      periode:periode,
 
       items:finalData
    })
@@ -1887,8 +1894,8 @@ async function buatSlipGaji(){
    await res.json();
 
 	let item =
-	data
-	.filter(x=>
+	data.find(x=>
+
 	String(x.nama)
 	.trim()
 	.toUpperCase()
@@ -1898,9 +1905,13 @@ async function buatSlipGaji(){
 	String(nama)
 	.trim()
 	.toUpperCase()
-	)
 
-	.pop();
+	&&
+
+	String(x.periode)
+	includes(bulan)
+
+	);
 
    if(!item){
 
