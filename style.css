@@ -870,3 +870,22 @@ tr:hover{
       min-width:unset;
    }
 }
+.search-input{
+
+   width:300px;
+
+   padding:14px 18px;
+
+   border-radius:14px;
+
+   border:none;
+
+   margin-bottom:20px;
+
+   font-size:15px;
+
+   background:#fff;
+
+   box-shadow:
+   0 4px 10px rgba(0,0,0,0.08);
+}
