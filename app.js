@@ -1458,7 +1458,7 @@ let finalData =
 Object.values(hasil);
 
 let periodeInput =
-document.getElementById('slipBulan');
+document.getElementById('uploadPeriode');
 
 let periode = '';
 
@@ -1515,68 +1515,70 @@ function loadPayroll(){
 
       data.reverse().forEach(item=>{
 
-         html += `
+html += `
 
-         <tr>
+<tr>
 
-            <td>
-            ${formatTanggal(item.tanggal)}
-            </td>
+   <td>
+   ${formatTanggal(item.tanggal)}
+   </td>
 
-            <td>
-            ${item.nama || '-'}
-			
-            </td>
-			<td>
-			${item.bank}
-			</td>
+   <td>
+   ${item.nama}
+   </td>
 
-			<td>
-			${item.rekening}
-			</td>
-            <td>
-			
-			${rupiah(item.totalSC)}
-			</td>
+   <td>
+   ${item.bank}
+   </td>
 
-			<td>
-			${item.jumlahOrder} SC
-			</td>
+   <td>
+   ${item.rekening}
+   </td>
 
-			<td>
-			${rupiah(item.bonus)}
-			</td>
+   <td>
+   ${rupiah(item.totalSC)}
+   </td>
 
-            <td>
-            ${rupiah(item.lembur)}
-            </td>
+   <td>
+   ${item.jumlahOrder} SC
+   </td>
 
-            <td>
-            ${rupiah(item.potongan)}
-            </td>
+   <td>
+   ${rupiah(item.bonus)}
+   </td>
 
-            <td>
-            ${rupiah(item.totalGaji)}
-            </td>
+   <td>
+   ${rupiah(item.lembur)}
+   </td>
 
-            <td>
+   <td>
+   ${rupiah(item.potongan)}
+   </td>
 
-			<button onclick="ubahStatusGaji('${item.id}','${item.status}')"
-			class="${
-			item.status ==
-			'SUDAH TRANSFER'
-				?
-			'status-lunas'
-			:
-			'status-belum'
-				}">
-			${item.status}
+   <td>
+   ${rupiah(item.totalGaji)}
+   </td>
 
-			</button>
-		</td>
+   <td>
 
-         </tr>
-         `;
+      <button
+      onclick="ubahStatusGaji('${item.id}','${item.status}')"
+      class="${
+      item.status == 'SUDAH TRANSFER'
+      ?
+      'status-lunas'
+      :
+      'status-belum'
+      }">
+
+      ${item.status}
+
+      </button>
+
+   </td>
+
+</tr>
+`;
       });
 
       document.getElementById(
