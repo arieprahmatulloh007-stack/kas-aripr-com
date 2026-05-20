@@ -32,32 +32,25 @@ function showPage(id){
 
 /* DEFAULT PAGE */
 
-window.onload = async function(){
+window.onload = function(){
 
-   try{
+   showPage('dashboard');
 
-      showPage('dashboard');
+   loadDashboard();
 
-      await loadDashboard();
+   loadKas();
 
-      await loadKas();
+   loadPinjaman();
 
-      await loadPinjaman();
+   loadCicilan();
 
-      await loadCicilan();
+   loadDropdownPeminjam();
 
-      await loadDropdownPeminjam();
+   loadPayroll();
 
-      await loadPayroll();
+   loadTeknisi();
 
-      await loadTeknisi();
-
-      await loadSlipNama();
-
-   }catch(err){
-
-      console.log(err);
-   }
+   loadSlipNama();
 };
 
 /* LOGOUT */
