@@ -60,15 +60,23 @@ function formatRupiah(angka){
    .toLocaleString('id-ID');
 }
 
+function formatRupiah(angka){
+
+   return Number(angka || 0)
+   .toLocaleString('id-ID');
+}
+
 function rupiah(angka){
+
+   return 'Rp ' +
+   Number(angka || 0)
+   .toLocaleString('id-ID');
+}
+
 function formatTanggal(tanggal){
 
    return new Date(tanggal)
    .toLocaleDateString('id-ID');
-}
-   return 'Rp ' +
-   Number(angka || 0)
-   .toLocaleString('id-ID');
 }
 
 /* DASHBOARD */
