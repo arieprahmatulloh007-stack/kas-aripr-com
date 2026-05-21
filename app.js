@@ -372,7 +372,12 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-new Chart(
+if(window.gajiChart){
+
+   window.gajiChart.destroy();
+}
+
+window.gajiChart = new Chart(
 
 document.getElementById(
 'chartGaji'
@@ -400,7 +405,12 @@ document.getElementById('chartSC');
 
 if(chartSC){
 
-   new Chart(chartSC,{
+  if(window.scChart){
+
+   window.scChart.destroy();
+}
+
+window.scChart = new Chart(chartSC,{
 
       type:'bar',
 
