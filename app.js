@@ -400,57 +400,66 @@ document.getElementById(
    }
 });
 
-let chartSC =
-document.getElementById('chartSC');
+try{
 
-if(chartSC){
+   let chartSC =
+   document.getElementById('chartSC');
 
-  if(window.scChart){
+   if(chartSC){
 
-   window.scChart.destroy();
-}
+      if(window.scChart){
 
-window.scChart = new Chart(chartSC,{
+         window.scChart.destroy();
+      }
 
-      type:'bar',
+      window.scChart = new Chart(chartSC,{
 
-      data:{
+         type:'bar',
 
-         labels:Object.keys(periodeSC),
+         data:{
 
-         datasets:[{
+            labels:Object.keys(periodeSC),
 
-            label:'Total SC',
+            datasets:[{
 
-            data:Object.values(periodeSC),
+               label:'Total SC',
 
-            backgroundColor:'#2563eb',
+               data:Object.values(periodeSC),
 
-            borderRadius:10
-         }]
-      },
+               backgroundColor:'#2563eb',
 
-      options:{
-
-         responsive:true,
-
-         plugins:{
-
-            legend:{
-               display:true
-            }
+               borderRadius:10
+            }]
          },
 
-         scales:{
+         options:{
 
-            y:{
-               beginAtZero:true
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+
+               legend:{
+                  display:true
+               }
+            },
+
+            scales:{
+
+               y:{
+                  beginAtZero:true
+               }
             }
          }
-      }
-   });
+      });
+   }
+
+}catch(err){
+
+   console.log(err);
 }
-}
+
 async function loadSummaryTeknisi(){
 
    let res =
