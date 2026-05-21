@@ -150,57 +150,81 @@ if(localStorage.getItem('login') != 'true'){
    </div>
    
    <div class="payroll-dashboard">
-   <div class="teknisi-summary-grid">
+	<div class="summary-table-box">
 
-   <div class="summary-card">
+   <table class="summary-table">
 
-      <h4>Total Teknisi</h4>
+      <thead>
 
-      <h2 id="totalTeknisiCard">0</h2>
+         <tr>
 
-   </div>
+            <th colspan="2">
+            Data Teknisi
+            </th>
 
-   <div class="summary-card">
+            <th colspan="5">
+            Total Area
+            </th>
 
-      <h4>Total Area</h4>
+            <th colspan="2">
+            Status Teknisi
+            </th>
 
-      <h2 id="totalAreaCard">0</h2>
+         </tr>
 
-   </div>
+      </thead>
 
-   <div class="summary-card">
+      <tbody>
 
-      <h4>Total Jabatan</h4>
+         <tr>
 
-      <h2 id="totalJabatanCard">0</h2>
+            <td>Total Jabatan</td>
 
-   </div>
+            <td>Total Teknisi</td>
 
-   <div class="summary-card">
+            <td>CMI</td>
 
-      <h4>Status Teknisi</h4>
+            <td>NJG</td>
 
-      <h2>
+            <td>BTJ</td>
 
-         <span id="aktifTeknisiCard">
-         0
-         </span>
+            <td>CLL</td>
 
-         /
+            <td>GNH</td>
 
-         <span id="nonaktifTeknisiCard">
-         0
-         </span>
+            <td>AKTIF</td>
 
-      </h2>
+            <td>NONAKTIF</td>
 
-      <small>
-      AKTIF / NONAKTIF
-      </small>
+         </tr>
 
-   </div>
+         <tr>
 
-</div>
+            <td id="jabatanList">-</td>
+
+            <td id="totalTeknisiCard">0</td>
+
+            <td id="cmiCount">0</td>
+
+            <td id="njgCount">0</td>
+
+            <td id="btjCount">0</td>
+
+            <td id="cllCount">0</td>
+
+            <td id="gnhCount">0</td>
+
+            <td id="aktifTeknisiCard">0</td>
+
+            <td id="nonaktifTeknisiCard">0</td>
+
+			</tr>
+
+		</tbody>
+
+	</table>
+
+	</div>
 
    <div class="dashboard-grid">
 
