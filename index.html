@@ -151,13 +151,35 @@ if(localStorage.getItem('login') != 'true'){
    
    <div class="payroll-dashboard">
 
-   <div class="dashboard-box">
+   <div class="dashboard-grid">
 
-      <h3>Total Gaji Periode</h3>
+      <div class="dashboard-box">
 
-      <div id="dashboardPeriodeGaji"></div>
+         <h3>Total Gaji Periode</h3>
+
+         <canvas id="chartGaji"></canvas>
+
+      </div>
+
+      <div class="dashboard-box">
+
+         <h3>Total SC Periode</h3>
+
+         <canvas id="chartSC"></canvas>
+
+      </div>
 
    </div>
+
+   <div class="dashboard-box">
+
+      <h3>Ranking Teknisi Payroll</h3>
+
+      <div id="dashboardTeknisiPayroll"></div>
+
+   </div>
+
+</div>
 
    <div class="dashboard-box">
 
@@ -685,6 +707,6 @@ if(localStorage.getItem('login') != 'true'){
 </div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="app.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
