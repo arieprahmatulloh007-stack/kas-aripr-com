@@ -372,6 +372,28 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
+new Chart(
+
+document.getElementById(
+'chartGaji'
+),{
+
+   type:'bar',
+
+   data:{
+
+      labels:Object.keys(periodeGaji),
+
+      datasets:[{
+
+         label:'Total Gaji',
+
+         data:Object.values(periodeGaji),
+
+         borderWidth:1
+      }]
+   }
+});
 
 let periodeChart = Object.keys(periodeSC);
 
@@ -477,169 +499,6 @@ if(scCanvas){
       }]
    });
 }
-}
-
-async function loadSummaryTeknisi(){
-
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
-
-   let data =
-   await res.json();
-
-   let aktif = 0;
-
-   let nonaktif = 0;
-
-   let jabatan = [];
-
-   let areaCount = {
-
-      CMI:0,
-
-      NJG:0,
-
-      BTJ:0,
-
-      CLL:0,
-
-      GNH:0
-   };
-
-   data.forEach(item=>{
-
-      let area =
-      String(item.area || '')
-      .toUpperCase()
-      .trim();
-
-      if(areaCount[area] != undefined){
-
-         areaCount[area]++;
-      }
-
-      if(
-      !jabatan.includes(item.jabatan)
-      ){
-
-         jabatan.push(item.jabatan);
-      }
-
-      if(item.status == 'AKTIF'){
-
-         aktif++;
-
-      }else{
-
-         nonaktif++;
-      }
-   });
-
-   document.getElementById(
-   'totalTeknisiCard'
-   ).innerHTML =
-   data.length;
-
-   document.getElementById(
-   'jabatanList'
-   ).innerHTML =
-   jabatan.join(', ');
-
-   document.getElementById(
-   'cmiCount'
-   ).innerHTML =
-   areaCount.CMI;
-
-   document.getElementById(
-   'njgCount'
-   ).innerHTML =
-   areaCount.NJG;
-
-   document.getElementById(
-   'btjCount'
-   ).innerHTML =
-   areaCount.BTJ;
-
-   document.getElementById(
-   'cllCount'
-   ).innerHTML =
-   areaCount.CLL;
-
-   document.getElementById(
-   'gnhCount'
-   ).innerHTML =
-   areaCount.GNH;
-
-   document.getElementById(
-   'aktifTeknisiCard'
-   ).innerHTML =
-   aktif;
-
-   document.getElementById(
-   'nonaktifTeknisiCard'
-   ).innerHTML =
-   nonaktif;
-}
-
-/* SIMPAN KAS */
-
-async function simpanKas(){
-
-   let data = {
-
-      action:'tambahKas',
-
-      editId:
-      localStorage.getItem('editKas'),
-      
-      tanggal:
-      document.getElementById('tglKas').value,
-
-      masuk:
-      document.getElementById('nominalMasuk').value,
-
-      keluar:
-      document.getElementById('nominalKeluar').value,
-
-      sumberMasuk:
-      document.getElementById('sumberMasuk').value,
-
-      sumberKeluar:
-      document.getElementById('sumberKeluar').value,
-
-      keterangan:
-      document.getElementById('ketKas').value
-
-
-   };
-
-   await fetch(API_URL,{
-
-      method:'POST',
-
-      body:JSON.stringify(data)
-   });
-
-   alert('Berhasil');
-
-   document.getElementById('tglKas').value='';
-
-   document.getElementById('nominalMasuk').value='';
-
-   document.getElementById('nominalKeluar').value='';
-
-   document.getElementById('sumberMasuk').value='';
-
-   document.getElementById('sumberKeluar').value='';
-
-   document.getElementById('ketKas').value='';
-   localStorage.removeItem('editKas');
-   loadKas();
-
-   loadDashboard();
 }
 
 /* LOAD KAS */
@@ -2649,7 +2508,7 @@ function printSlip(){
 
             color:#fff;
 
-            font-weight:bold;
+            font-weight:bold;a
 
             background:#22c55e;
          }
