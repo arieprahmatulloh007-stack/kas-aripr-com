@@ -372,11 +372,11 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-let periodeGaji =
-Object.keys(periodeTotal);
+let periodeGajiChart =
+Object.keys(periodeGaji);
 
 let totalGajiList =
-Object.values(periodeTotal);
+Object.values(periodeGaji);
 
 let gajiCanvas =
 document.getElementById('chartGaji');
@@ -389,8 +389,8 @@ if(gajiCanvas){
 
       data:{
 
-         labels:periodeGaji,
-
+         labels:periodeGajiChart,
+		 
          datasets:[{
 
             label:'Total Gaji',
