@@ -256,33 +256,91 @@ async function loadDashboardPayroll(){
    Object.keys(teknisi)
    .forEach(nama=>{
 
-      htmlTeknisi += `
+     htmlTeknisi += `
 
-      <div class="row-dashboard">
+	<div class="rank-card">
 
-         <div>
+   <div class="rank-left">
 
-            <b>${nama}</b><br>
+      <b>${nama}</b><br>
 
-            ${teknisi[nama].sc} SC
+      ${teknisi[nama].sc} SC
 
-         </div>
+   </div>
 
-         <div>
+   <div class="rank-right">
 
-            ${rupiah(teknisi[nama].gaji)}<br>
+      <b>
+      ${rupiah(teknisi[nama].gaji)}
+      </b><br>
 
-            ${teknisi[nama].status}
+      <span class="${
+      teknisi[nama].status ==
+      'SUDAH TRANSFER'
+      ?
+      'status-transfer'
+      :
+      'status-belum'
+      }">
 
-         </div>
+      ${teknisi[nama].status}
 
-      </div>
-      `;
+      </span>
+
+   </div>
+
+	</div>
+	`;
    });
 
    document.getElementById(
    'dashboardTeknisiPayroll'
    ).innerHTML = htmlTeknisi;
+new Chart(
+
+document.getElementById(
+'chartGaji'
+),{
+
+   type:'bar',
+
+   data:{
+
+      labels:Object.keys(periodeGaji),
+
+      datasets:[{
+
+         label:'Total Gaji',
+
+         data:Object.values(periodeGaji),
+
+         borderWidth:1
+      }]
+   }
+});
+
+new Chart(
+
+document.getElementById(
+'chartSC'
+),{
+
+   type:'line',
+
+   data:{
+
+      labels:Object.keys(periodeSC),
+
+      datasets:[{
+
+         label:'Total SC',
+
+         data:Object.values(periodeSC),
+
+         borderWidth:2
+      }]
+   }
+});
 }
 /* SIMPAN KAS */
 
