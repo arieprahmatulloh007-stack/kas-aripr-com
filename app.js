@@ -372,12 +372,7 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-if(window.gajiChart){
-
-   window.gajiChart.destroy();
-}
-
-window.gajiChart = new Chart(
+new Chart(
 
 document.getElementById(
 'chartGaji'
@@ -400,65 +395,28 @@ document.getElementById(
    }
 });
 
-try{
+new Chart(
 
-let chartSC =
-document.getElementById('chartSC');
+document.getElementById(
+'chartSC'
+),{
 
-if(chartSC){
+   type:'line',
 
-   if(window.scChart){
+   data:{
 
-      window.scChart.destroy();
+      labels:Object.keys(periodeSC),
+
+      datasets:[{
+
+         label:'Total SC',
+
+         data:Object.values(periodeSC),
+
+         borderWidth:2
+      }]
    }
-
-   window.scChart =
-   new Chart(chartSC,{
-
-      type:'bar',
-
-      data:{
-
-         labels:
-         Object.keys(periodeSC),
-
-         datasets:[{
-
-            label:'Total SC',
-
-            data:
-            Object.values(periodeSC),
-
-            backgroundColor:'#2563eb',
-
-            borderRadius:10
-         }]
-      },
-
-      options:{
-
-         responsive:true,
-
-         maintainAspectRatio:false,
-
-         plugins:{
-
-            legend:{
-
-               display:true
-            }
-         },
-
-         scales:{
-
-            y:{
-
-               beginAtZero:true
-            }
-         }
-      }
-   });
-}
+});
 }
 
 async function loadSummaryTeknisi(){
