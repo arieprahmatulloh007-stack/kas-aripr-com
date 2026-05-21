@@ -1,5 +1,7 @@
 const API_URL ='https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';/*
- =========================GLOBAL DATA========================= */
+ =========================
+ GLOBAL DATA
+ ========================= */
 
 let kasData = [];
 
@@ -32,8 +34,6 @@ showPage('dashboard');
 loadDashboard();
 
 loadDashboardPayroll();
-
-loadSummaryTeknisi();
 
 loadKas();
 
@@ -196,6 +196,8 @@ Object.keys(periodeGaji).reverse().forEach(p=>{
 
 });
 
+document.getElementById('dashboardPeriodeGaji').innerHTML = htmlGaji;
+
 let htmlSC = '';
 
 Object.keys(periodeSC).reverse().forEach(p=>{
@@ -213,103 +215,43 @@ Object.keys(periodeSC).reverse().forEach(p=>{
 
 });
 
-let periodeList = [];
+document.getElementById('dashboardPeriodeSC').innerHTML = htmlSC;
 
-data.forEach(item=>{
+let htmlTeknisi = '';
 
-if(!periodeList.includes(item.periode)){
+Object.keys(teknisi).forEach(nama=>{
 
-  periodeList.push(item.periode);
+ htmlTeknisi += `
 
-}});
+<div class="rank-card">
 
-periodeList.sort();
+  <b>${nama}</b><br>
 
-let ranking = {};
+  ${teknisi[nama].sc} SC
 
-data.forEach(item=>{
+  <b>
+  ${rupiah(teknisi[nama].gaji)}
+  </b><br>
 
-let nama = item.nama;
-
-if(!ranking[nama]){
-
-  ranking[nama] = {};
-
-}
-
-if(!ranking[nama][item.periode]){
-
-  ranking[nama][item.periode] = {
-
-     sc:0,
-
-     rp:0
-  };
-
-}
-
-ranking[nama][item.periode].sc +=Number(item.jumlahOrder || 0);
-
-ranking[nama][item.periode].rp +=Number(item.totalGaji || 0);});
-
-let head = `
-
-periodeList.forEach(p=>{
-
-head += `
-
-head += `
-
-periodeList.forEach(()=>{
-
-head += `
-
-head += `
-
-document.getElementById('rankingPayrollHead').innerHTML = head;
-
-let body = '';
-
-Object.keys(ranking).forEach(nama=>{
-
-body += `
-
-  <td class="nama-teknisi-rank">
-  ${nama}
-  </td>
-
-`;
-
-periodeList.forEach(p=>{
-
-  let item =
-  ranking[nama][p];
-
-  body += `
-
-  <td class="total-sc">
-
-  ${item ? item.sc : 0}
-
-  </td>
-
-  <td class="total-rp">
-
-  ${item
+  <span class="${
+  teknisi[nama].status ==
+  'SUDAH TRANSFER'
   ?
-  rupiah(item.rp)
+  'status-transfer'
   :
-  'Rp 0'
-  }
+  'status-belum'
+  }">
 
-  </td>
-  `;
+  ${teknisi[nama].status}
+
+  </span>
+
+</div>
+`;
 
 });
 
-body += `
-
-document.getElementById('dashboardTeknisiPayroll').innerHTML = body;new Chart(
+document.getElementById('dashboardTeknisiPayroll').innerHTML = htmlTeknisi;new Chart(
 
 document.getElementById('chartGaji'),{
 
@@ -349,64 +291,7 @@ data:{
      borderWidth:2
   }]
 
-}});}
-
-async function loadSummaryTeknisi(){
-
-let res =await fetch(API_URL +'?action=getTeknisi');
-
-let data =await res.json();
-
-let totalTeknisi =data.length;
-
-let area = [];
-
-let jabatan = [];
-
-let aktif = 0;
-
-let nonaktif = 0;
-
-data.forEach(item=>{
-
-  if(
-  !area.includes(item.area)
-  ){
-
-     area.push(item.area);
-  }
-
-  if(
-  !jabatan.includes(item.jabatan)
-  ){
-
-     jabatan.push(item.jabatan);
-  }
-
-  if(
-  item.status == 'AKTIF'
-  ){
-
-     aktif++;
-
-  }else{
-
-     nonaktif++;
-  }
-
-});
-
-document.getElementById('totalTeknisiCard').innerHTML =totalTeknisi;
-
-document.getElementById('totalAreaCard').innerHTML =area.length;
-
-document.getElementById('totalJabatanCard').innerHTML =jabatan.length;
-
-document.getElementById('aktifTeknisiCard').innerHTML =aktif;
-
-document.getElementById('nonaktifTeknisiCard').innerHTML =nonaktif;}
-
-/* SIMPAN KAS */
+}});}/* SIMPAN KAS */
 
 async function simpanKas(){
 
@@ -2125,3 +2010,4 @@ ${content}
 win.document.close();
 
 win.print();
+}
