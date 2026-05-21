@@ -826,15 +826,9 @@ function filterKas(){
      let data =
    [...kasData];
    
-   let tglAwal =
-   document
-   .getElementById('tglAwalKas')
-   .value;
+   let tglAwal = '';
 
-   let tglAkhir =
-   document
-   .getElementById('tglAkhirKas')
-   .value;
+   let tglAkhir = '';
    
    let cari =
    document
@@ -2589,7 +2583,7 @@ function printSlip(){
 
             color:#fff;
 
-            font-weight:bold;a
+            font-weight:bold;
 
             background:#22c55e;
          }
