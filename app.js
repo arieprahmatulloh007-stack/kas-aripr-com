@@ -402,71 +402,63 @@ document.getElementById(
 
 try{
 
-   let chartSC =
+let chartSC =
 document.getElementById('chartSC');
 
-try{
+if(chartSC){
 
-   if(chartSC){
+   if(window.scChart){
 
-      if(window.scChart){
-
-         window.scChart.destroy();
-      }
-
-      window.scChart =
-      new Chart(chartSC,{
-
-         type:'bar',
-
-         data:{
-
-            labels:
-            Object.keys(periodeSC),
-
-            datasets:[{
-
-               label:'Total SC',
-
-               data:
-               Object.values(periodeSC),
-
-               backgroundColor:'#2563eb',
-
-               borderRadius:10
-            }]
-         },
-
-         options:{
-
-            responsive:true,
-
-            maintainAspectRatio:false,
-
-            plugins:{
-
-               legend:{
-
-                  display:true
-               }
-            },
-
-            scales:{
-
-               y:{
-
-                  beginAtZero:true
-               }
-            }
-         }
-      });
+      window.scChart.destroy();
    }
 
-}catch(err){
+   window.scChart =
+   new Chart(chartSC,{
 
-   console.log(err);
+      type:'bar',
+
+      data:{
+
+         labels:
+         Object.keys(periodeSC),
+
+         datasets:[{
+
+            label:'Total SC',
+
+            data:
+            Object.values(periodeSC),
+
+            backgroundColor:'#2563eb',
+
+            borderRadius:10
+         }]
+      },
+
+      options:{
+
+         responsive:true,
+
+         maintainAspectRatio:false,
+
+         plugins:{
+
+            legend:{
+
+               display:true
+            }
+         },
+
+         scales:{
+
+            y:{
+
+               beginAtZero:true
+            }
+         }
+      }
+   });
 }
-
 }
 
 async function loadSummaryTeknisi(){
