@@ -225,10 +225,6 @@ async function loadDashboardPayroll(){
       `;
    });
 
-   document.getElementById(
-   'dashboardPeriodeGaji'
-   ).innerHTML = htmlGaji;
-
    let htmlSC = '';
 
    Object.keys(periodeSC)
@@ -246,10 +242,6 @@ async function loadDashboardPayroll(){
       </div>
       `;
    });
-
-   document.getElementById(
-   'dashboardPeriodeSC'
-   ).innerHTML = htmlSC;
 
    let htmlTeknisi = '';
 
