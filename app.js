@@ -141,15 +141,25 @@ async function loadDashboard(){
 async function loadDashboardPayroll(){
 
    let res =
-   await fetch(
-   API_URL +
-   '?action=getPayroll'
-   );
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify({
+
+         action:'getPayroll'
+      })
+   });
 
    let data =
    await res.json();
 
-   if(!Array.isArray(data)) return;
+   if(!Array.isArray(data)){
+
+      console.log(data);
+
+      return;
+   }
 
    let periodeGaji = {};
 
@@ -204,6 +214,7 @@ async function loadDashboardPayroll(){
    .forEach(p=>{
 
       htmlGaji += `
+
       <div class="row-dashboard">
 
          <span>${p}</span>
@@ -225,6 +236,7 @@ async function loadDashboardPayroll(){
    .forEach(p=>{
 
       htmlSC += `
+
       <div class="row-dashboard">
 
          <span>${p}</span>
@@ -245,6 +257,7 @@ async function loadDashboardPayroll(){
    .forEach(nama=>{
 
       htmlTeknisi += `
+
       <div class="row-dashboard">
 
          <div>
@@ -252,6 +265,7 @@ async function loadDashboardPayroll(){
             <b>${nama}</b><br>
 
             ${teknisi[nama].sc} SC
+
          </div>
 
          <div>
@@ -270,7 +284,6 @@ async function loadDashboardPayroll(){
    'dashboardTeknisiPayroll'
    ).innerHTML = htmlTeknisi;
 }
-
 /* SIMPAN KAS */
 
 async function simpanKas(){
