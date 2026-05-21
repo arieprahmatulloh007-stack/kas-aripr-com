@@ -467,6 +467,8 @@ try{
    console.log(err);
 }
 
+}
+
 async function loadSummaryTeknisi(){
 
    let res =
