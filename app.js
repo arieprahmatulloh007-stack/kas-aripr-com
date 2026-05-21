@@ -39,6 +39,8 @@ window.onload = function(){
    loadDashboard();
    
    loadDashboardPayroll();
+   
+   loadSummaryTeknisi();
 
    loadKas();
 
@@ -416,6 +418,83 @@ document.getElementById(
    }
 });
 }
+
+async function loadSummaryTeknisi(){
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getTeknisi'
+   );
+
+   let data =
+   await res.json();
+
+   let totalTeknisi =
+   data.length;
+
+   let area = [];
+
+   let jabatan = [];
+
+   let aktif = 0;
+
+   let nonaktif = 0;
+
+   data.forEach(item=>{
+
+      if(
+      !area.includes(item.area)
+      ){
+
+         area.push(item.area);
+      }
+
+      if(
+      !jabatan.includes(item.jabatan)
+      ){
+
+         jabatan.push(item.jabatan);
+      }
+
+      if(
+      item.status == 'AKTIF'
+      ){
+
+         aktif++;
+
+      }else{
+
+         nonaktif++;
+      }
+   });
+
+   document.getElementById(
+   'totalTeknisiCard'
+   ).innerHTML =
+   totalTeknisi;
+
+   document.getElementById(
+   'totalAreaCard'
+   ).innerHTML =
+   area.length;
+
+   document.getElementById(
+   'totalJabatanCard'
+   ).innerHTML =
+   jabatan.length;
+
+   document.getElementById(
+   'aktifTeknisiCard'
+   ).innerHTML =
+   aktif;
+
+   document.getElementById(
+   'nonaktifTeknisiCard'
+   ).innerHTML =
+   nonaktif;
+}
+
 /* SIMPAN KAS */
 
 async function simpanKas(){
