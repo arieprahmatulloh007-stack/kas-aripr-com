@@ -372,30 +372,47 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-let periodeGajiChart =
-Object.keys(periodeGaji);
+new Chart(
 
-let totalGajiList =
-Object.values(periodeGaji);
+document.getElementById(
+'chartGaji'
+),{
 
-let gajiCanvas =
-document.getElementById('chartGaji');
+   type:'bar',
 
-if(gajiCanvas){
+   data:{
 
-   new Chart(gajiCanvas,{
+      labels:Object.keys(periodeGaji),
+
+      datasets:[{
+
+         label:'Total Gaji',
+
+         data:Object.values(periodeGaji),
+
+         borderWidth:1
+      }]
+   }
+});
+
+let chartSC =
+document.getElementById('chartSC');
+
+if(chartSC){
+
+   new Chart(chartSC,{
 
       type:'bar',
 
       data:{
 
-         labels:periodeGajiChart,
-		 
+         labels:Object.keys(periodeSC),
+
          datasets:[{
 
-            label:'Total Gaji',
+            label:'Total SC',
 
-            data:totalGajiList,
+            data:Object.values(periodeSC),
 
             backgroundColor:'#2563eb',
 
@@ -410,7 +427,6 @@ if(gajiCanvas){
          plugins:{
 
             legend:{
-
                display:true
             }
          },
@@ -418,7 +434,6 @@ if(gajiCanvas){
          scales:{
 
             y:{
-
                beginAtZero:true
             }
          }
@@ -426,110 +441,167 @@ if(gajiCanvas){
    });
 }
 
-let periodeChart = Object.keys(periodeSC);
+async function loadSummaryTeknisi(){
 
-let scList = Object.values(periodeSC);
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getTeknisi'
+   );
 
-let scCanvas =
-document.getElementById('chartSC');
+   let data =
+   await res.json();
 
-if(scCanvas){
+   let aktif = 0;
 
-   new Chart(scCanvas,{
+   let nonaktif = 0;
 
-      type:'line',
+   let jabatan = [];
 
-      data:{
+   let areaCount = {
 
-         labels:periodeChart,
+      CMI:0,
 
-         datasets:[{
+      NJG:0,
 
-            label:'Total SC',
+      BTJ:0,
 
-            data:scList,
+      CLL:0,
 
-            borderColor:'#2563eb',
+      GNH:0
+   };
 
-            backgroundColor:
-            'rgba(37,99,235,0.15)',
+   data.forEach(item=>{
 
-            fill:true,
+      let area =
+      String(item.area || '')
+      .toUpperCase()
+      .trim();
 
-            tension:0.4,
+      if(areaCount[area] != undefined){
 
-            pointRadius:6,
+         areaCount[area]++;
+      }
 
-            pointHoverRadius:8,
+      if(
+      !jabatan.includes(item.jabatan)
+      ){
 
-            pointBackgroundColor:'#2563eb'
-         }]
-      },
+         jabatan.push(item.jabatan);
+      }
 
-      options:{
+      if(item.status == 'AKTIF'){
 
-         responsive:true,
+         aktif++;
 
-         plugins:{
+      }else{
 
-            legend:{
-
-               display:true
-            }
-         },
-
-         scales:{
-
-            y:{
-
-               beginAtZero:true
-            }
-         }
-      },
-
-      plugins:[{
-
-         id:'customLabel',
-
-         afterDatasetsDraw(chart){
-
-            const ctx = chart.ctx;
-
-            chart.data.datasets.forEach(
-
-            function(dataset,i){
-
-               const meta =
-               chart.getDatasetMeta(i);
-
-               meta.data.forEach(
-
-               function(element,index){
-
-                  ctx.fillStyle =
-                  '#0f172a';
-
-                  ctx.font =
-                  'bold 12px Segoe UI';
-
-                  ctx.textAlign =
-                  'center';
-
-                  ctx.fillText(
-
-                     dataset.data[index]
-                     + ' SC',
-
-                     element.x,
-
-                     element.y - 15
-                  );
-               });
-            });
-         }
-      }]
+         nonaktif++;
+      }
    });
+
+   document.getElementById(
+   'totalTeknisiCard'
+   ).innerHTML =
+   data.length;
+
+   document.getElementById(
+   'jabatanList'
+   ).innerHTML =
+   jabatan.join(', ');
+
+   document.getElementById(
+   'cmiCount'
+   ).innerHTML =
+   areaCount.CMI;
+
+   document.getElementById(
+   'njgCount'
+   ).innerHTML =
+   areaCount.NJG;
+
+   document.getElementById(
+   'btjCount'
+   ).innerHTML =
+   areaCount.BTJ;
+
+   document.getElementById(
+   'cllCount'
+   ).innerHTML =
+   areaCount.CLL;
+
+   document.getElementById(
+   'gnhCount'
+   ).innerHTML =
+   areaCount.GNH;
+
+   document.getElementById(
+   'aktifTeknisiCard'
+   ).innerHTML =
+   aktif;
+
+   document.getElementById(
+   'nonaktifTeknisiCard'
+   ).innerHTML =
+   nonaktif;
 }
+
+/* SIMPAN KAS */
+
+async function simpanKas(){
+
+   let data = {
+
+      action:'tambahKas',
+
+      editId:
+      localStorage.getItem('editKas'),
+      
+      tanggal:
+      document.getElementById('tglKas').value,
+
+      masuk:
+      document.getElementById('nominalMasuk').value,
+
+      keluar:
+      document.getElementById('nominalKeluar').value,
+
+      sumberMasuk:
+      document.getElementById('sumberMasuk').value,
+
+      sumberKeluar:
+      document.getElementById('sumberKeluar').value,
+
+      keterangan:
+      document.getElementById('ketKas').value
+
+
+   };
+
+   await fetch(API_URL,{
+
+      method:'POST',
+
+      body:JSON.stringify(data)
+   });
+
+   alert('Berhasil');
+
+   document.getElementById('tglKas').value='';
+
+   document.getElementById('nominalMasuk').value='';
+
+   document.getElementById('nominalKeluar').value='';
+
+   document.getElementById('sumberMasuk').value='';
+
+   document.getElementById('sumberKeluar').value='';
+
+   document.getElementById('ketKas').value='';
+   localStorage.removeItem('editKas');
+   loadKas();
+
+   loadDashboard();
 }
 
 /* LOAD KAS */
