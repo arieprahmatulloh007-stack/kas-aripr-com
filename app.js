@@ -400,8 +400,6 @@ document.getElementById(
    }
 });
 
-try{
-
 let chartSC =
 document.getElementById('chartSC');
 
@@ -458,7 +456,6 @@ if(chartSC){
          }
       }
    });
-}
 }
 
 async function loadSummaryTeknisi(){
