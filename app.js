@@ -378,46 +378,103 @@ document.getElementById(
 'chartGaji'
 ),{
 
-   type:'bar',
-
-   data:{
-
-      labels:Object.keys(periodeGaji),
-
-      datasets:[{
-
-         label:'Total Gaji',
-
-         data:Object.values(periodeGaji),
-
-         borderWidth:1
-      }]
-   }
-});
-
-new Chart(
-
-document.getElementById(
-'chartSC'
-),{
+new Chart(scCanvas,{
 
    type:'line',
 
    data:{
 
-      labels:Object.keys(periodeSC),
+      labels:periodeList,
 
       datasets:[{
 
          label:'Total SC',
 
-         data:Object.values(periodeSC),
+         data:scList,
 
-         borderWidth:2
+         borderColor:'#2563eb',
+
+         backgroundColor:
+         'rgba(37,99,235,0.15)',
+
+         fill:true,
+
+         tension:0.4,
+
+         pointRadius:6,
+
+         pointHoverRadius:8,
+
+         pointBackgroundColor:'#2563eb'
       }]
-   }
+   },
+
+   options:{
+
+      responsive:true,
+
+      plugins:{
+
+         legend:{
+
+            display:true
+         }
+      },
+
+      scales:{
+
+         y:{
+
+            beginAtZero:true
+         }
+      }
+   },
+
+   plugins:[{
+
+      id:'customLabel',
+
+      afterDatasetsDraw(chart){
+
+         const {
+
+            ctx
+         } = chart;
+
+         chart.data.datasets.forEach(
+
+         function(dataset,i){
+
+            const meta =
+            chart.getDatasetMeta(i);
+
+            meta.data.forEach(
+
+            function(element,index){
+
+               ctx.fillStyle =
+               '#0f172a';
+
+               ctx.font =
+               'bold 12px Segoe UI';
+
+               ctx.textAlign =
+               'center';
+
+               ctx.fillText(
+
+                  dataset.data[index]
+                  + ' SC',
+
+                  element.x,
+
+                  element.y - 15
+               );
+            });
+         });
+      }
+   }]
 });
-}
 
 async function loadSummaryTeknisi(){
 
