@@ -477,10 +477,7 @@ if(scCanvas){
       }]
    });
 }
-
-
-
-
+}
 
 async function loadSummaryTeknisi(){
 
