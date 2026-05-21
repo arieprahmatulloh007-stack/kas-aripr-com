@@ -457,6 +457,7 @@ if(chartSC){
       }
    });
 }
+}
 
 async function loadSummaryTeknisi(){
 
