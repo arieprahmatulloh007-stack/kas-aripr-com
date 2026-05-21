@@ -430,24 +430,35 @@ async function loadSummaryTeknisi(){
    let data =
    await res.json();
 
-   let totalTeknisi =
-   data.length;
-
-   let area = [];
-
-   let jabatan = [];
-
    let aktif = 0;
 
    let nonaktif = 0;
 
+   let jabatan = [];
+
+   let areaCount = {
+
+      CMI:0,
+
+      NJG:0,
+
+      BTJ:0,
+
+      CLL:0,
+
+      GNH:0
+   };
+
    data.forEach(item=>{
 
-      if(
-      !area.includes(item.area)
-      ){
+      let area =
+      String(item.area || '')
+      .toUpperCase()
+      .trim();
 
-         area.push(item.area);
+      if(areaCount[area] != undefined){
+
+         areaCount[area]++;
       }
 
       if(
@@ -457,9 +468,7 @@ async function loadSummaryTeknisi(){
          jabatan.push(item.jabatan);
       }
 
-      if(
-      item.status == 'AKTIF'
-      ){
+      if(item.status == 'AKTIF'){
 
          aktif++;
 
@@ -472,17 +481,37 @@ async function loadSummaryTeknisi(){
    document.getElementById(
    'totalTeknisiCard'
    ).innerHTML =
-   totalTeknisi;
+   data.length;
 
    document.getElementById(
-   'totalAreaCard'
+   'jabatanList'
    ).innerHTML =
-   area.length;
+   jabatan.join(', ');
 
    document.getElementById(
-   'totalJabatanCard'
+   'cmiCount'
    ).innerHTML =
-   jabatan.length;
+   areaCount.CMI;
+
+   document.getElementById(
+   'njgCount'
+   ).innerHTML =
+   areaCount.NJG;
+
+   document.getElementById(
+   'btjCount'
+   ).innerHTML =
+   areaCount.BTJ;
+
+   document.getElementById(
+   'cllCount'
+   ).innerHTML =
+   areaCount.CLL;
+
+   document.getElementById(
+   'gnhCount'
+   ).innerHTML =
+   areaCount.GNH;
 
    document.getElementById(
    'aktifTeknisiCard'
