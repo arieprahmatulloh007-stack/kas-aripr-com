@@ -403,7 +403,9 @@ document.getElementById(
 try{
 
    let chartSC =
-   document.getElementById('chartSC');
+document.getElementById('chartSC');
+
+try{
 
    if(chartSC){
 
@@ -412,19 +414,22 @@ try{
          window.scChart.destroy();
       }
 
-      window.scChart = new Chart(chartSC,{
+      window.scChart =
+      new Chart(chartSC,{
 
          type:'bar',
 
          data:{
 
-            labels:Object.keys(periodeSC),
+            labels:
+            Object.keys(periodeSC),
 
             datasets:[{
 
                label:'Total SC',
 
-               data:Object.values(periodeSC),
+               data:
+               Object.values(periodeSC),
 
                backgroundColor:'#2563eb',
 
@@ -441,6 +446,7 @@ try{
             plugins:{
 
                legend:{
+
                   display:true
                }
             },
@@ -448,6 +454,7 @@ try{
             scales:{
 
                y:{
+
                   beginAtZero:true
                }
             }
