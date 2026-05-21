@@ -168,10 +168,12 @@ padding:35px;}
 
 display:none;}
 
-.page.active{
-
-display:block;}
-
+.page{
+   display:none;
+}
+#dashboard{
+   display:block;
+}
 /* =========================================TITLE========================================= */
 
 h1{
