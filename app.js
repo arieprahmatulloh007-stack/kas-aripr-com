@@ -440,6 +440,7 @@ if(chartSC){
       }
    });
 }
+}
 async function loadSummaryTeknisi(){
 
    let res =
