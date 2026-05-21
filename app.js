@@ -372,28 +372,59 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-new Chart(
+let periodeGaji =
+Object.keys(periodeTotal);
 
-document.getElementById(
-'chartGaji'
-),{
+let totalGajiList =
+Object.values(periodeTotal);
 
-   type:'bar',
+let gajiCanvas =
+document.getElementById('chartGaji');
 
-   data:{
+if(gajiCanvas){
 
-      labels:Object.keys(periodeGaji),
+   new Chart(gajiCanvas,{
 
-      datasets:[{
+      type:'bar',
 
-         label:'Total Gaji',
+      data:{
 
-         data:Object.values(periodeGaji),
+         labels:periodeGaji,
 
-         borderWidth:1
-      }]
-   }
-});
+         datasets:[{
+
+            label:'Total Gaji',
+
+            data:totalGajiList,
+
+            backgroundColor:'#2563eb',
+
+            borderRadius:10
+         }]
+      },
+
+      options:{
+
+         responsive:true,
+
+         plugins:{
+
+            legend:{
+
+               display:true
+            }
+         },
+
+         scales:{
+
+            y:{
+
+               beginAtZero:true
+            }
+         }
+      }
+   });
+}
 
 let periodeChart = Object.keys(periodeSC);
 
