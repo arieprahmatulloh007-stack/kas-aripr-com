@@ -465,13 +465,6 @@ async function loadSummaryTeknisi(){
    API_URL +
    '?action=getTeknisi'
    );
-async function loadSummaryTeknisi(){
-
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
 
    let data =
    await res.json();
