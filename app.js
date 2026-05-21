@@ -243,51 +243,133 @@ async function loadDashboardPayroll(){
       `;
    });
 
-   let htmlTeknisi = '';
+let periodeList = [];
 
-   Object.keys(teknisi)
-   .forEach(nama=>{
+data.forEach(item=>{
 
-     htmlTeknisi += `
+   if(
+   !periodeList.includes(item.periode)
+   ){
 
-	<div class="rank-card">
+      periodeList.push(item.periode);
+   }
+});
 
-   <div class="rank-left">
+periodeList.sort();
 
-      <b>${nama}</b><br>
+let ranking = {};
 
-      ${teknisi[nama].sc} SC
+data.forEach(item=>{
 
-   </div>
+   let nama = item.nama;
 
-   <div class="rank-right">
+   if(!ranking[nama]){
 
-      <b>
-      ${rupiah(teknisi[nama].gaji)}
-      </b><br>
+      ranking[nama] = {};
+   }
 
-      <span class="${
-      teknisi[nama].status ==
-      'SUDAH TRANSFER'
+   if(!ranking[nama][item.periode]){
+
+      ranking[nama][item.periode] = {
+
+         sc:0,
+
+         rp:0
+      };
+   }
+
+   ranking[nama][item.periode].sc +=
+   Number(item.jumlahOrder || 0);
+
+   ranking[nama][item.periode].rp +=
+   Number(item.totalGaji || 0);
+});
+
+let head = `
+<tr>
+
+   <th rowspan="2">
+   NAMA TEKNISI
+   </th>
+`;
+
+periodeList.forEach(p=>{
+
+   head += `
+   <th colspan="2">
+   ${p}
+   </th>
+   `;
+});
+
+head += `
+</tr>
+
+<tr>
+`;
+
+periodeList.forEach(()=>{
+
+   head += `
+   <th>SC</th>
+   <th>RP</th>
+   `;
+});
+
+head += `
+</tr>
+`;
+
+document.getElementById(
+'rankingPayrollHead'
+).innerHTML = head;
+
+let body = '';
+
+Object.keys(ranking).forEach(nama=>{
+
+   body += `
+   <tr>
+
+      <td class="nama-teknisi-rank">
+      ${nama}
+      </td>
+   `;
+
+   periodeList.forEach(p=>{
+
+      let item =
+      ranking[nama][p];
+
+      body += `
+
+      <td class="total-sc">
+
+      ${item ? item.sc : 0}
+
+      </td>
+
+      <td class="total-rp">
+
+      ${item
       ?
-      'status-transfer'
+      rupiah(item.rp)
       :
-      'status-belum'
-      }">
+      'Rp 0'
+      }
 
-      ${teknisi[nama].status}
-
-      </span>
-
-   </div>
-
-	</div>
-	`;
+      </td>
+      `;
    });
 
-   document.getElementById(
-   'dashboardTeknisiPayroll'
-   ).innerHTML = htmlTeknisi;
+   body += `
+   </tr>
+   `;
+});
+
+document.getElementById(
+'dashboardTeknisiPayroll'
+).innerHTML = body;
 new Chart(
 
 document.getElementById(
