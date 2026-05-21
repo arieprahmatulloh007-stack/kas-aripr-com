@@ -457,7 +457,14 @@ if(chartSC){
       }
    });
 }
-}
+
+async function loadSummaryTeknisi(){
+
+   let res =
+   await fetch(
+   API_URL +
+   '?action=getTeknisi'
+   );
 async function loadSummaryTeknisi(){
 
    let res =
@@ -2628,7 +2635,7 @@ function printSlip(){
 
             color:#fff;
 
-            font-weight:bold;a
+            font-weight:bold;
 
             background:#22c55e;
          }
