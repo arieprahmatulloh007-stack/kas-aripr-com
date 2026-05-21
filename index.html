@@ -39,177 +39,442 @@ if(localStorage.getItem('login') != 'true'){
 
    <h2>
 
-      <i class="fa-solid fa-wallet"></i>
+ <i class="fa-solid fa-wallet"></i>
 
-      <span>
+  <span>
 
-         KAS ARIP<br>
-         R.COM
+     KAS ARIP<br>
+     R.COM
 
-      </span>
+  </span>
 
-   </h2>
+  <div class="card">
+     <h3>Total Uang Masuk</h3>
+     <p id="totalMasuk">Rp 0</p>
+  </div>
 
-   <button onclick="showPage('dashboard')">
-      Dashboard
-   </button>
+  <div class="card">
+     <h3>Total Uang Keluar</h3>
+     <p id="totalKeluar">Rp 0</p>
+  </div>
 
-   <button onclick="showPage('kas')">
-      Uang Kas
-   </button>
+  <div class="card">
+     <h3>Sisa Uang Kas</h3>
+     <p id="sisaKas">Rp 0</p>
+  </div>
 
-   <button onclick="showPage('pinjaman')">
-      Pinjaman
-   </button>
+  <div class="card">
+     <h3>Total Pinjaman</h3>
+     <p id="totalPinjaman">Rp 0</p>
+  </div>
 
-   <button onclick="showPage('cicilan')">
-      Cicilan
-   </button>
+  <div class="card">
+     <h3>Sisa Piutang</h3>
+     <p id="sisaPiutang">Rp 0</p>
+  </div>
 
-   <hr>
+  <canvas id="myChart"></canvas>
 
-   <button onclick="showPage('teknisi')">
-      Data Teknisi
-   </button>
+  <h3>Belum Lunas Pinjaman / Kasbon</h3>
 
-   <button onclick="showPage('uploadGaji')">
-      Upload Gaji
-   </button>
+  <div id="belumLunasList"></div>
 
-   <button onclick="showPage('monitoringGaji')">
-      Monitoring Gaji
-   </button>
+  <div class="dashboard-box">
 
-   <button onclick="showPage('slipGaji')">
-      Slip Gaji
-   </button>
+     <h3>Total Gaji Periode</h3>
 
-   <br>
+     <canvas id="chartGaji"></canvas>
 
-   <button onclick="logout()">
-      Logout
-   </button>
+  </div>
+
+  <div class="dashboard-box">
+
+     <h3>Total SC Periode</h3>
+
+     <canvas id="chartSC"></canvas>
+
+  </div>
+
+  <h3>Ranking Teknisi Payroll</h3>
+
+  <div id="dashboardTeknisiPayroll"></div>
+
+  <h3>Total SC Periode</h3>
+
+  <div id="dashboardPeriodeSC"></div>
+
+  <h3>Ranking Teknisi Payroll</h3>
+
+  <div id="dashboardTeknisiPayroll"></div>
+
+  <input type="date" id="tglKas">
+
+  <input
+  type="number"
+  id="nominalMasuk"
+  placeholder="Nominal Masuk">
+
+  <input
+  type="number"
+  id="nominalKeluar"
+  placeholder="Nominal Keluar">
+
+  <input
+  type="text"
+  id="sumberMasuk"
+  placeholder="Sumber Masuk">
+
+  <input
+  type="text"
+  id="sumberKeluar"
+  placeholder="Sumber Keluar">
+
+  <input
+  type="text"
+  id="ketKas"
+  placeholder="Keterangan">
+
+  <button onclick="simpanKas()">
+     Simpan
+  </button>
+
+  <button onclick="printKas()">
+     Print Laporan
+  </button>
+
+  <input
+  type="text"
+  id="searchKas"
+  placeholder="Cari keterangan..."
+  onkeyup="filterKas()">
+
+  <select
+  id="sortKas"
+  onchange="filterKas()">
+
+     <option value="baru">
+        Terbaru
+     </option>
+
+     <option value="lama">
+        Terlama
+     </option>
+
+  </select>
+
+  <table>
+
+     <thead>
+
+        <tr>
+
+           <th>Tanggal</th>
+           <th>Masuk</th>
+           <th>Keluar</th>
+           <th>Sumber Masuk</th>
+           <th>Sumber Keluar</th>
+           <th>Keterangan</th>
+           <th>Aksi</th>
+
+        </tr>
+
+     </thead>
+
+     <tbody id="tableKas"></tbody>
+
+  </table>
+
+  <input
+  type="text"
+  id="namaPinjam"
+  placeholder="Nama">
+
+  <input
+  type="text"
+  id="hpPinjam"
+  placeholder="No HP">
+
+  <input
+  type="text"
+  id="alamatPinjam"
+  placeholder="Alamat">
+
+  <input
+  type="number"
+  id="totalPinjam"
+  placeholder="Total Pinjaman">
+
+  <input
+  type="number"
+  id="lamaCicilan"
+  placeholder="Lama Cicilan (bulan)">
+
+  <button onclick="simpanPinjaman()">
+     Simpan
+  </button>
+
+  <button onclick="printPinjaman()">
+     Print Pinjaman
+  </button>
+
+  <input
+  type="text"
+  id="searchPinjaman"
+  placeholder="Cari pinjaman..."
+  onkeyup="filterPinjaman()">
+
+  <input
+  type="date"
+  id="tglAwalPinjaman"
+  onchange="filterPinjaman()">
+
+  <input
+  type="date"
+  id="tglAkhirPinjaman"
+  onchange="filterPinjaman()">
+
+  <select
+  id="sortPinjaman"
+  onchange="filterPinjaman()">
+
+     <option value="baru">
+        Terbaru
+     </option>
+
+     <option value="lama">
+        Terlama
+     </option>
+
+  </select>
+
+  <table>
+
+     <thead>
+
+        <tr>
+
+           <th>Nama</th>
+           <th>Total</th>
+           <th>Sudah Bayar</th>
+           <th>Sisa</th>
+           <th>Status</th>
+           <th>Aksi</th>
+
+        </tr>
+
+     </thead>
+
+     <tbody id="tablePinjaman"></tbody>
+
+  </table>
+
+  <select id="idPeminjam"></select>
+
+  <input
+  type="number"
+  id="cicilanKe"
+  placeholder="Cicilan Ke">
+
+  <input
+  type="number"
+  id="bayarNominal"
+  placeholder="Nominal Bayar">
+
+  <button onclick="bayarCicilan()">
+     Bayar
+  </button>
+
+  <button onclick="printCicilan()">
+     Print Cicilan
+  </button>
+
+  <input
+  type="text"
+  id="searchCicilan"
+  placeholder="Cari peminjam..."
+  onkeyup="filterCicilan()">
+
+  <table>
+
+     <thead>
+
+        <tr>
+
+           <th>Tanggal</th>
+           <th>Peminjam</th>
+           <th>Cicilan</th>
+           <th>Bayar</th>
+           <th>Sisa</th>
+           <th>Aksi</th>
+
+        </tr>
+
+     </thead>
+
+     <tbody id="tableCicilan"></tbody>
+
+  </table>
+
+  <input type="hidden"
+  id="editTeknisiId">
+
+  <input type="text"
+  id="teknisiNama"
+  placeholder="Nama Teknisi">
+
+  <input type="text"
+  id="teknisiJabatan"
+  placeholder="Jabatan">
+
+  <input type="text"
+  id="teknisiArea"
+  placeholder="Area">
+
+  <input type="text"
+  id="teknisiHp"
+  placeholder="No HP">
+
+  <input type="text"
+  id="teknisiBank"
+  placeholder="Bank">
+
+  <input type="text"
+  id="teknisiRekening"
+  placeholder="No Rekening">
+
+  <select id="teknisiStatus">
+
+     <option value="AKTIF">
+     AKTIF
+     </option>
+
+     <option value="NONAKTIF">
+     NONAKTIF
+     </option>
+
+  </select>
+
+  <button onclick="simpanTeknisi()">
+
+  Simpan Teknisi
+
+  </button>
+
+  <input
+  type="text"
+  id="searchTeknisi"
+  placeholder="Cari nama teknisi..."
+  onkeyup="filterTeknisi()"
+  class="search-input">
+
+  <table>
+
+     <thead>
+
+        <tr>
+
+           <th>NIK</th>
+           <th>Nama</th>
+           <th>Jabatan</th>
+           <th>Area</th>
+           <th>No HP</th>
+           <th>Bank</th>
+           <th>Rekening</th>
+           <th>Status</th>
+           <th>Aksi</th>
+
+        </tr>
+
+     </thead>
+
+     <tbody id="tableTeknisi">
+     </tbody>
+
+  </table>
+
+  <h3>Upload File Excel Payroll</h3>
+<input
+type="month"
+id="uploadPeriode">
+
+  <p>
+     Format wajib:
+     DATA_GAJI
+  </p>
+
+  <input
+  type="file"
+  id="fileExcel">
+
+  <br><br>
+
+  <button onclick="uploadExcel()">
+     Upload & Proses
+  </button>
+
+
+
+
 
 </div>
 
-<!-- =========================
-     CONTENT
-========================= -->
+  <table>
 
-<div class="content">
+     <thead>
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+        <tr>
 
-<div id="dashboard" class="page">
+           <th>Tanggal</th>
+		   <th>Periode</th>
+           <th>Nama</th>
+		   <th>Bank</th>
+			<th>Rekening</th>
+           <th>Total SC</th>
+		   <th>Order</th>
+           <th>Bonus</th>
+           <th>Lembur</th>
+           <th>Potongan</th>
+           <th>Total Gaji</th>
+           <th>Status</th>
 
-   <h1>Dashboard</h1>
+        </tr>
 
-   <div class="cards">
+     </thead>
 
-      <div class="card">
-         <h3>Total Uang Masuk</h3>
-         <p id="totalMasuk">Rp 0</p>
-      </div>
+     <tbody id="tableGaji"></tbody>
 
-      <div class="card">
-         <h3>Total Uang Keluar</h3>
-         <p id="totalKeluar">Rp 0</p>
-      </div>
+  </table>
 
-      <div class="card">
-         <h3>Sisa Uang Kas</h3>
-         <p id="sisaKas">Rp 0</p>
-      </div>
+  <div class="slip-filter">
 
-      <div class="card">
-         <h3>Total Pinjaman</h3>
-         <p id="totalPinjaman">Rp 0</p>
-      </div>
+     <select id="slipNama">
+     </select>
+	<input
+		type="month"
+		id="slipBulan">
+     <button onclick="buatSlipGaji()">
 
-      <div class="card">
-         <h3>Sisa Piutang</h3>
-         <p id="sisaPiutang">Rp 0</p>
-      </div>
+     Tampilkan Slip
 
-   </div>
+     </button>
 
-   <div class="chart-box">
+     <button onclick="printSlip()">
 
-      <canvas id="myChart"></canvas>
+     Print Slip
 
-   </div>
+     </button>
 
-   <div class="card">
+  </div>
 
-      <h3>Belum Lunas Pinjaman / Kasbon</h3>
-
-      <div id="belumLunasList"></div>
-
-   </div>
-
-   <div class="payroll-dashboard">
-
-   <div class="dashboard-grid">
-
-      <div class="dashboard-box">
-
-         <h3>Total Gaji Periode</h3>
-
-         <canvas id="chartGaji"></canvas>
-
-      </div>
-
-      <div class="dashboard-box">
-
-         <h3>Total SC Periode</h3>
-
-         <canvas id="chartSC"></canvas>
-
-      </div>
-
-   </div>
-
-   <div class="dashboard-box">
-
-      <h3>Total Gaji Periode</h3>
-      <h3>Ranking Teknisi Payroll</h3>
-
-      <div id="dashboardPeriodeGaji"></div>
-      <div id="dashboardTeknisiPayroll"></div>
+  <div id="hasilSlip"></div>
 
    </div>
 
 </div>
 
-   <div class="dashboard-box">
-
-      <h3>Total SC Periode</h3>
-
-      <div id="dashboardPeriodeSC"></div>
-
-   </div>
-
-   <div class="dashboard-box">
-
-      <h3>Ranking Teknisi Payroll</h3>
-
-      <div id="dashboardTeknisiPayroll"></div>
-
-   </div>
-
-</div>
-
-</div>
-
-<!-- =========================
-     UANG KAS
-========================= -->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="app.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
