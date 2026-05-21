@@ -395,52 +395,30 @@ document.getElementById(
    }
 });
 
-let chartSC =
-document.getElementById('chartSC');
+new Chart(
 
-if(chartSC){
+document.getElementById(
+'chartSC'
+),{
 
-   new Chart(chartSC,{
+   type:'line',
 
-      type:'bar',
+   data:{
 
-      data:{
+      labels:Object.keys(periodeSC),
 
-         labels:Object.keys(periodeSC),
+      datasets:[{
 
-         datasets:[{
+         label:'Total SC',
 
-            label:'Total SC',
+         data:Object.values(periodeSC),
 
-            data:Object.values(periodeSC),
-
-            backgroundColor:'#2563eb',
-
-            borderRadius:10
-         }]
-      },
-
-      options:{
-
-         responsive:true,
-
-         plugins:{
-
-            legend:{
-               display:true
-            }
-         },
-
-         scales:{
-
-            y:{
-               beginAtZero:true
-            }
-         }
-      }
-   });
+         borderWidth:2
+      }]
+   }
+});
 }
-}
+
 async function loadSummaryTeknisi(){
 
    let res =
