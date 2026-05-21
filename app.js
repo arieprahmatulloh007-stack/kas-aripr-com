@@ -1,60 +1,53 @@
-const API_URL =
-'https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';
-/* =========================
-   GLOBAL DATA
-========================= */
+const API_URL ='https://script.google.com/macros/s/AKfycbx0nv2PTvEZMoR5bQUl8WV5ckTI56RrZmvPo-v_NGiHjiX-IkgCyBkmLwcyT5Vu6gRg/exec';/*
+ =========================GLOBAL DATA========================= */
 
 let kasData = [];
 
 let pinjamanData = [];
 
-let cicilanData = [];
-let uploadBtn = null;
-/* PAGE */
+let cicilanData = [];let uploadBtn = null;/* PAGE */
 
 function showPage(id){
 
-   document
-   .querySelectorAll('.page')
-   .forEach(page=>{
+document.querySelectorAll('.page').forEach(page=>{
 
-      page.style.display='none';
-   });
+  page.style.display='none';
 
-   let target =
-   document.getElementById(id);
+});
 
-   if(target){
+let target =document.getElementById(id);
 
-      target.style.display='block';
-   }
-}
+if(target){
+
+  target.style.display='block';
+
+}}
 
 /* DEFAULT PAGE */
 
 window.onload = function(){
 
-   showPage('dashboard');
+showPage('dashboard');
 
-   loadDashboard();
-   
-   loadDashboardPayroll();
-   
-   loadSummaryTeknisi();
+loadDashboard();
 
-   loadKas();
+loadDashboardPayroll();
 
-   loadPinjaman();
+loadSummaryTeknisi();
 
-   loadCicilan();
+loadKas();
 
-   loadDropdownPeminjam();
+loadPinjaman();
 
-   loadPayroll();
+loadCicilan();
 
-   loadTeknisi();
+loadDropdownPeminjam();
 
-   loadSlipNama();
+loadPayroll();
+
+loadTeknisi();
+
+loadSlipNama();
 
 };
 
@@ -62,200 +55,173 @@ window.onload = function(){
 
 function logout(){
 
-   localStorage.clear();
+localStorage.clear();
 
-   window.location='login.html';
-}
+window.location='login.html';}
 
 /* FORMAT */
 
 function formatRupiah(angka){
 
-   return Number(angka || 0)
-   .toLocaleString('id-ID');
-}
+return Number(angka || 0).toLocaleString('id-ID');}
 
 function rupiah(angka){
 
-   return 'Rp ' +
-   Number(angka || 0)
-   .toLocaleString('id-ID');
-}
+return 'Rp ' +Number(angka || 0).toLocaleString('id-ID');}
 
 function formatTanggal(tanggal){
 
-   return new Date(tanggal)
-   .toLocaleDateString('id-ID');
-}
+return new Date(tanggal).toLocaleDateString('id-ID');}
 
 /* DASHBOARD */
 
 async function loadDashboard(){
 
-   const res =
-   await fetch(API_URL + '?action=dashboard');
+const res =await fetch(API_URL + '?action=dashboard');
 
-   const data =
-   await res.json();
-   document.getElementById('totalMasuk')
-   .innerHTML =
-   rupiah(data.totalMasuk);
+const data =await res.json();document.getElementById('totalMasuk').innerHTML =rupiah(data.totalMasuk);
 
-   document.getElementById('totalKeluar')
-   .innerHTML =
-   rupiah(data.totalKeluar);
+document.getElementById('totalKeluar').innerHTML =rupiah(data.totalKeluar);
 
-   document.getElementById('sisaKas')
-   .innerHTML =
-   rupiah(data.sisaKas);
+document.getElementById('sisaKas').innerHTML =rupiah(data.sisaKas);
 
-   document.getElementById('totalPinjaman')
-   .innerHTML =
-   rupiah(data.totalPinjaman);
+document.getElementById('totalPinjaman').innerHTML =rupiah(data.totalPinjaman);
 
-   document.getElementById('sisaPiutang')
-   .innerHTML =
-   rupiah(data.totalPiutang);
+document.getElementById('sisaPiutang').innerHTML =rupiah(data.totalPiutang);
 
-   /* =========================
-      BELUM LUNAS
-   ========================= */
+/* =========================BELUM LUNAS========================= */
 
-   let html='';
+let html='';
 
-   data.belumLunas.forEach(item=>{
+data.belumLunas.forEach(item=>{
 
-      html += `
-      <p>
+  html += `
+  <p>
 
-         ${item.nama}
-         -
-         ${rupiah(item.sisa)}
+     ${item.nama}
+     -
+     ${rupiah(item.sisa)}
 
-      </p>
-      `;
-   });
+  </p>
+  `;
 
-   document.getElementById('belumLunasList')
-   .innerHTML = html;
-}
+});
+
+document.getElementById('belumLunasList').innerHTML = html;}
 
 async function loadDashboardPayroll(){
 
-   let res =
-   await fetch(API_URL,{
+let res =await fetch(API_URL,{
 
-      method:'POST',
+  method:'POST',
 
-      body:JSON.stringify({
+  body:JSON.stringify({
 
-         action:'getPayroll'
-      })
-   });
+     action:'getPayroll'
+  })
 
-   let data =
-   await res.json();
+});
 
-   if(!Array.isArray(data)){
+let data =await res.json();
 
-      console.log(data);
+if(!Array.isArray(data)){
 
-      return;
-   }
+  console.log(data);
 
-   let periodeGaji = {};
+  return;
 
-   let periodeSC = {};
+}
 
-   let teknisi = {};
+let periodeGaji = {};
 
-   data.forEach(item=>{
+let periodeSC = {};
 
-      let periode =
-      item.periode || '-';
+let teknisi = {};
 
-      if(!periodeGaji[periode]){
+data.forEach(item=>{
 
-         periodeGaji[periode] = 0;
-      }
+  let periode =
+  item.periode || '-';
 
-      periodeGaji[periode] +=
-      Number(item.totalGaji || 0);
+  if(!periodeGaji[periode]){
 
-      if(!periodeSC[periode]){
+     periodeGaji[periode] = 0;
+  }
 
-         periodeSC[periode] = 0;
-      }
+  periodeGaji[periode] +=
+  Number(item.totalGaji || 0);
 
-      periodeSC[periode] +=
-      Number(item.jumlahOrder || 0);
+  if(!periodeSC[periode]){
 
-      if(!teknisi[item.nama]){
+     periodeSC[periode] = 0;
+  }
 
-         teknisi[item.nama] = {
+  periodeSC[periode] +=
+  Number(item.jumlahOrder || 0);
 
-            gaji:0,
+  if(!teknisi[item.nama]){
 
-            sc:0,
+     teknisi[item.nama] = {
 
-            status:item.status
-         };
-      }
+        gaji:0,
 
-      teknisi[item.nama].gaji +=
-      Number(item.totalGaji || 0);
+        sc:0,
 
-      teknisi[item.nama].sc +=
-      Number(item.jumlahOrder || 0);
-   });
+        status:item.status
+     };
+  }
 
-   let htmlGaji = '';
+  teknisi[item.nama].gaji +=
+  Number(item.totalGaji || 0);
 
-   Object.keys(periodeGaji)
-   .reverse()
-   .forEach(p=>{
+  teknisi[item.nama].sc +=
+  Number(item.jumlahOrder || 0);
 
-      htmlGaji += `
+});
 
-      <div class="row-dashboard">
+let htmlGaji = '';
 
-         <span>${p}</span>
+Object.keys(periodeGaji).reverse().forEach(p=>{
 
-         <b>${rupiah(periodeGaji[p])}</b>
+  htmlGaji += `
 
-      </div>
-      `;
-   });
+  <div class="row-dashboard">
 
-   let htmlSC = '';
+     <span>${p}</span>
 
-   Object.keys(periodeSC)
-   .reverse()
-   .forEach(p=>{
+     <b>${rupiah(periodeGaji[p])}</b>
 
-      htmlSC += `
+  </div>
+  `;
 
-      <div class="row-dashboard">
+});
 
-         <span>${p}</span>
+let htmlSC = '';
 
-         <b>${periodeSC[p]} SC</b>
+Object.keys(periodeSC).reverse().forEach(p=>{
 
-      </div>
-      `;
-   });
+  htmlSC += `
+
+  <div class="row-dashboard">
+
+     <span>${p}</span>
+
+     <b>${periodeSC[p]} SC</b>
+
+  </div>
+  `;
+
+});
 
 let periodeList = [];
 
 data.forEach(item=>{
 
-   if(
-   !periodeList.includes(item.periode)
-   ){
+if(!periodeList.includes(item.periode)){
 
-      periodeList.push(item.periode);
-   }
-});
+  periodeList.push(item.periode);
+
+}});
 
 periodeList.sort();
 
@@ -263,2391 +229,1899 @@ let ranking = {};
 
 data.forEach(item=>{
 
-   let nama = item.nama;
+let nama = item.nama;
 
-   if(!ranking[nama]){
+if(!ranking[nama]){
 
-      ranking[nama] = {};
-   }
+  ranking[nama] = {};
 
-   if(!ranking[nama][item.periode]){
+}
 
-      ranking[nama][item.periode] = {
+if(!ranking[nama][item.periode]){
 
-         sc:0,
+  ranking[nama][item.periode] = {
 
-         rp:0
-      };
-   }
+     sc:0,
 
-   ranking[nama][item.periode].sc +=
-   Number(item.jumlahOrder || 0);
+     rp:0
+  };
 
-   ranking[nama][item.periode].rp +=
-   Number(item.totalGaji || 0);
-});
+}
+
+ranking[nama][item.periode].sc +=Number(item.jumlahOrder || 0);
+
+ranking[nama][item.periode].rp +=Number(item.totalGaji || 0);});
 
 let head = `
-<tr>
-
-   <th rowspan="2">
-   NAMA TEKNISI
-   </th>
-`;
 
 periodeList.forEach(p=>{
 
-   head += `
-   <th colspan="2">
-   ${p}
-   </th>
-   `;
-});
+head += `
 
 head += `
-</tr>
-
-<tr>
-`;
 
 periodeList.forEach(()=>{
 
-   head += `
-   <th>SC</th>
-   <th>RP</th>
-   `;
-});
+head += `
 
 head += `
-</tr>
-`;
 
-document.getElementById(
-'rankingPayrollHead'
-).innerHTML = head;
+document.getElementById('rankingPayrollHead').innerHTML = head;
 
 let body = '';
 
 Object.keys(ranking).forEach(nama=>{
 
-   body += `
-   <tr>
+body += `
 
-      <td class="nama-teknisi-rank">
-      ${nama}
-      </td>
-   `;
+  <td class="nama-teknisi-rank">
+  ${nama}
+  </td>
 
-   periodeList.forEach(p=>{
+`;
 
-      let item =
-      ranking[nama][p];
+periodeList.forEach(p=>{
 
-      body += `
+  let item =
+  ranking[nama][p];
 
-      <td class="total-sc">
+  body += `
 
-      ${item ? item.sc : 0}
+  <td class="total-sc">
 
-      </td>
+  ${item ? item.sc : 0}
 
-      <td class="total-rp">
+  </td>
 
-      ${item
-      ?
-      rupiah(item.rp)
-      :
-      'Rp 0'
-      }
+  <td class="total-rp">
 
-      </td>
-      `;
-   });
+  ${item
+  ?
+  rupiah(item.rp)
+  :
+  'Rp 0'
+  }
 
-   body += `
-   </tr>
-   `;
+  </td>
+  `;
+
 });
 
-document.getElementById(
-'dashboardTeknisiPayroll'
-).innerHTML = body;
-if(window.gajiChart){
+body += `
 
-   window.gajiChart.destroy();
-}
+document.getElementById('dashboardTeknisiPayroll').innerHTML = body;new Chart(
 
-window.gajiChart = new Chart(
+document.getElementById('chartGaji'),{
 
-document.getElementById(
-'chartGaji'
-),{
+type:'bar',
 
-   type:'bar',
+data:{
 
-   data:{
+  labels:Object.keys(periodeGaji),
 
-      labels:Object.keys(periodeGaji),
+  datasets:[{
 
-      datasets:[{
+     label:'Total Gaji',
 
-         label:'Total Gaji',
+     data:Object.values(periodeGaji),
 
-         data:Object.values(periodeGaji),
+     borderWidth:1
+  }]
 
-         borderWidth:1
-      }]
-   }
-});
+}});
 
-let chartSC =
-document.getElementById('chartSC');
+new Chart(
 
-if(chartSC){
+document.getElementById('chartSC'),{
 
-   if(window.scChart){
+type:'line',
 
-      window.scChart.destroy();
-   }
+data:{
 
-   window.scChart =
-   new Chart(chartSC,{
+  labels:Object.keys(periodeSC),
 
-      type:'bar',
+  datasets:[{
 
-      data:{
+     label:'Total SC',
 
-         labels:
-         Object.keys(periodeSC),
+     data:Object.values(periodeSC),
 
-         datasets:[{
+     borderWidth:2
+  }]
 
-            label:'Total SC',
-
-            data:
-            Object.values(periodeSC),
-
-            backgroundColor:'#2563eb',
-
-            borderRadius:10
-         }]
-      },
-
-      options:{
-
-         responsive:true,
-
-         maintainAspectRatio:false,
-
-         plugins:{
-
-            legend:{
-
-               display:true
-            }
-         },
-
-         scales:{
-
-            y:{
-
-               beginAtZero:true
-            }
-         }
-      }
-   });
-}
-}
+}});}
 
 async function loadSummaryTeknisi(){
 
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
+let res =await fetch(API_URL +'?action=getTeknisi');
 
-   let data =
-   await res.json();
+let data =await res.json();
 
-   let aktif = 0;
+let totalTeknisi =data.length;
 
-   let nonaktif = 0;
+let area = [];
 
-   let jabatan = [];
+let jabatan = [];
 
-   let areaCount = {
+let aktif = 0;
 
-      CMI:0,
+let nonaktif = 0;
 
-      NJG:0,
+data.forEach(item=>{
 
-      BTJ:0,
+  if(
+  !area.includes(item.area)
+  ){
 
-      CLL:0,
+     area.push(item.area);
+  }
 
-      GNH:0
-   };
+  if(
+  !jabatan.includes(item.jabatan)
+  ){
 
-   data.forEach(item=>{
+     jabatan.push(item.jabatan);
+  }
 
-      let area =
-      String(item.area || '')
-      .toUpperCase()
-      .trim();
+  if(
+  item.status == 'AKTIF'
+  ){
 
-      if(areaCount[area] != undefined){
+     aktif++;
 
-         areaCount[area]++;
-      }
+  }else{
 
-      if(
-      !jabatan.includes(item.jabatan)
-      ){
+     nonaktif++;
+  }
 
-         jabatan.push(item.jabatan);
-      }
+});
 
-      if(item.status == 'AKTIF'){
+document.getElementById('totalTeknisiCard').innerHTML =totalTeknisi;
 
-         aktif++;
+document.getElementById('totalAreaCard').innerHTML =area.length;
 
-      }else{
+document.getElementById('totalJabatanCard').innerHTML =jabatan.length;
 
-         nonaktif++;
-      }
-   });
+document.getElementById('aktifTeknisiCard').innerHTML =aktif;
 
-   document.getElementById(
-   'totalTeknisiCard'
-   ).innerHTML =
-   data.length;
-
-   document.getElementById(
-   'jabatanList'
-   ).innerHTML =
-   jabatan.join(', ');
-
-   document.getElementById(
-   'cmiCount'
-   ).innerHTML =
-   areaCount.CMI;
-
-   document.getElementById(
-   'njgCount'
-   ).innerHTML =
-   areaCount.NJG;
-
-   document.getElementById(
-   'btjCount'
-   ).innerHTML =
-   areaCount.BTJ;
-
-   document.getElementById(
-   'cllCount'
-   ).innerHTML =
-   areaCount.CLL;
-
-   document.getElementById(
-   'gnhCount'
-   ).innerHTML =
-   areaCount.GNH;
-
-   document.getElementById(
-   'aktifTeknisiCard'
-   ).innerHTML =
-   aktif;
-
-   document.getElementById(
-   'nonaktifTeknisiCard'
-   ).innerHTML =
-   nonaktif;
-}
+document.getElementById('nonaktifTeknisiCard').innerHTML =nonaktif;}
 
 /* SIMPAN KAS */
 
 async function simpanKas(){
 
-   let data = {
+let data = {
 
-      action:'tambahKas',
+  action:'tambahKas',
 
-      editId:
-      localStorage.getItem('editKas'),
-      
-      tanggal:
-      document.getElementById('tglKas').value,
+  editId:
+  localStorage.getItem('editKas'),
+  
+  tanggal:
+  document.getElementById('tglKas').value,
 
-      masuk:
-      document.getElementById('nominalMasuk').value,
+  masuk:
+  document.getElementById('nominalMasuk').value,
 
-      keluar:
-      document.getElementById('nominalKeluar').value,
+  keluar:
+  document.getElementById('nominalKeluar').value,
 
-      sumberMasuk:
-      document.getElementById('sumberMasuk').value,
+  sumberMasuk:
+  document.getElementById('sumberMasuk').value,
 
-      sumberKeluar:
-      document.getElementById('sumberKeluar').value,
+  sumberKeluar:
+  document.getElementById('sumberKeluar').value,
 
-      keterangan:
-      document.getElementById('ketKas').value
+  keterangan:
+  document.getElementById('ketKas').value
 
+};
 
-   };
+await fetch(API_URL,{
 
-   await fetch(API_URL,{
+  method:'POST',
 
-      method:'POST',
+  body:JSON.stringify(data)
 
-      body:JSON.stringify(data)
-   });
+});
 
-   alert('Berhasil');
+alert('Berhasil');
 
-   document.getElementById('tglKas').value='';
+document.getElementById('tglKas').value='';
 
-   document.getElementById('nominalMasuk').value='';
+document.getElementById('nominalMasuk').value='';
 
-   document.getElementById('nominalKeluar').value='';
+document.getElementById('nominalKeluar').value='';
 
-   document.getElementById('sumberMasuk').value='';
+document.getElementById('sumberMasuk').value='';
 
-   document.getElementById('sumberKeluar').value='';
+document.getElementById('sumberKeluar').value='';
 
-   document.getElementById('ketKas').value='';
-   localStorage.removeItem('editKas');
-   loadKas();
+document.getElementById('ketKas').value='';localStorage.removeItem('editKas');loadKas();
 
-   loadDashboard();
-}
+loadDashboard();}
 
 /* LOAD KAS */
 
 async function loadKas(){
 
-   try{
+try{
 
-      const res =
-      await fetch(API_URL + '?action=getKas');
+  const res =
+  await fetch(API_URL + '?action=getKas');
 
-      const data =
-      await res.json();
+  const data =
+  await res.json();
 
-      kasData = data;
+  kasData = data;
 
-      let html='';
+  let html='';
 
-      data.forEach(item=>{
+  data.forEach(item=>{
 
-         html += `
-         <tr>
+     html += `
+     <tr>
 
-            <td>${item.tanggal}</td>
+        <td>${item.tanggal}</td>
 
-            <td>${rupiah(item.masuk)}</td>
+        <td>${rupiah(item.masuk)}</td>
 
-            <td>${rupiah(item.keluar)}</td>
+        <td>${rupiah(item.keluar)}</td>
 
-            <td>${item.sumberMasuk}</td>
+        <td>${item.sumberMasuk}</td>
 
-            <td>${item.sumberKeluar}</td>
+        <td>${item.sumberKeluar}</td>
 
-            <td>${item.keterangan}</td>
+        <td>${item.keterangan}</td>
 
-            <td>
+        <td>
 
-               <button
-               onclick="editKas('${item.row}')">
+           <button
+           onclick="editKas('${item.row}')">
 
-               Edit
+           Edit
 
-               </button>
+           </button>
 
-               <button
-               onclick="hapusKas('${item.row}')">
+           <button
+           onclick="hapusKas('${item.row}')">
 
-               Hapus
+           Hapus
 
-               </button>
+           </button>
 
-            </td>
+        </td>
 
-         </tr>
-         `;
-      });
+     </tr>
+     `;
+  });
 
-      document.getElementById('tableKas')
-      .innerHTML = html;
+  document.getElementById('tableKas')
+  .innerHTML = html;
 
-   }catch(err){
+}catch(err){
 
-      console.log(err);
-   }
-}
-/* LOAD PINJAMAN */
+  console.log(err);
+
+}}/* LOAD PINJAMAN */
 
 async function loadPinjaman(){
 
-   const res =
-   await fetch(API_URL + '?action=getPinjaman');
+const res =await fetch(API_URL + '?action=getPinjaman');
 
-   const data =
-   await res.json();
-   pinjamanData = data;
-   let html='';
+const data =await res.json();pinjamanData = data;let html='';
 
-   data.forEach(item=>{
+data.forEach(item=>{
 
-      html += `
-      <tr>
+  html += `
+  <tr>
 
-         <td>${item.nama}</td>
+     <td>${item.nama}</td>
 
-         <td>${rupiah(item.total)}</td>
+     <td>${rupiah(item.total)}</td>
 
-         <td>${rupiah(item.sudah)}</td>
+     <td>${rupiah(item.sudah)}</td>
 
-         <td>${rupiah(item.sisa)}</td>
+     <td>${rupiah(item.sisa)}</td>
 
-         <td style="
-         color:
-         ${item.status == 'LUNAS'
-         ? '#16a34a'
-         : '#dc2626'};
-         font-weight:bold;
-               ">
-         ${item.status}
-         </td>
-         
-         <td>
-         <button
-         onclick="editPinjaman('${item.row}')">
-         Edit
-         </button>
-         <button
-         onclick="hapusPinjaman('${item.row}')">
-         Hapus
-         </button>
-         </td>
-         
-      </tr>
-      `;
-   });
+     <td style="
+     color:
+     ${item.status == 'LUNAS'
+     ? '#16a34a'
+     : '#dc2626'};
+     font-weight:bold;
+           ">
+     ${item.status}
+     </td>
+     
+     <td>
+     <button
+     onclick="editPinjaman('${item.row}')">
+     Edit
+     </button>
+     <button
+     onclick="hapusPinjaman('${item.row}')">
+     Hapus
+     </button>
+     </td>
+     
+  </tr>
+  `;
 
-   document.getElementById('tablePinjaman')
-   .innerHTML = html;
-}
+});
+
+document.getElementById('tablePinjaman').innerHTML = html;}
 
 /* CICILAN */
 
 async function bayarCicilan(){
 
-   let data = {
+let data = {
 
-      action:'bayarCicilan',
-      editId:
-      localStorage.getItem('editCicilan'),
-      
-      id:
-      document.getElementById('idPeminjam').value,
+  action:'bayarCicilan',
+  editId:
+  localStorage.getItem('editCicilan'),
+  
+  id:
+  document.getElementById('idPeminjam').value,
 
-      cicilan:
-      document.getElementById('cicilanKe').value,
+  cicilan:
+  document.getElementById('cicilanKe').value,
 
-      bayar:
-      document.getElementById('bayarNominal').value
-   };
+  bayar:
+  document.getElementById('bayarNominal').value
 
-   await fetch(API_URL,{
+};
 
-      method:'POST',
+await fetch(API_URL,{
 
-      body:JSON.stringify(data)
-   });
+  method:'POST',
 
-   alert('Pembayaran berhasil');
-   document.getElementById('cicilanKe').value='';
+  body:JSON.stringify(data)
 
-   document.getElementById('bayarNominal').value='';
-   localStorage.removeItem('editCicilan');
-   loadCicilan();
+});
 
-   loadPinjaman();
+alert('Pembayaran berhasil');document.getElementById('cicilanKe').value='';
 
-   loadDashboard();
-}
+document.getElementById('bayarNominal').value='';localStorage.removeItem('editCicilan');loadCicilan();
+
+loadPinjaman();
+
+loadDashboard();}
 
 /* LOAD CICILAN */
 
 async function loadCicilan(){
 
-   const res =
-   await fetch(API_URL + '?action=getCicilan');
+const res =await fetch(API_URL + '?action=getCicilan');
 
-   const data =
-   await res.json();
-   cicilanData = data;
-   let html='';
+const data =await res.json();cicilanData = data;let html='';
 
-   data.forEach(item=>{
+data.forEach(item=>{
 
-      html += `
-      <tr>
+  html += `
+  <tr>
 
-         <td>${item.tanggal}</td>
+     <td>${item.tanggal}</td>
 
-         <td>${item.id}</td>
+     <td>${item.id}</td>
 
-         <td>${item.cicilan}</td>
+     <td>${item.cicilan}</td>
 
-         <td>${rupiah(item.bayar)}</td>
+     <td>${rupiah(item.bayar)}</td>
 
-         <td>${rupiah(item.sisa)}</td>
+     <td>${rupiah(item.sisa)}</td>
 
-         <td>
-         <button
-         onclick="editCicilan('${item.rowid}')">
-         Edit
-         </button>
-         <button
-         onclick="hapusCicilan('${item.rowid}')">
-         Hapus
-         </button>
-         </td>
-      </tr>
-      `;
-   });
+     <td>
+     <button
+     onclick="editCicilan('${item.rowid}')">
+     Edit
+     </button>
+     <button
+     onclick="hapusCicilan('${item.rowid}')">
+     Hapus
+     </button>
+     </td>
+  </tr>
+  `;
 
-   document.getElementById('tableCicilan')
-   .innerHTML = html;
-}
+});
+
+document.getElementById('tableCicilan').innerHTML = html;}
 
 /* DROPDOWN */
 
 async function loadDropdownPeminjam(){
 
-   const res =
-   await fetch(API_URL + '?action=getPinjaman');
+const res =await fetch(API_URL + '?action=getPinjaman');
 
-   const data =
-   await res.json();
+const data =await res.json();
 
-   let html =
-   '<option>Pilih Peminjam</option>';
+let html ='Pilih Peminjam';
 
-   data.forEach(item=>{
+data.forEach(item=>{
 
-      if(Number(item.sisa) > 0){
+  if(Number(item.sisa) > 0){
 
-         html += `
-         <option value="${item.id}">
+     html += `
+     <option value="${item.id}">
 
-            ${item.nama}
-            - Sisa:
-            ${rupiah(item.sisa)}
+        ${item.nama}
+        - Sisa:
+        ${rupiah(item.sisa)}
 
-         </option>
-         `;
-      }
+     </option>
+     `;
+  }
 
-   });
+});
 
-   document.getElementById('idPeminjam')
-   .innerHTML = html;
-}
+document.getElementById('idPeminjam').innerHTML = html;}
 
-/* =========================
-   FILTER KAS
-========================= */
+/* =========================FILTER KAS========================= */
 
 function filterKas(){
 
-     let data =
-   [...kasData];
-   
-   let tglAwal =
-   document
-   .getElementById('tglAwalKas')
-   .value;
+ let data =
 
-   let tglAkhir =
-   document
-   .getElementById('tglAkhirKas')
-   .value;
-   
-   let cari =
-   document
-   .getElementById('searchKas')
-   .value
-   .toLowerCase();
-/* =========================
-   FILTER TANGGAL
-========================= */
+[...kasData];
 
-   if(tglAwal && tglAkhir){
+let tglAwal =document.getElementById('tglAwalKas').value;
 
-      data = data.filter(item=>{
+let tglAkhir =document.getElementById('tglAkhirKas').value;
 
-         let tgl =
-         item.tanggal.split(' ')[0];
+let cari =document.getElementById('searchKas').value.toLowerCase();/* =========================FILTER TANGGAL========================= */
 
-         let p =
-         tgl.split('/');
-   
-         let format =
-         `${p[2]}-${p[1]}-${p[0]}`;
+if(tglAwal && tglAkhir){
 
-            return (
-            format >= tglAwal &&
-            format <= tglAkhir
-         );
-      });
-   }
-   let sort =
-   document
-   .getElementById('sortKas')
-   .value;
+  data = data.filter(item=>{
 
-   
- 
+     let tgl =
+     item.tanggal.split(' ')[0];
 
-   if(cari){
+     let p =
+     tgl.split('/');
 
-      data = data.filter(item=>
+     let format =
+     `${p[2]}-${p[1]}-${p[0]}`;
 
-         item.keterangan
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
+        return (
+        format >= tglAwal &&
+        format <= tglAkhir
+     );
+  });
 
-   if(sort == 'baru'){
+}let sort =document.getElementById('sortKas').value;
 
-      data.reverse();
-   }
 
-   let html='';
 
-   data.forEach(item=>{
+if(cari){
 
-      html += `
-      <tr>
+  data = data.filter(item=>
 
-         <td>${item.tanggal}</td>
+     item.keterangan
+     .toLowerCase()
+     .includes(cari)
+  );
 
-         <td>${rupiah(item.masuk)}</td>
-
-         <td>${rupiah(item.keluar)}</td>
-
-         <td>${item.sumberMasuk}</td>
-
-         <td>${item.sumberKeluar}</td>
-
-         <td>${item.keterangan}</td>
-
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableKas')
-   .innerHTML = html;
 }
 
-/* =========================
-   FILTER PINJAMAN
-========================= */
+if(sort == 'baru'){
+
+  data.reverse();
+
+}
+
+let html='';
+
+data.forEach(item=>{
+
+  html += `
+  <tr>
+
+     <td>${item.tanggal}</td>
+
+     <td>${rupiah(item.masuk)}</td>
+
+     <td>${rupiah(item.keluar)}</td>
+
+     <td>${item.sumberMasuk}</td>
+
+     <td>${item.sumberKeluar}</td>
+
+     <td>${item.keterangan}</td>
+
+  </tr>
+  `;
+
+});
+
+document.getElementById('tableKas').innerHTML = html;}
+
+/* =========================FILTER PINJAMAN========================= */
 
 function filterPinjaman(){
 
-   let cari =
-   document
-   .getElementById('searchPinjaman')
-   .value
-   .toLowerCase();
+let cari =document.getElementById('searchPinjaman').value.toLowerCase();
 
-   let status =
-   document
-   .getElementById('statusPinjaman')
-   .value;
+let status =document.getElementById('statusPinjaman').value;
 
-   let data =
-   [...pinjamanData];
+let data =[...pinjamanData];
 
-   if(cari){
+if(cari){
 
-      data = data.filter(item=>
+  data = data.filter(item=>
 
-         item.nama
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
+     item.nama
+     .toLowerCase()
+     .includes(cari)
+  );
 
-   if(status){
+}
 
-      data = data.filter(item=>
+if(status){
 
-         item.status == status
-      );
-   }
+  data = data.filter(item=>
 
-   let html='';
+     item.status == status
+  );
 
-   data.forEach(item=>{
+}
 
-      html += `
-      <tr>
+let html='';
 
-         <td>${item.nama}</td>
+data.forEach(item=>{
 
-         <td>${rupiah(item.total)}</td>
+  html += `
+  <tr>
 
-         <td>${rupiah(item.sudah)}</td>
+     <td>${item.nama}</td>
 
-         <td>${rupiah(item.sisa)}</td>
+     <td>${rupiah(item.total)}</td>
 
-         <td style="
-         color:
-         ${item.status == 'LUNAS'
-         ? '#16a34a'
-         : '#dc2626'};
-         font-weight:bold;
-         ">
+     <td>${rupiah(item.sudah)}</td>
 
-         ${item.status}
+     <td>${rupiah(item.sisa)}</td>
 
-         </td>
-<td>
+     <td style="
+     color:
+     ${item.status == 'LUNAS'
+     ? '#16a34a'
+     : '#dc2626'};
+     font-weight:bold;
+     ">
 
-<button
-onclick="editPinjaman('${item.row}')">
+     ${item.status}
+
+     </td>
+
+
 
 Edit
 
-</button>
 
-<button
-onclick="hapusPinjaman('${item.row}')">
 
 Hapus
 
-</button>
+document.getElementById('tablePinjaman').innerHTML = html;}
 
-</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tablePinjaman')
-   .innerHTML = html;
-}
-
-/* =========================
-   FILTER CICILAN
-========================= */
+/* =========================FILTER CICILAN========================= */
 
 function filterCicilan(){
 
-   let cari =
-   document
-   .getElementById('searchCicilan')
-   .value
-   .toLowerCase();
+let cari =document.getElementById('searchCicilan').value.toLowerCase();
 
-   let data =
-   [...cicilanData];
+let data =[...cicilanData];
 
-   if(cari){
+if(cari){
 
-      data = data.filter(item=>
+  data = data.filter(item=>
 
-         String(item.id)
-         .toLowerCase()
-         .includes(cari)
-      );
-   }
+     String(item.id)
+     .toLowerCase()
+     .includes(cari)
+  );
 
-   let html='';
+}
 
-   data.forEach(item=>{
+let html='';
 
-      html += `
-      <tr>
+data.forEach(item=>{
 
-         <td>${item.tanggal}</td>
+  html += `
+  <tr>
 
-         <td>${item.id}</td>
+     <td>${item.tanggal}</td>
 
-         <td>${item.cicilan}</td>
+     <td>${item.id}</td>
 
-         <td>${rupiah(item.bayar)}</td>
+     <td>${item.cicilan}</td>
 
-         <td>${rupiah(item.sisa)}</td>
-<td>
+     <td>${rupiah(item.bayar)}</td>
 
-<button
-onclick="editCicilan('${item.rowid}')">
+     <td>${rupiah(item.sisa)}</td>
+
+
 
 Edit
 
-</button>
 
-<button
-onclick="hapusCicilan('${item.rowid}')">
 
 Hapus
 
-</button>
-
-</td>
-      </tr>
-      `;
-   });
-
-   document.getElementById('tableCicilan')
-   .innerHTML = html;
-}
-/* =========================
-   EDIT KAS
-========================= */
+document.getElementById('tableCicilan').innerHTML = html;}/* =========================EDIT KAS========================= */
 
 function editKas(id){
 
-   let item =
-   kasData.find(x=>x.row == id);
-   let tgl =
-   item.tanggal.split(' ')[0];
-   let pecah =
-   tgl.split('/');
-   document.getElementById('tglKas').value =
-   `${pecah[2]}-${pecah[1]}-${pecah[0]}`;
+let item =kasData.find(x=>x.row == id);let tgl =item.tanggal.split(' ')[0];let pecah =tgl.split('/');document.getElementById('tglKas').value =${pecah[2]}-${pecah[1]}-${pecah[0]};
 
-   document.getElementById('nominalMasuk').value =
-   item.masuk;
+document.getElementById('nominalMasuk').value =item.masuk;
 
-   document.getElementById('nominalKeluar').value =
-   item.keluar;
+document.getElementById('nominalKeluar').value =item.keluar;
 
-   document.getElementById('sumberMasuk').value =
-   item.sumberMasuk;
+document.getElementById('sumberMasuk').value =item.sumberMasuk;
 
-   document.getElementById('sumberKeluar').value =
-   item.sumberKeluar;
+document.getElementById('sumberKeluar').value =item.sumberKeluar;
 
-   document.getElementById('ketKas').value =
-   item.keterangan;
+document.getElementById('ketKas').value =item.keterangan;
 
-   localStorage.setItem('editKas',id);
-}
+localStorage.setItem('editKas',id);}
 
-/* =========================
-   EDIT PINJAMAN
-========================= */
+/* =========================EDIT PINJAMAN========================= */
 
 function editPinjaman(id){
 
-   let item =
-   pinjamanData.find(x=>x.row == id);
+let item =pinjamanData.find(x=>x.row == id);
 
-   document.getElementById('namaPinjam').value =
-   item.nama;
+document.getElementById('namaPinjam').value =item.nama;
 
-   document.getElementById('hpPinjam').value =
-   item.hp;
+document.getElementById('hpPinjam').value =item.hp;
 
-   document.getElementById('alamatPinjam').value =
-   item.alamat;
+document.getElementById('alamatPinjam').value =item.alamat;
 
-   document.getElementById('totalPinjam').value =
-   item.total;
+document.getElementById('totalPinjam').value =item.total;
 
-   localStorage.setItem('editPinjaman',id);
-}
+localStorage.setItem('editPinjaman',id);}
 
-/* =========================
-   EDIT CICILAN
-========================= */
+/* =========================EDIT CICILAN========================= */
 
 function editCicilan(id){
 
-   let item =
-   cicilanData.find(x=>x.rowid == id);
+let item =cicilanData.find(x=>x.rowid == id);
 
-   document.getElementById('cicilanKe').value =
-   item.cicilan;
+document.getElementById('cicilanKe').value =item.cicilan;
 
-   document.getElementById('bayarNominal').value =
-   item.bayar;
+document.getElementById('bayarNominal').value =item.bayar;
 
-   localStorage.setItem('editCicilan',id);
-}
-/* =========================
-   PRINT KAS
-========================= */
+localStorage.setItem('editCicilan',id);}/* =========================PRINT KAS========================= */
 
 function printKas(){
 
-   let rows = '';
+let rows = '';
 
-   kasData.forEach(item=>{
+kasData.forEach(item=>{
 
-      rows += `
+  rows += `
 
-      <tr>
+  <tr>
 
-         <td>${item.tanggal}</td>
+     <td>${item.tanggal}</td>
 
-         <td>${rupiah(item.masuk)}</td>
+     <td>${rupiah(item.masuk)}</td>
 
-         <td>${rupiah(item.keluar)}</td>
+     <td>${rupiah(item.keluar)}</td>
 
-         <td>${item.sumberMasuk}</td>
+     <td>${item.sumberMasuk}</td>
 
-         <td>${item.sumberKeluar}</td>
+     <td>${item.sumberKeluar}</td>
 
-         <td>${item.keterangan}</td>
+     <td>${item.keterangan}</td>
 
-      </tr>
-      `;
-   });
+  </tr>
+  `;
 
-   let win =
-   window.open('','','width=1200,height=700');
+});
 
-   win.document.write(`
+let win =window.open('','','width=1200,height=700');
 
-   <html>
+win.document.write(`
 
-   <head>
+  <title>
+  Laporan Uang Kas
+  </title>
 
-      <title>
-      Laporan Uang Kas
-      </title>
+  <style>
 
-      <style>
+  body{
 
-      body{
+     font-family:Arial;
+     padding:20px;
+  }
 
-         font-family:Arial;
-         padding:20px;
-      }
+  h2{
 
-      h2{
+     margin-bottom:20px;
+  }
 
-         margin-bottom:20px;
-      }
+  table{
 
-      table{
+     width:100%;
+     border-collapse:collapse;
+  }
 
-         width:100%;
-         border-collapse:collapse;
-      }
+  th,td{
 
-      th,td{
+     border:1px solid #ccc;
+     padding:10px;
+     text-align:left;
+  }
 
-         border:1px solid #ccc;
-         padding:10px;
-         text-align:left;
-      }
+  th{
 
-      th{
+     background:#f3f4f6;
+  }
 
-         background:#f3f4f6;
-      }
+  </style>
 
-      </style>
+  <h2>
+  LAPORAN UANG KAS
+  </h2>
 
-   </head>
+  <table>
 
-   <body>
+     <thead>
 
-      <h2>
-      LAPORAN UANG KAS
-      </h2>
+        <tr>
 
-      <table>
+           <th>Tanggal</th>
+           <th>Masuk</th>
+           <th>Keluar</th>
+           <th>Sumber Masuk</th>
+           <th>Sumber Keluar</th>
+           <th>Keterangan</th>
 
-         <thead>
+        </tr>
 
-            <tr>
+     </thead>
 
-               <th>Tanggal</th>
-               <th>Masuk</th>
-               <th>Keluar</th>
-               <th>Sumber Masuk</th>
-               <th>Sumber Keluar</th>
-               <th>Keterangan</th>
+     <tbody>
 
-            </tr>
+        ${rows}
 
-         </thead>
+     </tbody>
 
-         <tbody>
+  </table>
 
-            ${rows}
+win.document.close();
 
-         </tbody>
+win.focus();
 
-      </table>
+win.print();}
 
-   </body>
-
-   </html>
-   `);
-
-   win.document.close();
-
-   win.focus();
-
-   win.print();
-}
-
-/* =========================
-   PRINT PINJAMAN
-========================= */
+/* =========================PRINT PINJAMAN========================= */
 
 function printPinjaman(){
 
-   let isi =
-   document.getElementById('tablePinjaman')
-   .innerHTML;
+let isi =document.getElementById('tablePinjaman').innerHTML;
 
-   let win =
-   window.open('','','width=1000,height=700');
+let win =window.open('','','width=1000,height=700');
 
-   win.document.write(`
+win.document.write(`
 
-   <html>
+  <title>
+  Data Pinjaman
+  </title>
 
-   <head>
+  <style>
 
-      <title>
-      Data Pinjaman
-      </title>
+  body{
 
-      <style>
+     font-family:Arial;
+     padding:20px;
+  }
 
-      body{
+  table{
 
-         font-family:Arial;
-         padding:20px;
-      }
+     width:100%;
+     border-collapse:collapse;
+  }
 
-      table{
+  th,td{
 
-         width:100%;
-         border-collapse:collapse;
-      }
+     border:1px solid #ccc;
+     padding:10px;
+  }
 
-      th,td{
+  th{
 
-         border:1px solid #ccc;
-         padding:10px;
-      }
+     background:#f3f4f6;
+  }
 
-      th{
+  </style>
 
-         background:#f3f4f6;
-      }
+  <h2>
+  DATA PINJAMAN
+  </h2>
 
-      </style>
+  <table>
 
-   </head>
+     <thead>
 
-   <body>
+        <tr>
 
-      <h2>
-      DATA PINJAMAN
-      </h2>
+           <th>Nama</th>
+           <th>Total</th>
+           <th>Sudah Bayar</th>
+           <th>Sisa</th>
+           <th>Status</th>
 
-      <table>
+        </tr>
 
-         <thead>
+     </thead>
 
-            <tr>
+     <tbody>
 
-               <th>Nama</th>
-               <th>Total</th>
-               <th>Sudah Bayar</th>
-               <th>Sisa</th>
-               <th>Status</th>
+        ${isi}
 
-            </tr>
+     </tbody>
 
-         </thead>
+  </table>
 
-         <tbody>
+win.document.close();
 
-            ${isi}
+win.print();}
 
-         </tbody>
-
-      </table>
-
-   </body>
-
-   </html>
-   `);
-
-   win.document.close();
-
-   win.print();
-}
-
-/* =========================
-   PRINT CICILAN
-========================= */
+/* =========================PRINT CICILAN========================= */
 
 function printCicilan(){
 
-   let isi =
-   document.getElementById('tableCicilan')
-   .innerHTML;
+let isi =document.getElementById('tableCicilan').innerHTML;
 
-   let win =
-   window.open('','','width=1000,height=700');
+let win =window.open('','','width=1000,height=700');
 
-   win.document.write(`
+win.document.write(`
 
-   <html>
+  <title>
+  Data Cicilan
+  </title>
 
-   <head>
+  <style>
 
-      <title>
-      Data Cicilan
-      </title>
+  body{
 
-      <style>
+     font-family:Arial;
+     padding:20px;
+  }
 
-      body{
+  table{
 
-         font-family:Arial;
-         padding:20px;
-      }
+     width:100%;
+     border-collapse:collapse;
+  }
 
-      table{
+  th,td{
 
-         width:100%;
-         border-collapse:collapse;
-      }
+     border:1px solid #ccc;
+     padding:10px;
+  }
 
-      th,td{
+  th{
 
-         border:1px solid #ccc;
-         padding:10px;
-      }
+     background:#f3f4f6;
+  }
 
-      th{
+  </style>
 
-         background:#f3f4f6;
-      }
+  <h2>
+  DATA CICILAN
+  </h2>
 
-      </style>
+  <table>
 
-   </head>
+     <thead>
 
-   <body>
+        <tr>
 
-      <h2>
-      DATA CICILAN
-      </h2>
+           <th>Tanggal</th>
+           <th>Peminjam</th>
+           <th>Cicilan</th>
+           <th>Bayar</th>
+           <th>Sisa</th>
 
-      <table>
+        </tr>
 
-         <thead>
+     </thead>
 
-            <tr>
+     <tbody>
 
-               <th>Tanggal</th>
-               <th>Peminjam</th>
-               <th>Cicilan</th>
-               <th>Bayar</th>
-               <th>Sisa</th>
+        ${isi}
 
-            </tr>
+     </tbody>
 
-         </thead>
+  </table>
 
-         <tbody>
+win.document.close();
 
-            ${isi}
+win.print();}async function simpanPinjaman(){
 
-         </tbody>
+try{
 
-      </table>
+  const nama =
+  document.getElementById('namaPinjam').value;
 
-   </body>
+  const hp =
+  document.getElementById('hpPinjam').value;
 
-   </html>
-   `);
+  const alamat =
+  document.getElementById('alamatPinjam').value;
 
-   win.document.close();
+  const total =
+  document.getElementById('totalPinjam').value;
 
-   win.print();
-}
-async function simpanPinjaman(){
+  const lama =
+  document.getElementById('lamaCicilan').value;
 
-   try{
+  const res =
+  await fetch(API_URL,{
 
-      const nama =
-      document.getElementById('namaPinjam').value;
+     method:'POST',
 
-      const hp =
-      document.getElementById('hpPinjam').value;
+     body:JSON.stringify({
 
-      const alamat =
-      document.getElementById('alamatPinjam').value;
+        action:'tambahPinjaman',
 
-      const total =
-      document.getElementById('totalPinjam').value;
+        editId:
+        localStorage.getItem('editPinjaman'),
 
-      const lama =
-      document.getElementById('lamaCicilan').value;
+        nama:nama,
 
-      const res =
-      await fetch(API_URL,{
+        hp:hp,
 
-         method:'POST',
+        alamat:alamat,
 
-         body:JSON.stringify({
+        total:total,
 
-            action:'tambahPinjaman',
+        lama:lama
+     })
+  });
 
-            editId:
-            localStorage.getItem('editPinjaman'),
+  const text =
+  await res.text();
 
-            nama:nama,
+  console.log(text);
 
-            hp:hp,
+  let hasil;
 
-            alamat:alamat,
+  try{
 
-            total:total,
+     hasil =
+     JSON.parse(text);
 
-            lama:lama
-         })
-      });
+  }catch{
 
-      const text =
-      await res.text();
+     alert(
+     'Response Apps Script bukan JSON'
+     );
 
-      console.log(text);
+     return;
+  }
 
-      let hasil;
+  if(hasil.status == 'error'){
 
-      try{
+     alert(hasil.message);
 
-         hasil =
-         JSON.parse(text);
+     return;
+  }
 
-      }catch{
+  alert('Data berhasil disimpan');
 
-         alert(
-         'Response Apps Script bukan JSON'
-         );
+  localStorage.removeItem('editPinjaman');
 
-         return;
-      }
+  document.getElementById('namaPinjam').value='';
 
-      if(hasil.status == 'error'){
+  document.getElementById('hpPinjam').value='';
 
-         alert(hasil.message);
+  document.getElementById('alamatPinjam').value='';
 
-         return;
-      }
+  document.getElementById('totalPinjam').value='';
 
-      alert('Data berhasil disimpan');
+  document.getElementById('lamaCicilan').value='';
 
-      localStorage.removeItem('editPinjaman');
+  loadPinjaman();
 
-      document.getElementById('namaPinjam').value='';
+  loadDashboard();
 
-      document.getElementById('hpPinjam').value='';
+}catch(err){
 
-      document.getElementById('alamatPinjam').value='';
+  console.log(err);
 
-      document.getElementById('totalPinjam').value='';
+  alert(
+  'Gagal simpan pinjaman'
+  );
 
-      document.getElementById('lamaCicilan').value='';
-
-      loadPinjaman();
-
-      loadDashboard();
-
-   }catch(err){
-
-      console.log(err);
-
-      alert(
-      'Gagal simpan pinjaman'
-      );
-   }
-}
-/* =========================
-   HAPUS PINJAMAN
-========================= */
+}}/* =========================HAPUS PINJAMAN========================= */
 
 async function hapusPinjaman(id){
 
-   let yakin =
-   confirm('Hapus data pinjaman?');
+let yakin =confirm('Hapus data pinjaman?');
 
-   if(!yakin) return;
+if(!yakin) return;
 
-   try{
+try{
 
-      await fetch(API_URL,{
+  await fetch(API_URL,{
 
-         method:'POST',
+     method:'POST',
 
-         body:JSON.stringify({
+     body:JSON.stringify({
 
-            action:'hapusPinjaman',
+        action:'hapusPinjaman',
 
-            id:id
-         })
-      });
+        id:id
+     })
+  });
 
-      alert('Data berhasil dihapus');
+  alert('Data berhasil dihapus');
 
-      loadPinjaman();
+  loadPinjaman();
 
-      loadDashboard();
+  loadDashboard();
 
-   }catch(err){
+}catch(err){
 
-      console.log(err);
+  console.log(err);
 
-      alert('Gagal hapus pinjaman');
-   }
-}
+  alert('Gagal hapus pinjaman');
 
-/* =========================
-   HAPUS CICILAN
-========================= */
+}}
+
+/* =========================HAPUS CICILAN========================= */
 
 async function hapusCicilan(id){
 
-   let yakin =
-   confirm('Hapus data cicilan?');
+let yakin =confirm('Hapus data cicilan?');
 
-   if(!yakin) return;
+if(!yakin) return;
 
-   try{
+try{
 
-      await fetch(API_URL,{
+  await fetch(API_URL,{
 
-         method:'POST',
+     method:'POST',
 
-         body:JSON.stringify({
+     body:JSON.stringify({
 
-            action:'hapusCicilan',
+        action:'hapusCicilan',
 
-            id:id
-         })
-      });
+        id:id
+     })
+  });
 
-      alert('Data berhasil dihapus');
+  alert('Data berhasil dihapus');
 
-      loadCicilan();
+  loadCicilan();
 
-      loadPinjaman();
+  loadPinjaman();
 
-      loadDashboard();
+  loadDashboard();
 
-   }catch(err){
+}catch(err){
 
-      console.log(err);
+  console.log(err);
 
-      alert('Gagal hapus cicilan');
-   }
-}
+  alert('Gagal hapus cicilan');
 
-/* =========================
-   HAPUS UANG KAS
-========================= */
+}}
+
+/* =========================HAPUS UANG KAS========================= */
 
 async function hapusKas(id){
 
-   let yakin =
-   confirm('Hapus data uang kas?');
+let yakin =confirm('Hapus data uang kas?');
 
-   if(!yakin) return;
+if(!yakin) return;
 
-   try{
+try{
 
-      await fetch(API_URL,{
+  await fetch(API_URL,{
 
-         method:'POST',
+     method:'POST',
 
-         body:JSON.stringify({
+     body:JSON.stringify({
 
-            action:'hapusKas',
+        action:'hapusKas',
 
-            id:id
-         })
-      });
+        id:id
+     })
+  });
 
-      alert('Data berhasil dihapus');
+  alert('Data berhasil dihapus');
 
-      loadKas();
+  loadKas();
 
-      loadDashboard();
+  loadDashboard();
 
-   }catch(err){
+}catch(err){
 
-      console.log(err);
+  console.log(err);
 
-      alert('Gagal hapus uang kas');
-   }
+  alert('Gagal hapus uang kas');
+
+}}function uploadExcel(){
+
+let file =document.getElementById('fileExcel').files[0];
+
+if(!file){
+
+  alert('Pilih file Excel dulu');
+
+  return;
+
 }
-function uploadExcel(){
 
-   let file =
-   document.getElementById('fileExcel').files[0];
+uploadBtn =document.querySelector('#uploadGaji button');
 
-   if(!file){
+uploadBtn.innerHTML =' Processing Payroll...';
 
-      alert('Pilih file Excel dulu');
+uploadBtn.disabled = true;
 
-      return;
-   }
+let reader =new FileReader();
 
-   uploadBtn =
-   document.querySelector(
-   '#uploadGaji button'
-   );
+reader.onload = function(e){
 
-   uploadBtn.innerHTML =
-   '<i class="fa-solid fa-spinner fa-spin"></i> Processing Payroll...';
+  let data =
+  new Uint8Array(e.target.result);
 
-   uploadBtn.disabled = true;
+  let workbook =
+  XLSX.read(data,{
+     type:'array'
+  });
 
-   let reader =
-   new FileReader();
+  let sheetName =
+  workbook.SheetNames[0];
 
-   reader.onload = function(e){
+  if(sheetName != 'DATA_GAJI'){
 
-      let data =
-      new Uint8Array(e.target.result);
+     alert(
+     'Nama sheet wajib DATA_GAJI'
+     );
 
-      let workbook =
-      XLSX.read(data,{
-         type:'array'
-      });
+     uploadBtn.innerHTML =
+     'Upload & Proses';
 
-      let sheetName =
-      workbook.SheetNames[0];
+     uploadBtn.disabled = false;
 
-      if(sheetName != 'DATA_GAJI'){
+     return;
+  }
 
-         alert(
-         'Nama sheet wajib DATA_GAJI'
-         );
+  let worksheet =
+  workbook.Sheets[sheetName];
 
-         uploadBtn.innerHTML =
-         'Upload & Proses';
+  let json =
+  XLSX.utils.sheet_to_json(
+     worksheet
+  );
 
-         uploadBtn.disabled = false;
+  prosesPayroll(json);
 
-         return;
-      }
+};
 
-      let worksheet =
-      workbook.Sheets[sheetName];
-
-      let json =
-      XLSX.utils.sheet_to_json(
-         worksheet
-      );
-
-      prosesPayroll(json);
-
-   };
-
-   reader.readAsArrayBuffer(file);
-}
+reader.readAsArrayBuffer(file);}
 
 function tampilMonitoring(data){
 
-   loadPayroll();
+loadPayroll();
 
-   showPage('monitoringGaji');
+showPage('monitoringGaji');
 
-   alert(
-   'Payroll berhasil diproses'
-   );
-}
-function prosesPayroll(data){
+alert('Payroll berhasil diproses');}function prosesPayroll(data){
 
-let periodeInput =
-document.getElementById('uploadPeriode');
+let periodeInput =document.getElementById('uploadPeriode');
 
 let periode = '';
 
 if(periodeInput){
 
-   periode = periodeInput.value;
-}
-   let hasil = {};
+periode = periodeInput.value;}let hasil = {};
 
-  data.forEach(item=>{
+data.forEach(item=>{
 
-   let nama =
-   item.NAMA_TEKNISI;
+let nama =item.NAMA_TEKNISI;
 
-   if(!hasil[nama]){
+if(!hasil[nama]){
 
-   hasil[nama] = {
+hasil[nama] = {
 
-   nama:nama,
+nama:nama,
 
-   periode:periode,
+periode:periode,
 
-   status:'BELUM TRANSFER',
+status:'BELUM TRANSFER',
 
-   totalSC:0,
+totalSC:0,
 
-   jumlahOrder:0,
+jumlahOrder:0,
 
-   bonus:0,
+bonus:0,
 
-   lembur:0,
+lembur:0,
 
-   potongan:0,
+potongan:0,
 
-   totalGaji:0
-	};
-   }
+totalGaji:0};}
 
-   let totalSC =
-   Number(item.QTY || 0)
-   * 120000;
+let totalSC =Number(item.QTY || 0)
 
-   hasil[nama].totalSC +=
-   totalSC;
+120000;
 
-   hasil[nama].jumlahOrder +=
-   Number(item.QTY || 0);
+hasil[nama].totalSC +=totalSC;
 
-   hasil[nama].bonus +=
-   Number(item.BONUS || 0);
+hasil[nama].jumlahOrder +=Number(item.QTY || 0);
 
-   hasil[nama].lembur +=
-   Number(item.LEMBUR || 0);
+hasil[nama].bonus +=Number(item.BONUS || 0);
 
-   hasil[nama].potongan +=
-   Number(item.POTONGAN || 0);
+hasil[nama].lembur +=Number(item.LEMBUR || 0);
 
-   hasil[nama].totalGaji =
+hasil[nama].potongan +=Number(item.POTONGAN || 0);
 
-   hasil[nama].totalSC +
+hasil[nama].totalGaji =
 
-   hasil[nama].bonus +
+hasil[nama].totalSC +
 
-   hasil[nama].lembur -
+hasil[nama].bonus +
 
-   hasil[nama].potongan;
-});
+hasil[nama].lembur -
 
-let finalData =
-Object.values(hasil);
+hasil[nama].potongan;});
+
+let finalData =Object.values(hasil);
 
 finalData.forEach(item=>{
 
-   item.periode = periode;
-});
+item.periode = periode;});
 
 fetch(API_URL,{
 
-   method:'POST',
+method:'POST',
 
-	body:JSON.stringify({
+body:JSON.stringify({
 
-	action:'simpanPayroll',
-	
-	periode:periode,
+action:'simpanPayroll',
 
-	   items:finalData
-	})
+periode:periode,
+
+   items:finalData
 })
-.then(res=>res.json())
-.then(res=>{
 
-   tampilMonitoring(finalData);
+}).then(res=>res.json()).then(res=>{
 
-   uploadBtn.innerHTML =
-   'Upload & Proses';
+tampilMonitoring(finalData);
 
-   uploadBtn.disabled = false;
-});
-}
-function loadPayroll(){
+uploadBtn.innerHTML ='Upload & Proses';
 
-   fetch(API_URL,{
+uploadBtn.disabled = false;});}function loadPayroll(){
 
-      method:'POST',
+fetch(API_URL,{
 
-      body:JSON.stringify({
+  method:'POST',
 
-         action:'getPayroll'
-      })
-   })
-   .then(res=>res.json())
-   .then(data=>{
+  body:JSON.stringify({
 
-      if(!Array.isArray(data)){
+     action:'getPayroll'
+  })
 
-         console.log(data);
+}).then(res=>res.json()).then(data=>{
 
-         return;
-      }
-      let html='';
+  if(!Array.isArray(data)){
 
-      data.reverse().forEach(item=>{
+     console.log(data);
+
+     return;
+  }
+  let html='';
+
+  data.reverse().forEach(item=>{
 
 html += `
 
-<tr>
+<td>
+${item.periode}
+</td>
 
-   <td>
-   ${formatTanggal(item.tanggal)}
-   </td>
-   
-	<td>
-	${item.periode}
-	</td>
-	
-   <td>
-   ${item.nama}
-   </td>
+  <button
+  onclick="ubahStatusGaji('${item.id}','${item.status}')"
+  class="${
+  item.status == 'SUDAH TRANSFER'
+  ?
+  'status-lunas'
+  :
+  'status-belum'
+  }">
 
-   <td>
-   ${item.bank}
-   </td>
+  ${item.status}
 
-   <td>
-   ${item.rekening}
-   </td>
+  </button>
 
-   <td>
-   ${rupiah(item.totalSC)}
-   </td>
+  document.getElementById(
+  'tableGaji'
+  ).innerHTML = html;
 
-   <td>
-   ${item.jumlahOrder} SC
-   </td>
+}).catch(err=>{
 
-   <td>
-   ${rupiah(item.bonus)}
-   </td>
+  console.log(err);
 
-   <td>
-   ${rupiah(item.lembur)}
-   </td>
-
-   <td>
-   ${rupiah(item.potongan)}
-   </td>
-
-   <td>
-   ${rupiah(item.totalGaji)}
-   </td>
-
-   <td>
-
-      <button
-      onclick="ubahStatusGaji('${item.id}','${item.status}')"
-      class="${
-      item.status == 'SUDAH TRANSFER'
-      ?
-      'status-lunas'
-      :
-      'status-belum'
-      }">
-
-      ${item.status}
-
-      </button>
-
-   </td>
-
-</tr>
-`;
-      });
-
-      document.getElementById(
-      'tableGaji'
-      ).innerHTML = html;
-   })
-   .catch(err=>{
-
-      console.log(err);
-   });
-}
+});}
 
 function filterMonitoringGaji(){
 
-   let periode =
-   document.getElementById(
-   'filterPeriodeGaji'
-   ).value
-   .trim();
+let periode =document.getElementById('filterPeriodeGaji').value.trim();
 
-   let nama =
-   document.getElementById(
-   'filterNamaGaji'
-   ).value
-   .toUpperCase()
-   .trim();
+let nama =document.getElementById('filterNamaGaji').value.toUpperCase().trim();
 
-   let rows =
-   document.querySelectorAll(
-   '#tableGaji tr'
-   );
+let rows =document.querySelectorAll('#tableGaji tr');
 
-   rows.forEach(row=>{
+rows.forEach(row=>{
 
-      let text =
-      row.innerText.toUpperCase();
+  let text =
+  row.innerText.toUpperCase();
 
-      let tampil = true;
+  let tampil = true;
 
-      if(
-      nama &&
-      !text.includes(nama)
-      ){
+  if(
+  nama &&
+  !text.includes(nama)
+  ){
 
-         tampil = false;
-      }
+     tampil = false;
+  }
 
-      let periodeRow =
-      row.children[1]
-      .innerText
-      .trim();
+  let periodeRow =
+  row.children[1]
+  .innerText
+  .trim();
 
-      if(
-      periode &&
-      periodeRow !== periode
-      ){
+  if(
+  periode &&
+  periodeRow !== periode
+  ){
 
-         tampil = false;
-      }
+     tampil = false;
+  }
 
-      row.style.display =
-      tampil
-      ?
-      ''
-      :
-      'none';
-   });
-}
+  row.style.display =
+  tampil
+  ?
+  ''
+  :
+  'none';
+
+});}
 
 function ubahStatusGaji(id,status){
 
-   let statusBaru =
-   status == 'BELUM TRANSFER'
-   ?
-   'SUDAH TRANSFER'
-   :
-   'BELUM TRANSFER';
+let statusBaru =status == 'BELUM TRANSFER'?'SUDAH TRANSFER':'BELUM TRANSFER';
 
-   fetch(API_URL,{
+fetch(API_URL,{
 
-      method:'POST',
+  method:'POST',
 
-      body:JSON.stringify({
+  body:JSON.stringify({
 
-         action:'ubahStatusGaji',
+     action:'ubahStatusGaji',
 
-         id:id,
+     id:id,
 
-         status:statusBaru
-      })
-   })
-   .then(res=>res.json())
-   .then(res=>{
+     status:statusBaru
+  })
 
-      loadPayroll();
-   });
-}
-async function loadTeknisi(){
+}).then(res=>res.json()).then(res=>{
 
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
+  loadPayroll();
 
-   let data =
-   await res.json();
+});}async function loadTeknisi(){
 
-   let html='';
+let res =await fetch(API_URL +'?action=getTeknisi');
 
-   data.reverse().forEach(item=>{
+let data =await res.json();
 
-      html += `
+let html='';
 
-      <tr>
+data.reverse().forEach(item=>{
 
-         <td>${item.id}</td>
+  html += `
 
-         <td>${item.nama}</td>
+  <tr>
 
-         <td>${item.jabatan}</td>
+     <td>${item.id}</td>
 
-         <td>${item.area}</td>
+     <td>${item.nama}</td>
 
-         <td>${item.hp}</td>
+     <td>${item.jabatan}</td>
 
-         <td>${item.bank}</td>
+     <td>${item.area}</td>
 
-         <td>${item.rekening}</td>
+     <td>${item.hp}</td>
 
-         <td>${item.status}</td>
+     <td>${item.bank}</td>
 
-         <td>
+     <td>${item.rekening}</td>
 
-            <button
-            onclick="editTeknisi('${item.row}')">
-            Edit
-            </button>
+     <td>${item.status}</td>
 
-            <button
-            onclick="hapusTeknisi('${item.row}')">
-            Hapus
-            </button>
+     <td>
 
-         </td>
+        <button
+        onclick="editTeknisi('${item.row}')">
+        Edit
+        </button>
 
-      </tr>
-      `;
-   });
+        <button
+        onclick="hapusTeknisi('${item.row}')">
+        Hapus
+        </button>
 
-   document.getElementById(
-   'tableTeknisi'
-   ).innerHTML = html;
-}
-async function simpanTeknisi(){
+     </td>
 
-   await fetch(API_URL,{
+  </tr>
+  `;
 
-      method:'POST',
+});
 
-      body:JSON.stringify({
+document.getElementById('tableTeknisi').innerHTML = html;}async function simpanTeknisi(){
 
-         action:'simpanTeknisi',
+await fetch(API_URL,{
 
-         nama:
-         document.getElementById(
-         'teknisiNama'
-         ).value,
+  method:'POST',
 
-         jabatan:
-         document.getElementById(
-         'teknisiJabatan'
-         ).value,
-
-         area:
-         document.getElementById(
-         'teknisiArea'
-         ).value,
-
-         hp:
-         document.getElementById(
-         'teknisiHp'
-         ).value,
-
-         bank:
-         document.getElementById(
-         'teknisiBank'
-         ).value,
-
-         rekening:
-         document.getElementById(
-         'teknisiRekening'
-         ).value,
-
-         status:
-         document.getElementById(
-         'teknisiStatus'
-         ).value
-      })
-   });
-
-   loadTeknisi();
-   alert('Teknisi berhasil disimpan');
-}
-function filterTeknisi(){
-
-   let cari =
-   document.getElementById(
-   'searchTeknisi'
-   ).value.toLowerCase();
-
-   let rows =
-   document.querySelectorAll(
-   '#tableTeknisi tr'
-   );
-
-   rows.forEach(row=>{
-
-      let nama =
-      row.children[1]
-      .innerText
-      .toLowerCase();
-
-      if(nama.includes(cari)){
-
-         row.style.display='';
-
-      }else{
-
-         row.style.display='none';
-      }
-   });
-}
-function editTeknisi(id){
+  body:JSON.stringify({
 
-   let rows =
-   document.querySelectorAll(
-   '#tableTeknisi tr'
-   );
+     action:'simpanTeknisi',
 
-   rows.forEach(row=>{
+     nama:
+     document.getElementById(
+     'teknisiNama'
+     ).value,
 
-      let btn =
-      row.querySelector('button');
+     jabatan:
+     document.getElementById(
+     'teknisiJabatan'
+     ).value,
 
-      if(
-      btn &&
-      btn.getAttribute('onclick')
-      .includes(id)
-      ){
+     area:
+     document.getElementById(
+     'teknisiArea'
+     ).value,
 
-         document.getElementById(
-         'editTeknisiId'
-         ).value = id;
+     hp:
+     document.getElementById(
+     'teknisiHp'
+     ).value,
 
-         document.getElementById(
-         'teknisiNama'
-         ).value =
-         row.children[1].innerText;
+     bank:
+     document.getElementById(
+     'teknisiBank'
+     ).value,
 
-         document.getElementById(
-         'teknisiJabatan'
-         ).value =
-         row.children[2].innerText;
+     rekening:
+     document.getElementById(
+     'teknisiRekening'
+     ).value,
 
-         document.getElementById(
-         'teknisiArea'
-         ).value =
-         row.children[3].innerText;
+     status:
+     document.getElementById(
+     'teknisiStatus'
+     ).value
+  })
 
-         document.getElementById(
-         'teknisiHp'
-         ).value =
-         row.children[4].innerText;
+});
 
-         document.getElementById(
-         'teknisiBank'
-         ).value =
-         row.children[5].innerText;
+loadTeknisi();alert('Teknisi berhasil disimpan');}function filterTeknisi(){
 
-         document.getElementById(
-         'teknisiRekening'
-         ).value =
-         row.children[6].innerText;
+let cari =document.getElementById('searchTeknisi').value.toLowerCase();
 
-         document.getElementById(
-         'teknisiStatus'
-         ).value =
-         row.children[7].innerText;
-      }
-   });
-}
-async function hapusTeknisi(id){
+let rows =document.querySelectorAll('#tableTeknisi tr');
 
-   let yakin =
-   confirm('Hapus teknisi?');
+rows.forEach(row=>{
 
-   if(!yakin) return;
+  let nama =
+  row.children[1]
+  .innerText
+  .toLowerCase();
 
-   await fetch(API_URL,{
+  if(nama.includes(cari)){
 
-      method:'POST',
+     row.style.display='';
 
-      body:JSON.stringify({
+  }else{
 
-         action:'hapusTeknisi',
+     row.style.display='none';
+  }
 
-         id:id
-      })
-   });
+});}function editTeknisi(id){
 
-   loadTeknisi();
-}
-async function loadSlipNama(){
+let rows =document.querySelectorAll('#tableTeknisi tr');
 
-   let res =
-   await fetch(
-   API_URL +
-   '?action=getTeknisi'
-   );
+rows.forEach(row=>{
 
-   let data =
-   await res.json();
+  let btn =
+  row.querySelector('button');
 
-   let html =
-   '<option value="">Pilih Teknisi</option>';
+  if(
+  btn &&
+  btn.getAttribute('onclick')
+  .includes(id)
+  ){
 
-   data.forEach(item=>{
+     document.getElementById(
+     'editTeknisiId'
+     ).value = id;
 
-      html += `
+     document.getElementById(
+     'teknisiNama'
+     ).value =
+     row.children[1].innerText;
 
-      <option value="${item.nama}">
+     document.getElementById(
+     'teknisiJabatan'
+     ).value =
+     row.children[2].innerText;
 
-      ${item.nama}
+     document.getElementById(
+     'teknisiArea'
+     ).value =
+     row.children[3].innerText;
 
-      </option>
-      `;
-   });
+     document.getElementById(
+     'teknisiHp'
+     ).value =
+     row.children[4].innerText;
 
-   document.getElementById(
-   'slipNama'
-   ).innerHTML = html;
-}
+     document.getElementById(
+     'teknisiBank'
+     ).value =
+     row.children[5].innerText;
+
+     document.getElementById(
+     'teknisiRekening'
+     ).value =
+     row.children[6].innerText;
+
+     document.getElementById(
+     'teknisiStatus'
+     ).value =
+     row.children[7].innerText;
+  }
+
+});}async function hapusTeknisi(id){
+
+let yakin =confirm('Hapus teknisi?');
+
+if(!yakin) return;
+
+await fetch(API_URL,{
+
+  method:'POST',
+
+  body:JSON.stringify({
+
+     action:'hapusTeknisi',
+
+     id:id
+  })
+
+});
+
+loadTeknisi();}async function loadSlipNama(){
+
+let res =await fetch(API_URL +'?action=getTeknisi');
+
+let data =await res.json();
+
+let html ='Pilih Teknisi';
+
+data.forEach(item=>{
+
+  html += `
+
+  <option value="${item.nama}">
+
+  ${item.nama}
+
+  </option>
+  `;
+
+});
+
+document.getElementById('slipNama').innerHTML = html;}
 
 async function buatSlipGaji(){
 
-   let nama =
-   document.getElementById(
-   'slipNama'
-   ).value;
+let nama =document.getElementById('slipNama').value;
 
-   let bulan =
-   document.getElementById(
-   'slipBulan'
-   ).value;
+let bulan =document.getElementById('slipBulan').value;
 
-   if(!nama){
+if(!nama){
 
-      alert('Pilih teknisi');
+  alert('Pilih teknisi');
 
-      return;
-   }
+  return;
 
-   if(!bulan){
+}
 
-      alert('Pilih periode bulan');
+if(!bulan){
 
-      return;
-   }
+  alert('Pilih periode bulan');
 
-	let arrBulan = [
+  return;
 
-   'Januari',
-   'Februari',
-   'Maret',
-   'April',
-   'Mei',
-   'Juni',
-   'Juli',
-   'Agustus',
-   'September',
-   'Oktober',
-   'November',
-   'Desember'
-	];
+}
 
-	let split =
-	bulan.split('-');
+let arrBulan = [
 
-	let periode =
-	arrBulan[
-	Number(split[1]) - 1
-	] + ' ' + split[0];
+'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
-	let res =
-	await fetch(API_URL,{
+let split =
+bulan.split('-');
 
-	method:'POST',
+let periode =
+arrBulan[
+Number(split[1]) - 1
+] + ' ' + split[0];
 
-	body:JSON.stringify({
+let res =
+await fetch(API_URL,{
 
-      action:'getPayroll'
+method:'POST',
 
-	})
-	});
+body:JSON.stringify({
 
-	let data =
-	await res.json();
-	console.log(data);
+  action:'getPayroll'
 
-let item =
-data.find(x => {
-
-   let namaData =
-   String(x.nama)
-   .trim()
-   .toUpperCase();
-
-   let namaPilih =
-   String(nama)
-   .trim()
-   .toUpperCase();
-
-   let periodeData =
-   String(x.periode)
-   .trim()
-   .replace(/\s/g,'');
-
-   let periodePilih =
-   String(bulan)
-   .trim()
-   .replace(/\s/g,'');
-
-   console.log(
-   namaData,
-   namaPilih,
-   periodeData,
-   periodePilih
-   );
-
-   return (
-
-      namaData === namaPilih
-
-      &&
-
-      periodeData.includes(
-      periodePilih
-      )
-
-   );
-
+})
 });
-   if(!item){
 
-      alert(
-      'Slip tidak ditemukan'
-      );
+let data =
+await res.json();
+console.log(data);
 
-      return;
-   }
+let item =data.find(x => {
 
-   document.getElementById(
-   'hasilSlip'
-   ).innerHTML = `
+let namaData =String(x.nama).trim().toUpperCase();
 
-   <div class="slip-box">
+let namaPilih =String(nama).trim().toUpperCase();
 
-      <div class="slip-header">
+let periodeData =String(x.periode).trim().replace(/\s/g,'');
 
-         <h2>
-         KAS ARIP R.COM
-         </h2>
+let periodePilih =String(bulan).trim().replace(/\s/g,'');
 
-         <h3>
-         SLIP GAJI TEKNISI
-         </h3>
+console.log(namaData,namaPilih,periodeData,periodePilih);
 
-         <p class="periode-slip">
+return (
 
-         PERIODE :
-         ${periode.toUpperCase()}
+  namaData === namaPilih
 
-         </p>
+  &&
 
-      </div>
+  periodeData.includes(
+  periodePilih
+  )
 
-      <div class="slip-body">
+);
 
-         <div class="slip-row">
-            <span>Nama</span>
-            <b>${item.nama}</b>
-         </div>
+});if(!item){
 
-         <div class="slip-row">
-            <span>Bank</span>
-            <b>${item.bank}</b>
-         </div>
+  alert(
+  'Slip tidak ditemukan'
+  );
 
-         <div class="slip-row">
-            <span>No Rekening</span>
-            <b>${item.rekening}</b>
-         </div>
+  return;
 
-         <div class="slip-row">
-            <span>Jumlah Order</span>
-            <b>${item.jumlahOrder} SC</b>
-         </div>
-
-         <div class="slip-row">
-            <span>Total SC</span>
-            <b>${rupiah(item.totalSC)}</b>
-         </div>
-
-         <div class="slip-row">
-            <span>Bonus</span>
-            <b>${rupiah(item.bonus)}</b>
-         </div>
-
-         <div class="slip-row">
-            <span>Lembur</span>
-            <b>${rupiah(item.lembur)}</b>
-         </div>
-
-         <div class="slip-row">
-            <span>Potongan</span>
-            <b>${rupiah(item.potongan)}</b>
-         </div>
-
-      </div>
-
-      <div class="slip-total">
-
-         TOTAL GAJI
-
-         <h1>
-         ${rupiah(item.totalGaji)}
-         </h1>
-
-      </div>
-
-      <div class="slip-status">
-
-         ${item.status}
-
-      </div>
-
-   </div>
-   `;
 }
-function printSlip(){
 
-   let content =
-   document.getElementById(
-   'hasilSlip'
-   ).innerHTML;
+document.getElementById('hasilSlip').innerHTML = `
 
-   let win =
-   window.open('','','width=900,height=700');
+  <div class="slip-header">
 
-   win.document.write(`
+     <h2>
+     KAS ARIP R.COM
+     </h2>
 
-   <html>
+     <h3>
+     SLIP GAJI TEKNISI
+     </h3>
 
-   <head>
+     <p class="periode-slip">
 
-      <title>
-      Slip Gaji
-      </title>
+     PERIODE :
+     ${periode.toUpperCase()}
 
-      <style>
+     </p>
 
-         body{
+  </div>
 
-            font-family:Arial;
+  <div class="slip-body">
 
-            background:#f1f5f9;
+     <div class="slip-row">
+        <span>Nama</span>
+        <b>${item.nama}</b>
+     </div>
 
-            padding:30px;
-         }
+     <div class="slip-row">
+        <span>Bank</span>
+        <b>${item.bank}</b>
+     </div>
 
-         .slip-box{
+     <div class="slip-row">
+        <span>No Rekening</span>
+        <b>${item.rekening}</b>
+     </div>
 
-            max-width:700px;
+     <div class="slip-row">
+        <span>Jumlah Order</span>
+        <b>${item.jumlahOrder} SC</b>
+     </div>
 
-            margin:auto;
+     <div class="slip-row">
+        <span>Total SC</span>
+        <b>${rupiah(item.totalSC)}</b>
+     </div>
 
-            background:#fff;
+     <div class="slip-row">
+        <span>Bonus</span>
+        <b>${rupiah(item.bonus)}</b>
+     </div>
 
-            border-radius:25px;
+     <div class="slip-row">
+        <span>Lembur</span>
+        <b>${rupiah(item.lembur)}</b>
+     </div>
 
-            overflow:hidden;
+     <div class="slip-row">
+        <span>Potongan</span>
+        <b>${rupiah(item.potongan)}</b>
+     </div>
 
-            box-shadow:
-            0 10px 30px rgba(0,0,0,0.1);
-         }
+  </div>
 
-         .slip-header{
+  <div class="slip-total">
 
-            background:
-            linear-gradient(
-            135deg,
-            #0f172a,
-            #1e3a8a
-            );
+     TOTAL GAJI
 
-            color:#fff;
+     <h1>
+     ${rupiah(item.totalGaji)}
+     </h1>
 
-            padding:30px;
+  </div>
 
-            text-align:center;
-         }
+  <div class="slip-status">
 
-         .slip-body{
+     ${item.status}
 
-            padding:30px;
-         }
+  </div>
 
-         .slip-row{
+let content =document.getElementById('hasilSlip').innerHTML;
 
-            display:flex;
+let win =window.open('','','width=900,height=700');
 
-            justify-content:space-between;
+win.document.write(`
 
-            margin-bottom:15px;
+  <title>
+  Slip Gaji
+  </title>
 
-            border-bottom:
-            1px dashed #ddd;
+  <style>
 
-            padding-bottom:10px;
-         }
+     body{
 
-         .slip-total{
+        font-family:Arial;
 
-            background:#f8fafc;
+        background:#f1f5f9;
 
-            padding:30px;
+        padding:30px;
+     }
 
-            text-align:center;
-         }
+     .slip-box{
 
-         .slip-total h1{
+        max-width:700px;
 
-            color:#2563eb;
-         }
+        margin:auto;
 
-         .slip-status{
+        background:#fff;
 
-            padding:20px;
+        border-radius:25px;
 
-            text-align:center;
+        overflow:hidden;
 
-            color:#fff;
+        box-shadow:
+        0 10px 30px rgba(0,0,0,0.1);
+     }
 
-            font-weight:bold;
+     .slip-header{
 
-            background:#22c55e;
-         }
+        background:
+        linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a
+        );
 
-      </style>
+        color:#fff;
 
-   </head>
+        padding:30px;
 
-   <body>
+        text-align:center;
+     }
 
-   ${content}
+     .slip-body{
 
-   </body>
+        padding:30px;
+     }
 
-   </html>
-   `);
+     .slip-row{
 
-   win.document.close();
+        display:flex;
 
-   win.print();
-}
+        justify-content:space-between;
+
+        margin-bottom:15px;
+
+        border-bottom:
+        1px dashed #ddd;
+
+        padding-bottom:10px;
+     }
+
+     .slip-total{
+
+        background:#f8fafc;
+
+        padding:30px;
+
+        text-align:center;
+     }
+
+     .slip-total h1{
+
+        color:#2563eb;
+     }
+
+     .slip-status{
+
+        padding:20px;
+
+        text-align:center;
+
+        color:#fff;
+
+        font-weight:bold;
+
+        background:#22c55e;
+     }
+
+  </style>
+
+${content}
+
+win.document.close();
+
+win.print();
