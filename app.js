@@ -372,109 +372,115 @@ Object.keys(ranking).forEach(nama=>{
 document.getElementById(
 'dashboardTeknisiPayroll'
 ).innerHTML = body;
-new Chart(
 
-document.getElementById(
-'chartGaji'
-),{
+let periodeChart = Object.keys(periodeSC);
 
-new Chart(scCanvas,{
+let scList = Object.values(periodeSC);
 
-   type:'line',
+let scCanvas =
+document.getElementById('chartSC');
 
-   data:{
+if(scCanvas){
 
-      labels:periodeList,
+   new Chart(scCanvas,{
 
-      datasets:[{
+      type:'line',
 
-         label:'Total SC',
+      data:{
 
-         data:scList,
+         labels:periodeChart,
 
-         borderColor:'#2563eb',
+         datasets:[{
 
-         backgroundColor:
-         'rgba(37,99,235,0.15)',
+            label:'Total SC',
 
-         fill:true,
+            data:scList,
 
-         tension:0.4,
+            borderColor:'#2563eb',
 
-         pointRadius:6,
+            backgroundColor:
+            'rgba(37,99,235,0.15)',
 
-         pointHoverRadius:8,
+            fill:true,
 
-         pointBackgroundColor:'#2563eb'
-      }]
-   },
+            tension:0.4,
 
-   options:{
+            pointRadius:6,
 
-      responsive:true,
+            pointHoverRadius:8,
 
-      plugins:{
+            pointBackgroundColor:'#2563eb'
+         }]
+      },
 
-         legend:{
+      options:{
 
-            display:true
+         responsive:true,
+
+         plugins:{
+
+            legend:{
+
+               display:true
+            }
+         },
+
+         scales:{
+
+            y:{
+
+               beginAtZero:true
+            }
          }
       },
 
-      scales:{
+      plugins:[{
 
-         y:{
+         id:'customLabel',
 
-            beginAtZero:true
-         }
-      }
-   },
+         afterDatasetsDraw(chart){
 
-   plugins:[{
+            const ctx = chart.ctx;
 
-      id:'customLabel',
+            chart.data.datasets.forEach(
 
-      afterDatasetsDraw(chart){
+            function(dataset,i){
 
-         const {
+               const meta =
+               chart.getDatasetMeta(i);
 
-            ctx
-         } = chart;
+               meta.data.forEach(
 
-         chart.data.datasets.forEach(
+               function(element,index){
 
-         function(dataset,i){
+                  ctx.fillStyle =
+                  '#0f172a';
 
-            const meta =
-            chart.getDatasetMeta(i);
+                  ctx.font =
+                  'bold 12px Segoe UI';
 
-            meta.data.forEach(
+                  ctx.textAlign =
+                  'center';
 
-            function(element,index){
+                  ctx.fillText(
 
-               ctx.fillStyle =
-               '#0f172a';
+                     dataset.data[index]
+                     + ' SC',
 
-               ctx.font =
-               'bold 12px Segoe UI';
+                     element.x,
 
-               ctx.textAlign =
-               'center';
-
-               ctx.fillText(
-
-                  dataset.data[index]
-                  + ' SC',
-
-                  element.x,
-
-                  element.y - 15
-               );
+                     element.y - 15
+                  );
+               });
             });
-         });
-      }
-   }]
-});
+         }
+      }]
+   });
+}
+
+
+
+
 
 async function loadSummaryTeknisi(){
 
