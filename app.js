@@ -382,41 +382,217 @@ document.getElementById(
 
    data:{
 
-      labels:Object.keys(periodeGaji),
+      labels:
+      Object.keys(periodeGaji),
 
       datasets:[{
 
          label:'Total Gaji',
 
-         data:Object.values(periodeGaji),
+         data:
+         Object.values(periodeGaji),
 
-         borderWidth:1
+         backgroundColor:
+         'rgba(37,99,235,0.75)',
+
+         borderColor:'#2563eb',
+
+         borderWidth:2,
+
+         borderRadius:18,
+
+         borderSkipped:false,
+
+         hoverBackgroundColor:
+         '#1d4ed8',
+
+         barThickness:55
       }]
+   },
+
+   options:{
+
+      responsive:true,
+
+      maintainAspectRatio:false,
+
+      animation:{
+
+         duration:2000,
+
+         easing:'easeOutQuart'
+      },
+
+      plugins:{
+
+         legend:{
+
+            labels:{
+
+               color:'#0f172a',
+
+               font:{
+
+                  size:14,
+
+                  weight:'bold'
+               }
+            }
+         },
+
+         tooltip:{
+
+            backgroundColor:'#0f172a',
+
+            titleColor:'#fff',
+
+            bodyColor:'#fff',
+
+            padding:14,
+
+            borderColor:'#2563eb',
+
+            borderWidth:1
+         }
+      },
+
+      scales:{
+
+         x:{
+
+            ticks:{
+
+               color:'#334155',
+
+               font:{
+
+                  weight:'bold'
+               }
+            },
+
+            grid:{
+
+               display:false
+            }
+         },
+
+         y:{
+
+            beginAtZero:true,
+
+            ticks:{
+
+               color:'#334155'
+            },
+
+            grid:{
+
+               color:'rgba(148,163,184,0.15)'
+            }
+         }
+      }
+	  
    }
-});
+   });
+   
+   /* =========================
+   CHART SC
+========================= */
 
-new Chart(
-
+let chartSC =
 document.getElementById(
 'chartSC'
-),{
+);
 
-   type:'line',
+if(chartSC){
 
-   data:{
+   new Chart(chartSC,{
 
-      labels:Object.keys(periodeSC),
+      type:'line',
 
-      datasets:[{
+      data:{
 
-         label:'Total SC',
+         labels:
+         Object.keys(periodeSC),
 
-         data:Object.values(periodeSC),
+         datasets:[{
 
-         borderWidth:2
-      }]
-   }
-});
+            label:'Total SC',
+
+            data:
+            Object.values(periodeSC),
+
+            borderColor:'#2563eb',
+
+            backgroundColor:
+            'rgba(37,99,235,0.15)',
+
+            fill:true,
+
+            tension:0.45,
+
+            borderWidth:4,
+
+            pointRadius:6,
+
+            pointHoverRadius:9,
+
+            pointBackgroundColor:'#2563eb',
+
+            pointBorderColor:'#fff',
+
+            pointBorderWidth:3
+         }]
+      },
+
+      options:{
+
+         responsive:true,
+
+         maintainAspectRatio:false,
+
+         animation:{
+
+            duration:1800
+         },
+
+         plugins:{
+
+            legend:{
+
+               labels:{
+
+                  color:'#0f172a',
+
+                  font:{
+
+                     size:14,
+
+                     weight:'bold'
+                  }
+               }
+            }
+         },
+
+         scales:{
+
+            x:{
+
+               grid:{
+
+                  display:false
+               }
+            },
+
+            y:{
+
+               beginAtZero:true
+            }
+         }
+      }
+    });
+}
+
 }
 
 async function loadSummaryTeknisi(){
