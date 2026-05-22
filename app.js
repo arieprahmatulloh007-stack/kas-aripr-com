@@ -412,52 +412,88 @@ document.getElementById(
 
    options:{
 
-      responsive:true,
+   responsive:true,
 
-      maintainAspectRatio:false,
+   maintainAspectRatio:false,
 
-      animation:{
+   animation:{
 
-         duration:2000,
+      duration:2000,
 
-         easing:'easeOutQuart'
-      },
+      easing:'easeOutQuart'
+   },
 
-      plugins:{
+   plugins:{
 
-         legend:{
+      legend:{
 
-            labels:{
+         labels:{
 
-               color:'#0f172a',
+            color:'#0f172a',
 
-               font:{
+            font:{
 
-                  size:14,
+               size:14,
 
-                  weight:'bold'
-               }
+               weight:'bold'
             }
-         },
-
-         tooltip:{
-
-            backgroundColor:'#0f172a',
-
-            titleColor:'#fff',
-
-            bodyColor:'#fff',
-
-            padding:14,
-
-            borderColor:'#2563eb',
-
-            borderWidth:1
          }
       },
 
-      scales:{
-	  plugins:[{
+      tooltip:{
+
+         backgroundColor:'#0f172a',
+
+         titleColor:'#fff',
+
+         bodyColor:'#fff',
+
+         padding:14,
+
+         borderColor:'#2563eb',
+
+         borderWidth:1
+      }
+   },
+
+   scales:{
+
+      x:{
+
+         ticks:{
+
+            color:'#334155',
+
+            font:{
+
+               weight:'bold'
+            }
+         },
+
+         grid:{
+
+            display:false
+         }
+      },
+
+      y:{
+
+         beginAtZero:true,
+
+         ticks:{
+
+            color:'#334155'
+         },
+
+         grid:{
+
+            color:'rgba(148,163,184,0.15)'
+         }
+      }
+   }
+},
+
+plugins:[{
 
    id:'customLabel',
 
@@ -495,8 +531,8 @@ document.getElementById(
                element.x,
 
                element.y - 15
-				);
-				});
+			);
+			});
 			});
 		}
 		}]
@@ -549,131 +585,128 @@ document.getElementById(
 
 if(chartSC){
 
-   new Chart(chartSC,{
+new Chart(chartSC,{
 
-      type:'line',
+   type:'bar',
 
-      data:{
+   data:{
 
-         labels:
-         Object.keys(periodeSC),
+      labels:
+      Object.keys(periodeSC),
 
-         datasets:[{
+      datasets:[{
 
-            label:'Total SC',
+         label:'Total SC',
 
-            data:
-            Object.values(periodeSC),
+         data:
+         Object.values(periodeSC),
 
-            borderColor:'#2563eb',
+         backgroundColor:
+         'rgba(37,99,235,0.75)',
 
-            backgroundColor:
-            'rgba(37,99,235,0.15)',
+         borderColor:'#2563eb',
 
-            fill:true,
+         borderWidth:2,
 
-            tension:0.45,
+         borderRadius:18,
 
-            borderWidth:4,
+         borderSkipped:false,
 
-            pointRadius:6,
+         hoverBackgroundColor:
+         '#1d4ed8',
 
-            pointHoverRadius:9,
+         barThickness:55
+      }]
+   },
 
-            pointBackgroundColor:'#2563eb',
+   options:{
 
-            pointBorderColor:'#fff',
+      responsive:true,
 
-            pointBorderWidth:3
-         }]
+      maintainAspectRatio:false,
+
+      animation:{
+
+         duration:1800
       },
 
-      options:{
+      plugins:{
 
-         responsive:true,
+         legend:{
 
-         maintainAspectRatio:false,
+            labels:{
 
-         animation:{
+               color:'#0f172a',
 
-            duration:1800
-         },
+               font:{
 
-         plugins:{
+                  size:14,
 
-            legend:{
-
-               labels:{
-
-                  color:'#0f172a',
-
-                  font:{
-
-                     size:14,
-
-                     weight:'bold'
-                  }
+                  weight:'bold'
                }
+            }
+         }
+      },
+
+      scales:{
+
+         x:{
+
+            grid:{
+
+               display:false
             }
          },
 
-         scales:{
-			plugins:[{
+         y:{
 
-		id:'customLabelSC',
+            beginAtZero:true
+         }
+      }
+   },
 
-		afterDatasetsDraw(chart){
+   plugins:[{
 
-      const ctx = chart.ctx;
+      id:'customLabelSC',
 
-      chart.data.datasets.forEach(
+      afterDatasetsDraw(chart){
 
-      function(dataset,i){
+         const ctx = chart.ctx;
 
-         const meta =
-         chart.getDatasetMeta(i);
+         chart.data.datasets.forEach(
 
-         meta.data.forEach(
+         function(dataset,i){
 
-         function(element,index){
+            const meta =
+            chart.getDatasetMeta(i);
 
-            ctx.fillStyle =
-            '#0f172a';
+            meta.data.forEach(
 
-            ctx.font =
-            'bold 13px Segoe UI';
+            function(element,index){
 
-            ctx.textAlign =
-            'center';
+               ctx.fillStyle =
+               '#0f172a';
 
-            ctx.fillText(
+               ctx.font =
+               'bold 13px Segoe UI';
 
-               dataset.data[index]
-               + ' SC',
+               ctx.textAlign =
+               'center';
 
-               element.x,
+               ctx.fillText(
 
-               element.y - 15
-				);
+                  dataset.data[index]
+                  + ' SC',
+
+                  element.x,
+
+                  element.y - 15
+               );
 				});
 			});
 		}
-		}]
-            x:{
-
-               grid:{
-
-                  display:false
-               }
-            },
-
-            y:{
-
-               beginAtZero:true
-            }
-         }
-      }
-    });
+	}]
+	});
 }
 
 }
