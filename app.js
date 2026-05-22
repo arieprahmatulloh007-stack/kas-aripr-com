@@ -457,6 +457,49 @@ document.getElementById(
       },
 
       scales:{
+	  plugins:[{
+
+   id:'customLabel',
+
+   afterDatasetsDraw(chart){
+
+      const ctx = chart.ctx;
+
+      chart.data.datasets.forEach(
+
+      function(dataset,i){
+
+         const meta =
+         chart.getDatasetMeta(i);
+
+         meta.data.forEach(
+
+         function(element,index){
+
+            ctx.fillStyle =
+            '#0f172a';
+
+            ctx.font =
+            'bold 13px Segoe UI';
+
+            ctx.textAlign =
+            'center';
+
+            ctx.fillText(
+
+               'Rp ' +
+               Number(
+               dataset.data[index]
+               ).toLocaleString('id-ID'),
+
+               element.x,
+
+               element.y - 15
+				);
+				});
+			});
+		}
+		}]
 
          x:{
 
@@ -575,7 +618,47 @@ if(chartSC){
          },
 
          scales:{
+			plugins:[{
 
+		id:'customLabelSC',
+
+		afterDatasetsDraw(chart){
+
+      const ctx = chart.ctx;
+
+      chart.data.datasets.forEach(
+
+      function(dataset,i){
+
+         const meta =
+         chart.getDatasetMeta(i);
+
+         meta.data.forEach(
+
+         function(element,index){
+
+            ctx.fillStyle =
+            '#0f172a';
+
+            ctx.font =
+            'bold 13px Segoe UI';
+
+            ctx.textAlign =
+            'center';
+
+            ctx.fillText(
+
+               dataset.data[index]
+               + ' SC',
+
+               element.x,
+
+               element.y - 15
+				);
+				});
+			});
+		}
+		}]
             x:{
 
                grid:{
