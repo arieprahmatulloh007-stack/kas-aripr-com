@@ -167,7 +167,9 @@ async function loadDashboardPayroll(){
 
    let periodeSC = {};
 
-   let teknisi = {};
+   let periodeList = [];
+
+   let ranking = {};
 
    data.forEach(item=>{
 
@@ -190,525 +192,395 @@ async function loadDashboardPayroll(){
       periodeSC[periode] +=
       Number(item.jumlahOrder || 0);
 
-      if(!teknisi[item.nama]){
+      if(!periodeList.includes(periode)){
 
-         teknisi[item.nama] = {
+         periodeList.push(periode);
+      }
 
-            gaji:0,
+      if(!ranking[item.nama]){
+
+         ranking[item.nama] = {};
+      }
+
+      if(!ranking[item.nama][periode]){
+
+         ranking[item.nama][periode] = {
 
             sc:0,
-
-            status:item.status
+            rp:0
          };
       }
 
-      teknisi[item.nama].gaji +=
-      Number(item.totalGaji || 0);
-
-      teknisi[item.nama].sc +=
+      ranking[item.nama][periode].sc +=
       Number(item.jumlahOrder || 0);
+
+      ranking[item.nama][periode].rp +=
+      Number(item.totalGaji || 0);
    });
 
-   let htmlGaji = '';
+   periodeList.sort();
 
-   Object.keys(periodeGaji)
-   .reverse()
-   .forEach(p=>{
+   /* =========================
+      TABLE RANKING
+   ========================= */
 
-      htmlGaji += `
-
-      <div class="row-dashboard">
-
-         <span>${p}</span>
-
-         <b>${rupiah(periodeGaji[p])}</b>
-
-      </div>
-      `;
-   });
-
-   let htmlSC = '';
-
-   Object.keys(periodeSC)
-   .reverse()
-   .forEach(p=>{
-
-      htmlSC += `
-
-      <div class="row-dashboard">
-
-         <span>${p}</span>
-
-         <b>${periodeSC[p]} SC</b>
-
-      </div>
-      `;
-   });
-
-let periodeList = [];
-
-data.forEach(item=>{
-
-   if(
-   !periodeList.includes(item.periode)
-   ){
-
-      periodeList.push(item.periode);
-   }
-});
-
-periodeList.sort();
-
-let ranking = {};
-
-data.forEach(item=>{
-
-   let nama = item.nama;
-
-   if(!ranking[nama]){
-
-      ranking[nama] = {};
-   }
-
-   if(!ranking[nama][item.periode]){
-
-      ranking[nama][item.periode] = {
-
-         sc:0,
-
-         rp:0
-      };
-   }
-
-   ranking[nama][item.periode].sc +=
-   Number(item.jumlahOrder || 0);
-
-   ranking[nama][item.periode].rp +=
-   Number(item.totalGaji || 0);
-});
-
-let head = `
-<tr>
-
-   <th rowspan="2">
-   NAMA TEKNISI
-   </th>
-`;
-
-periodeList.forEach(p=>{
-
-   head += `
-   <th colspan="2">
-   ${p}
-   </th>
-   `;
-});
-
-head += `
-</tr>
-
-<tr>
-`;
-
-periodeList.forEach(()=>{
-
-   head += `
-   <th>SC</th>
-   <th>RP</th>
-   `;
-});
-
-head += `
-</tr>
-`;
-
-document.getElementById(
-'rankingPayrollHead'
-).innerHTML = head;
-
-let body = '';
-
-Object.keys(ranking).forEach(nama=>{
-
-   body += `
+   let head = `
    <tr>
 
-      <td class="nama-teknisi-rank">
-      ${nama}
-      </td>
+      <th rowspan="2">
+      NAMA TEKNISI
+      </th>
    `;
 
    periodeList.forEach(p=>{
 
-      let item =
-      ranking[nama][p];
-
-      body += `
-
-      <td class="total-sc">
-
-      ${item ? item.sc : 0}
-
-      </td>
-
-      <td class="total-rp">
-
-      ${item
-      ?
-      rupiah(item.rp)
-      :
-      'Rp 0'
-      }
-
-      </td>
+      head += `
+      <th colspan="2">
+      ${p}
+      </th>
       `;
    });
 
-   body += `
+   head += `
+   </tr>
+
+   <tr>
+   `;
+
+   periodeList.forEach(()=>{
+
+      head += `
+      <th>SC</th>
+      <th>RP</th>
+      `;
+   });
+
+   head += `
    </tr>
    `;
-});
 
-document.getElementById(
-'dashboardTeknisiPayroll'
-).innerHTML = body;
-new Chart(
+   document.getElementById(
+   'rankingPayrollHead'
+   ).innerHTML = head;
 
-document.getElementById(
-'chartGaji'
-),{
+   let body = '';
 
-   type:'bar',
+   Object.keys(ranking).forEach(nama=>{
 
-   data:{
+      body += `
+      <tr>
 
-      labels:
-      Object.keys(periodeGaji),
+         <td class="nama-teknisi-rank">
+         ${nama}
+         </td>
+      `;
 
-      datasets:[{
+      periodeList.forEach(p=>{
 
-         label:'Total Gaji',
+         let item =
+         ranking[nama][p];
 
-         data:
-         Object.values(periodeGaji),
+         body += `
 
-         backgroundColor:
-         'rgba(37,99,235,0.75)',
+         <td class="total-sc">
+         ${item ? item.sc : 0}
+         </td>
 
-         borderColor:'#2563eb',
+         <td class="total-rp">
+         ${item ? rupiah(item.rp) : 'Rp 0'}
+         </td>
+         `;
+      });
 
-         borderWidth:2,
-
-         borderRadius:18,
-
-         borderSkipped:false,
-
-         hoverBackgroundColor:
-         '#1d4ed8',
-
-         barThickness:55
-      }]
-   },
-
-   options:{
-
-   responsive:true,
-
-   maintainAspectRatio:false,
-
-   animation:{
-
-      duration:2000,
-
-      easing:'easeOutQuart'
-   },
-
-   plugins:{
-
-      legend:{
-
-         labels:{
-
-            color:'#0f172a',
-
-            font:{
-
-               size:14,
-
-               weight:'bold'
-            }
-         }
-      },
-
-      tooltip:{
-
-         backgroundColor:'#0f172a',
-
-         titleColor:'#fff',
-
-         bodyColor:'#fff',
-
-         padding:14,
-
-         borderColor:'#2563eb',
-
-         borderWidth:1
-      }
-   },
-
-   scales:{
-
-      x:{
-
-         ticks:{
-
-            color:'#334155',
-
-            font:{
-
-               weight:'bold'
-            }
-         },
-
-         grid:{
-
-            display:false
-         }
-      },
-
-      y:{
-
-         beginAtZero:true,
-
-         ticks:{
-
-            color:'#334155'
-         },
-
-         grid:{
-
-            color:'rgba(148,163,184,0.15)'
-         }
-      }
-   }
-},
-
-plugins:[{
-
-   id:'customLabel',
-
-   afterDatasetsDraw(chart){
-
-      const ctx = chart.ctx;
-
-      chart.data.datasets.forEach(
-
-      function(dataset,i){
-
-         const meta =
-         chart.getDatasetMeta(i);
-
-         meta.data.forEach(
-
-         function(element,index){
-
-            ctx.fillStyle =
-            '#0f172a';
-
-            ctx.font =
-            'bold 13px Segoe UI';
-
-            ctx.textAlign =
-            'center';
-
-            ctx.fillText(
-
-               'Rp ' +
-               Number(
-               dataset.data[index]
-               ).toLocaleString('id-ID'),
-
-               element.x,
-
-               element.y - 15
-			);
-			});
-			});
-		}
-		}]
-
-         x:{
-
-            ticks:{
-
-               color:'#334155',
-
-               font:{
-
-                  weight:'bold'
-               }
-            },
-
-            grid:{
-
-               display:false
-            }
-         },
-
-         y:{
-
-            beginAtZero:true,
-
-            ticks:{
-
-               color:'#334155'
-            },
-
-            grid:{
-
-               color:'rgba(148,163,184,0.15)'
-            }
-         }
-      }
-	  
-   }
+      body += `
+      </tr>
+      `;
    });
-   
+
+   document.getElementById(
+   'dashboardTeknisiPayroll'
+   ).innerHTML = body;
+
    /* =========================
-   CHART SC
-========================= */
+      CHART GAJI
+   ========================= */
 
-let chartSC =
-document.getElementById(
-'chartSC'
-);
+   new Chart(
 
-if(chartSC){
+   document.getElementById(
+   'chartGaji'
+   ),{
 
-new Chart(chartSC,{
+      type:'bar',
 
-   type:'bar',
+      data:{
 
-   data:{
+         labels:
+         Object.keys(periodeGaji),
 
-      labels:
-      Object.keys(periodeSC),
+         datasets:[{
 
-      datasets:[{
+            label:'Total Gaji',
 
-         label:'Total SC',
+            data:
+            Object.values(periodeGaji),
 
-         data:
-         Object.values(periodeSC),
+            backgroundColor:
+            'rgba(37,99,235,0.75)',
 
-         backgroundColor:
-         'rgba(37,99,235,0.75)',
+            borderColor:'#2563eb',
 
-         borderColor:'#2563eb',
+            borderWidth:2,
 
-         borderWidth:2,
+            borderRadius:18,
 
-         borderRadius:18,
+            borderSkipped:false,
 
-         borderSkipped:false,
+            hoverBackgroundColor:
+            '#1d4ed8',
 
-         hoverBackgroundColor:
-         '#1d4ed8',
-
-         barThickness:55
-      }]
-   },
-
-   options:{
-
-      responsive:true,
-
-      maintainAspectRatio:false,
-
-      animation:{
-
-         duration:1800
+            barThickness:55
+         }]
       },
 
-      plugins:{
+      options:{
 
-         legend:{
+         responsive:true,
 
-            labels:{
+         maintainAspectRatio:false,
 
-               color:'#0f172a',
+         animation:{
 
-               font:{
+            duration:2000,
 
-                  size:14,
+            easing:'easeOutQuart'
+         },
 
-                  weight:'bold'
+         plugins:{
+
+            legend:{
+
+               labels:{
+
+                  color:'#0f172a',
+
+                  font:{
+
+                     size:14,
+
+                     weight:'bold'
+                  }
                }
-            }
-         }
-      },
+            },
 
-      scales:{
+            tooltip:{
 
-         x:{
+               backgroundColor:'#0f172a',
 
-            grid:{
+               titleColor:'#fff',
 
-               display:false
+               bodyColor:'#fff',
+
+               padding:14
             }
          },
 
-         y:{
+         scales:{
 
-            beginAtZero:true
+            x:{
+
+               grid:{
+
+                  display:false
+               }
+            },
+
+            y:{
+
+               beginAtZero:true
+            }
          }
-      }
-   },
+      },
 
-   plugins:[{
+      plugins:[{
 
-      id:'customLabelSC',
+         id:'customLabel',
 
-      afterDatasetsDraw(chart){
+         afterDatasetsDraw(chart){
 
-         const ctx = chart.ctx;
+            const ctx = chart.ctx;
 
-         chart.data.datasets.forEach(
+            chart.data.datasets.forEach(
 
-         function(dataset,i){
+            function(dataset,i){
 
-            const meta =
-            chart.getDatasetMeta(i);
+               const meta =
+               chart.getDatasetMeta(i);
 
-            meta.data.forEach(
+               meta.data.forEach(
 
-            function(element,index){
+               function(element,index){
 
-               ctx.fillStyle =
-               '#0f172a';
+                  ctx.fillStyle =
+                  '#0f172a';
 
-               ctx.font =
-               'bold 13px Segoe UI';
+                  ctx.font =
+                  'bold 13px Segoe UI';
 
-               ctx.textAlign =
-               'center';
+                  ctx.textAlign =
+                  'center';
 
-               ctx.fillText(
+                  ctx.fillText(
 
-                  dataset.data[index]
-                  + ' SC',
+                     'Rp ' +
+                     Number(
+                     dataset.data[index]
+                     ).toLocaleString('id-ID'),
 
-                  element.x,
+                     element.x,
 
-                  element.y - 15
-               );
-				});
-			});
-		}
-	}]
-	});
-}
+                     element.y - 15
+                  );
+               });
+            });
+         }
+      }]
+   });
 
+   /* =========================
+      CHART SC
+   ========================= */
+
+   let chartSC =
+   document.getElementById(
+   'chartSC'
+   );
+
+   if(chartSC){
+
+      new Chart(chartSC,{
+
+         type:'bar',
+
+         data:{
+
+            labels:
+            Object.keys(periodeSC),
+
+            datasets:[{
+
+               label:'Total SC',
+
+               data:
+               Object.values(periodeSC),
+
+               backgroundColor:
+               'rgba(37,99,235,0.75)',
+
+               borderColor:'#2563eb',
+
+               borderWidth:2,
+
+               borderRadius:18,
+
+               borderSkipped:false,
+
+               hoverBackgroundColor:
+               '#1d4ed8',
+
+               barThickness:55
+            }]
+         },
+
+         options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            animation:{
+
+               duration:1800
+            },
+
+            plugins:{
+
+               legend:{
+
+                  labels:{
+
+                     color:'#0f172a',
+
+                     font:{
+
+                        size:14,
+
+                        weight:'bold'
+                     }
+                  }
+               }
+            },
+
+            scales:{
+
+               x:{
+
+                  grid:{
+
+                     display:false
+                  }
+               },
+
+               y:{
+
+                  beginAtZero:true
+               }
+            }
+         },
+
+         plugins:[{
+
+            id:'customLabelSC',
+
+            afterDatasetsDraw(chart){
+
+               const ctx = chart.ctx;
+
+               chart.data.datasets.forEach(
+
+               function(dataset,i){
+
+                  const meta =
+                  chart.getDatasetMeta(i);
+
+                  meta.data.forEach(
+
+                  function(element,index){
+
+                     ctx.fillStyle =
+                     '#0f172a';
+
+                     ctx.font =
+                     'bold 13px Segoe UI';
+
+                     ctx.textAlign =
+                     'center';
+
+                     ctx.fillText(
+
+                        dataset.data[index]
+                        + ' SC',
+
+                        element.x,
+
+                        element.y - 15
+                     );
+                  });
+               });
+            }
+         }]
+      });
+   }
 }
 
 async function loadSummaryTeknisi(){
