@@ -1056,3 +1056,31 @@ tr:hover{
 
    font-size:15px;
 }
+.dashboard-box canvas{
+
+   width:100% !important;
+
+   height:320px !important;
+}
+
+.dashboard-box{
+
+   background:#ffffff;
+
+   border-radius:28px;
+
+   padding:25px;
+
+   box-shadow:
+   0 10px 30px rgba(15,23,42,0.08);
+
+   transition:0.3s;
+}
+
+.dashboard-box:hover{
+
+   transform:translateY(-4px);
+
+   box-shadow:
+   0 20px 40px rgba(37,99,235,0.12);
+}
